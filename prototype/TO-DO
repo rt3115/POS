@@ -7,8 +7,20 @@ layout
 1 - make to do : create and fill the to-do list (5/8/19 : 15 min)
 
 ----GUI to-do----
+creates and runs the gui
 1 - proto gui : create a prototype gui to demo (not done)
 
 
 ----Main to-do----
+runs the application, starts all the classes
 1 - create layout diagram : make the layout diagram for Main (not done)
+
+----Register Runner to-do----
+Runs the register program, handles prices, totals
+
+----Food DataBase to-do----
+stores all the prices and needed information about food
+
+----Logger to-do----
+logs everything the system does, outputs to a text file and outputs to LEDs about system status
+
