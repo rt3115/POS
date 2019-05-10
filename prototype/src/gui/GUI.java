@@ -1,7 +1,6 @@
 package gui;
 
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,8 +8,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import java.awt.event.ActionEvent;
 
 public class GUI extends Application {
 
@@ -93,7 +90,8 @@ public class GUI extends Application {
             for(int j = 0; j < 3; j++){
                 Button b1 = new Button((i * j) + "");
                 b1.setPrefSize(120, 90);
-
+                b1.setText("Pizza");
+                b1.setFont(Font.font(30));
                 b1.setOnAction(ActionEvent -> {
                     addItem("1 PIZZA :        2.50");
                     total += 2.5;
@@ -153,10 +151,19 @@ public class GUI extends Application {
 
         Button totalButton = new Button("Total");
         totalButton.setOnAction(ActionEvent -> {
-            total -= Double.parseDouble(keyValue);
-            keyValue = "";
-            refreshkeyPad();
-            refresgTotal();
+            try {
+                total -= Double.parseDouble(keyValue);
+                keyValue = "";
+                refreshkeyPad();
+                refresgTotal();
+            }catch (Exception e){
+                System.err.println("There was an error in totalButton, ignoring it and cleaning everything");
+                keyValue = "";
+                total = 0;
+                cleanTransNoUpdate();
+                refresgTotal();
+                refreshkeyPad();
+            }
         });
         totalButton.setPrefSize(120, 80);
         keyPadKeys.add(totalButton, 4, 3);
@@ -246,7 +253,7 @@ public class GUI extends Application {
     public void refresgTotal(){
         if(total < 0){
             totalNode.setText("Change: " + Math.abs(total));
-            cleatTransNoUpdate();
+            cleanTransNoUpdate();
             return;
         }
         totalNode.setText("Total: " + total);
@@ -271,7 +278,7 @@ public class GUI extends Application {
         refresgTotal();
     }
 
-    public void cleatTransNoUpdate(){
+    public void cleanTransNoUpdate(){
         int items = itemContent.getChildren().size();
         if(items == 0)
             return;
