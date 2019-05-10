@@ -125,6 +125,16 @@ public class GUI extends Application {
         addMan.setPrefSize(120, 80);
         keyPadKeys.add(addMan, 4, 2);
 
+        Button totalButton = new Button("Total");
+        totalButton.setOnAction(ActionEvent -> {
+            total -= Double.parseDouble(keyValue);
+            keyValue = "";
+            refreshkeyPad();
+            refresgTotal();
+        });
+        totalButton.setPrefSize(120, 80);
+        keyPadKeys.add(totalButton, 4, 3);
+
         HBox extraButtons = new HBox();
 
         Button dotButton = new Button(".");
@@ -208,6 +218,11 @@ public class GUI extends Application {
     }
 
     public void refresgTotal(){
+        if(total < 0){
+            totalNode.setText("Change: " + Math.abs(total));
+            cleatTransNoUpdate();
+            return;
+        }
         totalNode.setText("Total: " + total);
     }
 
@@ -228,6 +243,16 @@ public class GUI extends Application {
         }
         total = 0;
         refresgTotal();
+    }
+
+    public void cleatTransNoUpdate(){
+        int items = itemContent.getChildren().size();
+        if(items == 0)
+            return;
+        for(int i = items - 1 ; i >= 0; i--){
+            itemContent.getChildren().remove(i);
+        }
+        total = 0;
     }
 
     public void removeItem(){
