@@ -52,7 +52,33 @@ public class GUI extends Application {
         //creates the vbox for the functions
         VBox funcCol = new VBox();
         for(int i = 0; i < 10; i++){
-            Button  b1 = new Button("Button " + i);
+            Button b1;
+            switch (i){
+                case 0 :
+                    b1 = new Button("Close");
+                    break;
+                case 1 :
+                    b1 = new Button("Print Last Receipt");
+                    break;
+                case 2 :
+                    b1 = new Button("Print Receipt by Id");
+                    break;
+                case 3 :
+                    b1 = new Button("Print Totals");
+                    break;
+                case 4 :
+                    b1 = new Button("Void Trans by ID");
+                    break;
+                case 5 :
+                    b1 = new Button("No Sale");
+                    break;
+                case 6 :
+                    b1 = new Button("Manager Functions");
+                    break;
+                default:
+                    b1 = new Button("Button " + i);
+            }
+
             b1.setStyle(genStyle);
             b1.setPrefSize(150, 60);
             funcCol.getChildren().add(b1);
