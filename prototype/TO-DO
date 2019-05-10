@@ -2,6 +2,11 @@ stuff to do
 every package for have its own section, related packages should near each other
 use ----name---- to denote a package
 
+NOTES:
+please don't count to much (but include some) time on research in the time it took to complete
+research is an important use of time however it is technically not completely part of the project
+recommend only recording about 20% of your research time in time taken to complete
+
 layout
 [num] - [thing to do] : [short desc] ([date completed] : [est time taken])
 1 - make to do : create and fill the to-do list (5/8/19 : 15 min)
@@ -13,7 +18,15 @@ creates and runs the gui
 
 ----Main to-do----
 runs the application, starts all the classes
-1 - create layout diagram : make the layout diagram for Main (not done)
+1 - create layout diagram : make the layout diagram for Main (5/9/19 : 4hr)
+2 - create refined layout : iron our issues and make it look nicer (not done)
+3 - add functionality for prototype : make some buttons work (not done)
+4 - add color to important buttons : add color to important buttons (not done)
+5 - add labels : add labels to areas that need them (not done)
+6 - add function buttons : add the col of function buttons (5/9/19 : 15min)
+7 - add labels to func : add proper labels to func buttons (not done)
+8 - add functionality : make the func buttons work (not done)
+
 
 ----Register Runner to-do----
 Runs the register program, handles prices, totals
