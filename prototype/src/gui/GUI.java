@@ -298,4 +298,8 @@ public class GUI extends Application {
         Application.launch();
     }
 
+    public static void launch(){
+        Application.launch();
+    }
+
 }
