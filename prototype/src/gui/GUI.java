@@ -48,28 +48,28 @@ public class GUI extends Application {
 
         //creates the vbox for the functions
         VBox funcCol = new VBox();
-        for(int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             Button b1;
-            switch (i){
-                case 0 :
+            switch (i) {
+                case 0:
                     b1 = new Button("Close");
                     break;
-                case 1 :
+                case 1:
                     b1 = new Button("Print Last Receipt");
                     break;
-                case 2 :
+                case 2:
                     b1 = new Button("Print Receipt by Id");
                     break;
-                case 3 :
+                case 3:
                     b1 = new Button("Print Totals");
                     break;
-                case 4 :
+                case 4:
                     b1 = new Button("Void Trans by ID");
                     break;
-                case 5 :
+                case 5:
                     b1 = new Button("No Sale");
                     break;
-                case 6 :
+                case 6:
                     b1 = new Button("Manager Functions");
                     break;
                 default:
@@ -86,8 +86,8 @@ public class GUI extends Application {
 
         GridPane items = new GridPane();
         items.setStyle(genStyle);
-        for(int i = 0; i < 6; i++){
-            for(int j = 0; j < 3; j++){
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 3; j++) {
                 Button b1 = new Button((i * j) + "");
                 b1.setPrefSize(120, 90);
                 b1.setText("Pizza");
@@ -98,7 +98,7 @@ public class GUI extends Application {
                     refresgTotal();
                 });
 
-                items.add( b1 ,j , i);
+                items.add(b1, j, i);
             }
         }
         //items.add(new Button("Test"), 0 , 0);
@@ -111,8 +111,8 @@ public class GUI extends Application {
         keyPadValue.setPrefWidth(120 * 3);
         keyPadValue.setFont(Font.font(40));
 
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 Button b1 = new Button("" + ((i * 3) + j + 1));
                 int x = (i * 3) + j + 1;
                 b1.setOnAction(ActionEvent -> {
@@ -122,7 +122,7 @@ public class GUI extends Application {
 
                 b1.setStyle(genStyle);
                 b1.setPrefSize(80, 80);
-                keyPadKeys.add(b1, j , i + 1 );
+                keyPadKeys.add(b1, j, i + 1);
             }
         }
         Button clear = new Button("Clear");
@@ -141,7 +141,7 @@ public class GUI extends Application {
                 refresgTotal();
                 keyValue = "";
                 refreshkeyPad();
-            }catch(Exception e){
+            } catch (Exception e) {
                 System.err.println("caught error in keyValue");
             }
 
@@ -156,7 +156,7 @@ public class GUI extends Application {
                 keyValue = "";
                 refreshkeyPad();
                 refresgTotal();
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println("There was an error in totalButton, ignoring it and cleaning everything");
                 keyValue = "";
                 total = 0;
@@ -232,7 +232,7 @@ public class GUI extends Application {
 
         gridPane.add(items, 0, 0);
         gridPane.add(keyPad, 0, 1);
-        gridPane.add(itemView, 1 ,0);
+        gridPane.add(itemView, 1, 0);
         gridPane.add(totalCashCreditView, 1, 1);
 
         hBox.getChildren().addAll(funcCol, gridPane);
@@ -246,12 +246,12 @@ public class GUI extends Application {
         keyValue = "";
     }
 
-    public void refreshkeyPad(){
+    public void refreshkeyPad() {
         keyPadValue.setText(keyValue);
     }
 
-    public void refresgTotal(){
-        if(total < 0){
+    public void refresgTotal() {
+        if (total < 0) {
             totalNode.setText("Change: " + Math.abs(total));
             cleanTransNoUpdate();
             return;
@@ -259,7 +259,7 @@ public class GUI extends Application {
         totalNode.setText("Total: " + total);
     }
 
-    public void addItem(String in){
+    public void addItem(String in) {
         Label lb = new Label(in);
         lb.setStyle(genStyle);
         lb.setFont(Font.font(20));
@@ -267,29 +267,29 @@ public class GUI extends Application {
         itemContent.getChildren().add(lb);
     }
 
-    public void clearTrans(){
+    public void clearTrans() {
         int items = itemContent.getChildren().size();
-        if(items == 0)
+        if (items == 0)
             return;
-        for(int i = items - 1 ; i >= 0; i--){
+        for (int i = items - 1; i >= 0; i--) {
             itemContent.getChildren().remove(i);
         }
         total = 0;
         refresgTotal();
     }
 
-    public void cleanTransNoUpdate(){
+    public void cleanTransNoUpdate() {
         int items = itemContent.getChildren().size();
-        if(items == 0)
+        if (items == 0)
             return;
-        for(int i = items - 1 ; i >= 0; i--){
+        for (int i = items - 1; i >= 0; i--) {
             itemContent.getChildren().remove(i);
         }
         total = 0;
     }
 
-    public void removeItem(){
-        if(itemContent.getChildren().size() == 0)
+    public void removeItem() {
+        if (itemContent.getChildren().size() == 0)
             return;
         itemContent.getChildren().remove(itemContent.getChildren().size() - 1);
     }

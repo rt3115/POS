@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/POS.iml" filepath="$PROJECT_DIR$/.idea/POS.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/POS2.iml" filepath="$PROJECT_DIR$/.idea/POS2.iml" />
+>>>>>>> origin/master
       <module fileurl="file://$PROJECT_DIR$/prototype/prototype.iml" filepath="$PROJECT_DIR$/prototype/prototype.iml" />
     </modules>
   </component>
