@@ -9,6 +9,12 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.security.spec.ECField;
+import java.util.LinkedList;
+import java.util.List;
+
 public class GUI extends Application {
 
     private String genStyle = "" +
@@ -25,6 +31,9 @@ public class GUI extends Application {
     VBox itemContent;
     Label keyPadValue;
     Label totalNode;
+    List<TempFood> foods = new LinkedList<>();
+    List<TempFood> toppingsList = new LinkedList<>();
+    public String temp = "Empty";
 
     public GUI() {
         super();
@@ -33,6 +42,28 @@ public class GUI extends Application {
     @Override
     public void init() throws Exception {
         super.init();
+
+        foods.add(new TempFood("Pizza", 1, 2.5));
+        foods.add(new TempFood("Water", 2, 1.00));
+        foods.add(new TempFood("Plate", 3, 10.00, false, true));
+        foods.add(new TempFood("Arizona", 4, .99));
+        foods.add(new TempFood("Sub", 5, 6.00, false, true));
+        foods.add(new TempFood("Breakfast Sandwich", 6, 3.00, false, true));
+        foods.add(new TempFood("Gatorade", 7, 2.00, false, false));
+        foods.add(new TempFood("Soda", 8, 2.00, false, false));
+        foods.add(new TempFood("Doz Wings", 9 , 10.00, false, false));
+
+
+        toppingsList.add(new TempFood("Lettuce", 1, .00, true, false));
+        toppingsList.add(new TempFood("Tomato", 2, .00, true, false));
+        toppingsList.add(new TempFood("Hot Sauce", 3, .50, true, false));
+        toppingsList.add(new TempFood("Cheese", 4, .00, true, false));
+        toppingsList.add(new TempFood("Ex Cheese", 5, .50, true, false));
+        toppingsList.add(new TempFood("Ex Meat", 6, .50, true, false));
+        toppingsList.add(new TempFood("Peppers", 7, .00, true, false));
+        toppingsList.add(new TempFood("Onions", 8, .00, true, false));
+
+
     }
 
     @Override
@@ -84,23 +115,86 @@ public class GUI extends Application {
         //creates the gridPane that contains the rest of the UI
         GridPane gridPane = new GridPane();
 
-        GridPane items = new GridPane();
-        items.setStyle(genStyle);
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 3; j++) {
-                Button b1 = new Button((i * j) + "");
-                b1.setPrefSize(120, 90);
-                b1.setText("Pizza");
-                b1.setFont(Font.font(30));
-                b1.setOnAction(ActionEvent -> {
-                    addItem("1 PIZZA :        2.50");
-                    total += 2.5;
-                    refresgTotal();
-                });
+        Pane itemViewArea = new Pane();
 
-                items.add(b1, j, i);
+        GridPane items = new GridPane();
+        GridPane toppings = new GridPane();
+        items.setStyle(genStyle);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j <6; j++) {
+
+                Button b1 = new Button();
+                int x = (j * 3) + i;
+                if(x < foods.size()){
+                    b1.setText(foods.get(x).getName());
+                    b1.setPrefSize(120 , 90);
+//                    b1.setFont(Font.font(20));
+                    b1.setOnAction(ActionEvent -> {
+                        temp = foods.get(x).getId() +" " + foods.get(x).getName() + ":       " + foods.get(x).getPrice();
+                        total += foods.get(x).getPrice();
+                        if(foods.get(x).isHasTopping()){
+                            items.setVisible(false);
+                            toppings.setVisible(true);
+                        }else{
+                            addItem(temp);
+                            refresgTotal();
+                        }
+                    });
+                }else{
+                    break;
+                }
+
+                items.add(b1, i, j);
             }
         }
+
+
+        items.setStyle(genStyle);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 6; j++) {
+
+                Button b1 = new Button();
+                b1.setPrefSize(120, 90);
+
+                int x = (j * 3) + i;
+
+                if(x < toppingsList.size()){
+                    b1.setText(toppingsList.get(x).getName());
+                    b1.setOnAction(ActionEvent -> {
+                        temp += "\n";
+                        temp += "           " + toppingsList.get(x).getName() + ":        " + toppingsList.get(x).getPrice();
+                        total += toppingsList.get(x).getPrice();
+                    });
+                }else if(x == toppingsList.size()){
+                    //stop adding toppings
+                    b1.setOnAction(ActionEvent -> {
+                        b1.setText("Done");
+                        addItem(temp + "\n Sub Total: N/A");
+                        refresgTotal();
+                        toppings.setVisible(false);
+                        items.setVisible(true);
+                    });
+                }else{
+                    break;
+                }
+
+                /*
+                b1.setText("Ex Cheese");
+                b1.setFont(Font.font(30));
+                b1.setOnAction(ActionEvent -> {
+                    addItem("1 Sub              6.00" +
+                            " \n            Ex Cheese :   .50");
+                    total += .50;
+                    refresgTotal();
+                    toppings.setVisible(false);
+                    items.setVisible(true);
+                });*/
+                toppings.add(b1 , i, j);
+            }
+        }
+
+        itemViewArea.getChildren().addAll(toppings, items);
+        toppings.setVisible(false);
         //items.add(new Button("Test"), 0 , 0);
 
         VBox keyPad = new VBox();
@@ -230,7 +324,8 @@ public class GUI extends Application {
         creditButton.setFont(Font.font(30));
         totalCashCreditView.getChildren().addAll(totalNode, cashButton, creditButton);
 
-        gridPane.add(items, 0, 0);
+//        gridPane.add(items, 0, 0);
+        gridPane.add(itemViewArea, 0, 0);
         gridPane.add(keyPad, 0, 1);
         gridPane.add(itemView, 1, 0);
         gridPane.add(totalCashCreditView, 1, 1);
@@ -268,9 +363,13 @@ public class GUI extends Application {
     }
 
     public void clearTrans() {
+
         int items = itemContent.getChildren().size();
-        if (items == 0)
+        if (items == 0){
+            total = 0;
+            refresgTotal();
             return;
+        }
         for (int i = items - 1; i >= 0; i--) {
             itemContent.getChildren().remove(i);
         }
@@ -298,7 +397,7 @@ public class GUI extends Application {
         Application.launch();
     }
 
-    public static void launch(){
+    public static void launch() {
         Application.launch();
     }
 
