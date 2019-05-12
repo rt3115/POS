@@ -1,5 +1,8 @@
 package common;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class BasicFood extends Item {
     private final int price;
     private int qty;
@@ -16,6 +19,10 @@ public class BasicFood extends Item {
 
     public int getQty() {
         return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
     }
 
     @Override
