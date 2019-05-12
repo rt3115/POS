@@ -103,6 +103,9 @@ public class GUI extends Application {
                 case 6:
                     b1 = new Button("Manager Functions");
                     break;
+                case 7:
+                    b1 = new Button("Don't Touch!!!");
+                    break;
                 default:
                     b1 = new Button("Button " + i);
             }
