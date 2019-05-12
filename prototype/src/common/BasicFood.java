@@ -7,8 +7,8 @@ public class BasicFood extends Item {
     private final int price;
     private int qty;
 
-    public BasicFood(String name, int id, double price){
-        super(name, id);
+    public BasicFood(String name, double price){
+        super(name);
         this.price = (int)(price * 100);
         this.qty = 1;
     }

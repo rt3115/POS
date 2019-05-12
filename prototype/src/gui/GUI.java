@@ -1,5 +1,9 @@
 package gui;
 
+import common.AdjustableFood;
+import common.BasicFood;
+import common.Item;
+import common.Topping;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,8 +35,8 @@ public class GUI extends Application {
     VBox itemContent;
     Label keyPadValue;
     Label totalNode;
-    List<TempFood> foods = new LinkedList<>();
-    List<TempFood> toppingsList = new LinkedList<>();
+    List<BasicFood> foods = new LinkedList<>();
+    List<Topping> toppingsList = new LinkedList<>();
     public String temp = "Empty";
 
     public GUI() {
@@ -43,25 +47,25 @@ public class GUI extends Application {
     public void init() throws Exception {
         super.init();
 
-        foods.add(new TempFood("Pizza", 1, 2.5));
-        foods.add(new TempFood("Water", 2, 1.00));
-        foods.add(new TempFood("Plate", 3, 10.00, false, true));
-        foods.add(new TempFood("Arizona", 4, .99));
-        foods.add(new TempFood("Sub", 5, 6.00, false, true));
-        foods.add(new TempFood("Breakfast Sandwich", 6, 3.00, false, true));
-        foods.add(new TempFood("Gatorade", 7, 2.00, false, false));
-        foods.add(new TempFood("Soda", 8, 2.00, false, false));
-        foods.add(new TempFood("Doz Wings", 9 , 10.00, false, false));
+        foods.add(new BasicFood("Pizza", 2.5));
+        foods.add(new BasicFood("Water", 1));
+        foods.add(new AdjustableFood("Plate", 10.00, new Topping("Hot Sauce", .50), new Topping("Onions", .00)));
+        foods.add(new BasicFood("Arizona", .99));
+        foods.add(new AdjustableFood("Sub", 6.00));
+//        foods.add(new TempFood("Breakfast Sandwich", 6, 3.00, false, true));
+//        foods.add(new TempFood("Gatorade", 7, 2.00, false, false));
+//        foods.add(new TempFood("Soda", 8, 2.00, false, false));
+//        foods.add(new TempFood("Doz Wings", 9 , 10.00, false, false));
+//
 
-
-        toppingsList.add(new TempFood("Lettuce", 1, .00, true, false));
-        toppingsList.add(new TempFood("Tomato", 2, .00, true, false));
-        toppingsList.add(new TempFood("Hot Sauce", 3, .50, true, false));
-        toppingsList.add(new TempFood("Cheese", 4, .00, true, false));
-        toppingsList.add(new TempFood("Ex Cheese", 5, .50, true, false));
-        toppingsList.add(new TempFood("Ex Meat", 6, .50, true, false));
-        toppingsList.add(new TempFood("Peppers", 7, .00, true, false));
-        toppingsList.add(new TempFood("Onions", 8, .00, true, false));
+        toppingsList.add(new Topping("Lettuce", .00));
+        toppingsList.add(new Topping("Tomato", .00));
+        toppingsList.add(new Topping("Hot Sauce", .50, 1.00));
+        toppingsList.add(new Topping("Cheese", .00, .50));
+//        toppingsList.add(new TempFood("Ex Cheese", 5, .50, true, false));
+//        toppingsList.add(new TempFood("Ex Meat", 6, .50, true, false));
+//        toppingsList.add(new TempFood("Peppers", 7, .00, true, false));
+//        toppingsList.add(new TempFood("Onions", 8, .00, true, false));
 
 
     }
@@ -133,9 +137,9 @@ public class GUI extends Application {
                     b1.setPrefSize(120 , 90);
 //                    b1.setFont(Font.font(20));
                     b1.setOnAction(ActionEvent -> {
-                        temp = foods.get(x).getId() +" " + foods.get(x).getName() + ":       " + foods.get(x).getPrice();
+                        temp = foods.get(x).toString();
                         total += foods.get(x).getPrice();
-                        if(foods.get(x).isHasTopping()){
+                        if(foods.get(x) instanceof AdjustableFood){
                             items.setVisible(false);
                             toppings.setVisible(true);
                         }else{

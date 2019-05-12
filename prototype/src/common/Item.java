@@ -3,10 +3,13 @@ package common;
 public abstract class Item {
     private final String name;
     private final int id;
+    public static int CURRID = 0;
 
-    public Item(String name, int id){
+    public abstract int getPrice();
+
+    public Item(String name){
         this.name = name;
-        this.id = id;
+        this.id = Item.CURRID++;
     }
 
     public String getName() {
@@ -20,5 +23,17 @@ public abstract class Item {
     @Override
     public String toString() {
         return id + " " + name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Item){
+            if(((Item) obj).getId() == this.id){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false;
     }
 }

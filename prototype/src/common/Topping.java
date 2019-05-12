@@ -5,14 +5,14 @@ public class Topping extends Item {
     private int extraPrice;
     private int amount; //0 is normal, -1 LIGHT, 1 EXTRA, -2 is no topping
 
-    public Topping(String name, int id, double price){
-        super(name, id);
+    public Topping(String name, double price){
+        super(name);
         this.price = (int)(price*100);
         this.extraPrice = 0;
     }
 
-    public Topping(String name, int id, double price, double extraPrice){
-        this(name, id, price);
+    public Topping(String name, double price, double extraPrice){
+        this(name, price);
         this.extraPrice = (int)(extraPrice*100);
     }
 
