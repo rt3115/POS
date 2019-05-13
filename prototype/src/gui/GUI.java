@@ -13,9 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.security.spec.ECField;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class GUI extends Application {
     double keyValueDouble = 0;
     ScrollPane itemList;
     VBox itemContent;
-    List<Item> list = new LinkedList<>();
+    List<Item> list = new LinkedList<>(); //list of items currently in the transaction
     Label keyPadValue;
     Label totalNode;
     List<BasicFood> foods = new LinkedList<>();
@@ -123,7 +121,13 @@ public class GUI extends Application {
         //creates the gridPane that contains the rest of the UI
         GridPane gridPane = new GridPane();
 
+
+    //item view area
         Pane itemViewArea = new Pane();
+
+        VBox itemViewAreaBox = new VBox();
+
+
 
         GridPane items = new GridPane();
         GridPane toppings = new GridPane();
@@ -141,11 +145,15 @@ public class GUI extends Application {
                         temp = foods.get(x).toString();
                         total += foods.get(x).getPrice();
                         if(foods.get(x) instanceof AdjustableFood){
-                            items.setVisible(false);
-                            toppings.setVisible(true);
-                        }else{
+                            AdjustableFood x2 = (AdjustableFood)foods.get(x);
+                            Item temp = new AdjustableFood(x2.getName(), x2.getPrice());
                             addItem(temp);
-                            refresgTotal();
+                            //items.setVisible(false);
+                            //toppings.setVisible(true);
+                            refreshTotal();
+                        }else{
+                            addItem(foods.get(x));
+                            refreshTotal();
                         }
                     });
                 }else{
@@ -169,16 +177,24 @@ public class GUI extends Application {
                 if(x < toppingsList.size()){
                     b1.setText(toppingsList.get(x).getName());
                     b1.setOnAction(ActionEvent -> {
-                        temp += "\n";
-                        temp += "           " + toppingsList.get(x).getName() + ":        " + toppingsList.get(x).getPrice();
-                        total += toppingsList.get(x).getPrice();
+
+                        AdjustableFood food = (AdjustableFood) getItem();
+                        food.addTopping(toppingsList.get(x));
+                        refreshItem();
+                        refreshTotal();
+                        //removeItem();
+                        //addItem(food);
+
+                        //temp += "\n";
+                        //temp += "           " + toppingsList.get(x).getName() + ":        " + toppingsList.get(x).getPrice();
+                        //total += toppingsList.get(x).getPrice();
                     });
                 }else if(x == toppingsList.size()){
                     //stop adding toppings
+                    b1.setText("Done");
                     b1.setOnAction(ActionEvent -> {
-                        b1.setText("Done");
-                        addItem(temp + "\n Sub Total: N/A");
-                        refresgTotal();
+//                        addItem(temp + "\n Sub Total: N/A");
+                        refreshTotal();
                         toppings.setVisible(false);
                         items.setVisible(true);
                     });
@@ -193,7 +209,7 @@ public class GUI extends Application {
                     addItem("1 Sub              6.00" +
                             " \n            Ex Cheese :   .50");
                     total += .50;
-                    refresgTotal();
+                    refreshTotal();
                     toppings.setVisible(false);
                     items.setVisible(true);
                 });*/
@@ -201,6 +217,18 @@ public class GUI extends Application {
             }
         }
 
+        Button adjustOrder = new Button();
+        adjustOrder.setText("Adjust Order");
+        adjustOrder.setOnAction(ActionEvent -> {
+            toppings.setVisible(true);
+            items.setVisible(false);
+        });
+        Button addSide = new Button();
+        addSide.setText("Add Side");
+
+        HBox itemButtonBox = new HBox();
+        itemButtonBox.getChildren().addAll(adjustOrder, addSide);
+        itemViewAreaBox.getChildren().addAll(itemViewArea, itemButtonBox);
         itemViewArea.getChildren().addAll(toppings, items);
         toppings.setVisible(false);
         //items.add(new Button("Test"), 0 , 0);
@@ -240,7 +268,7 @@ public class GUI extends Application {
             try {
                 total += Double.parseDouble(keyValue);
                 addItem("Item Manual: " + keyValue);
-                refresgTotal();
+                refreshTotal();
                 keyValue = "";
                 refreshkeyPad();
             } catch (Exception e) {
@@ -257,13 +285,13 @@ public class GUI extends Application {
                 total -= Double.parseDouble(keyValue);
                 keyValue = "";
                 refreshkeyPad();
-                refresgTotal();
+                refreshTotal();
             } catch (Exception e) {
                 System.err.println("There was an error in totalButton, ignoring it and cleaning everything");
                 keyValue = "";
                 total = 0;
                 cleanTransNoUpdate();
-                refresgTotal();
+                refreshTotal();
                 refreshkeyPad();
             }
         });
@@ -333,7 +361,7 @@ public class GUI extends Application {
         totalCashCreditView.getChildren().addAll(totalNode, cashButton, creditButton);
 
 //        gridPane.add(items, 0, 0);
-        gridPane.add(itemViewArea, 0, 0);
+        gridPane.add(itemViewAreaBox, 0, 0);
         gridPane.add(keyPad, 0, 1);
         gridPane.add(itemView, 1, 0);
         gridPane.add(totalCashCreditView, 1, 1);
@@ -345,7 +373,7 @@ public class GUI extends Application {
         stage.show();
 
         refreshkeyPad();
-        refresgTotal();
+        refreshTotal();
         keyValue = "";
     }
 
@@ -353,13 +381,13 @@ public class GUI extends Application {
         keyPadValue.setText(keyValue);
     }
 
-    public void refresgTotal() {
+    public void refreshTotal() {
         if (total < 0) {
-            totalNode.setText("Change: " + Math.abs(total));
+            totalNode.setText("Change: " + Math.abs(total/100.00));
             cleanTransNoUpdate();
             return;
         }
-        totalNode.setText("Total: " + total);
+        totalNode.setText("Total: " + total/100.00);
     }
 
     public void addItem(String in) {
@@ -370,14 +398,27 @@ public class GUI extends Application {
         itemContent.getChildren().add(lb);
     }
 
+    public void addItem(Item item){
+        Label lb = new Label(item.toString());
+        lb.setStyle(genStyle);
+        lb.setFont(Font.font(20));
+        lb.setPrefWidth(390);
+        list.add(item);
+        itemContent.getChildren().add(lb);
+    }
+
+    public void refreshItem() {
+        Label lb = (Label) itemContent.getChildren().get(itemContent.getChildren().size() - 1);
+        lb.setText(getItem().toString());
+    }
+
     //returns the last item from the list
     public Item getItem(){
-        return null;
+        return list.get(list.size()-1);
     }
 
     public Item getItem(int index){
-//        return itemContent.getChildren().get(index);
-        return null;
+        return list.get(index);
     }
 
     public void clearTrans() {
@@ -385,14 +426,14 @@ public class GUI extends Application {
         int items = itemContent.getChildren().size();
         if (items == 0){
             total = 0;
-            refresgTotal();
+            refreshTotal();
             return;
         }
         for (int i = items - 1; i >= 0; i--) {
             itemContent.getChildren().remove(i);
         }
         total = 0;
-        refresgTotal();
+        refreshTotal();
     }
 
     public void cleanTransNoUpdate() {
@@ -408,7 +449,11 @@ public class GUI extends Application {
     public void removeItem() {
         if (itemContent.getChildren().size() == 0)
             return;
+        int x = list.get(list.size()-1).getPrice();
         itemContent.getChildren().remove(itemContent.getChildren().size() - 1);
+        list.remove(list.size()-1);
+        total -= x;
+        refreshTotal();
     }
 
     public static void main(String[] args) {

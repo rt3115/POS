@@ -48,6 +48,7 @@ logs everything the system does, outputs to a text file and outputs to LEDs abou
 an abstract class that all items inherit from
 1 - create class, make the abstract class (5/12/19 : 10min)
 2 - add functions, add the functions and implement the ones that need to be implemented (5/12/19 : 10min)
+3 - need to add a copy function , when adding to trans list object need to be new instances of item (not done)
 
 ----Basic Food----
 extends item, add prices and the functions to go with prices
@@ -55,11 +56,13 @@ extends item, add prices and the functions to go with prices
 2 - add the functions (5/12/19 : 20 min)
 3 - add the sides list, and functions to go with the list (not done)
 4 - change price to handle sides as well (not done)
+5 - add copy (not done)
 
 ----adjustable food----
 extends basic foods, this item has toppings. both normal toppings and can add toppings
 1 - create class, make class (5/12/19 : 5min)
 2 - add the functions, add the topping list and functions needed for the this (5/12/19 : 30min)
+3 - add copy (not done)
 
 
 ----Topping----
@@ -67,6 +70,7 @@ extends basic foods, this item has toppings. both normal toppings and can add to
 2 - add functions (5/12/19 : 20 min)
 3 - handle light, regular and extra (5/12/19 : 10 min)
 4 - handle no topping (5/12/19 : 5 min)
+5 - add copy (not done)
 
 
 

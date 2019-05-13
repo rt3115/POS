@@ -41,6 +41,6 @@ public class Topping extends Item {
         }else if(amount == -2){
             return "NO " + super.getName();
         }
-        return super.getName() + "      " + getPrice();
+        return super.getName() + "      " + getPrice()/100.00;
     }
 }

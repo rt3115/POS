@@ -46,12 +46,12 @@ public class AdjustableFood extends BasicFood {
             return super.toString();
         }
         String temp = super.toString();
-        temp += "/n";
+        temp += "\n";
         for(Item top : toppings){
             top = (Topping)top;
-            temp += "   " + top.toString() + "\n";
+            temp += "      " + top.toString() + "\n";
         }
-        temp = "SubTotal: " + getPrice();
+        temp += "SubTotal: " + getPrice()/100.00;
         return temp;
     }
 }
