@@ -33,6 +33,7 @@ public class GUI extends Application {
     double keyValueDouble = 0;
     ScrollPane itemList;
     VBox itemContent;
+    List<Item> list = new LinkedList<>();
     Label keyPadValue;
     Label totalNode;
     List<BasicFood> foods = new LinkedList<>();
@@ -367,6 +368,15 @@ public class GUI extends Application {
         lb.setFont(Font.font(20));
         lb.setPrefWidth(390);
         itemContent.getChildren().add(lb);
+    }
+
+    //returns the last item from the list
+    public Item getItem(){
+
+    }
+
+    public Item getItem(int index){
+        return itemContent.getChildren().get(index);
     }
 
     public void clearTrans() {

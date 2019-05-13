@@ -26,13 +26,46 @@ creates and runs the gui
 ----Main to-do----
 runs the application, starts all the classes
 1 - create layout diagram : make the layout diagram for Main (not done)
+2 - create way to launch program without intellJ, batch file? (not done)
 
 ----Register Runner to-do----
 Runs the register program, handles prices, totals
+1 - create layout (not done)
+2 - make the classes (not done)
 
 ----Food DataBase to-do----
 stores all the prices and needed information about food
+1 - create layout (not done)
+2 - create classes (not done)
 
 ----Logger to-do----
 logs everything the system does, outputs to a text file and outputs to LEDs about system status
+1 - create layout (not done)
+2 - create classes (not done)
+
+----Item----
+an abstract class that all items inherit from
+1 - create class, make the abstract class (5/12/19 : 10min)
+2 - add functions, add the functions and implement the ones that need to be implemented (5/12/19 : 10min)
+
+----Basic Food----
+extends item, add prices and the functions to go with prices
+1 - create class, make the class and extend from Item (5/12/19 : 5min)
+2 - add the functions (5/12/19 : 20 min)
+3 - add the sides list, and functions to go with the list (not done)
+4 - change price to handle sides as well (not done)
+
+----adjustable food----
+extends basic foods, this item has toppings. both normal toppings and can add toppings
+1 - create class, make class (5/12/19 : 5min)
+2 - add the functions, add the topping list and functions needed for the this (5/12/19 : 30min)
+
+
+----Topping----
+1 - create class, extend Item (5/12/19 : 5min)
+2 - add functions (5/12/19 : 20 min)
+3 - handle light, regular and extra (5/12/19 : 10 min)
+4 - handle no topping (5/12/19 : 5 min)
+
+
 
