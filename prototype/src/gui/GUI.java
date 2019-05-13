@@ -372,11 +372,12 @@ public class GUI extends Application {
 
     //returns the last item from the list
     public Item getItem(){
-
+        return null;
     }
 
     public Item getItem(int index){
-        return itemContent.getChildren().get(index);
+//        return itemContent.getChildren().get(index);
+        return null;
     }
 
     public void clearTrans() {

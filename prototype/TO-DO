@@ -21,12 +21,13 @@ creates and runs the gui
 6 - add function buttons : add the col of function buttons (5/9/19 : 15min)
 7 - add labels to func : add proper labels to func buttons (not done)
 8 - add functionality : make the func buttons work (not done)
-9 - Change Item list : make item list a stack pane so that items can layered depending on options (not done)
+9 - Change Item list : make item list a stack pane so that items can layered depending on options (4/11/19 : 1.5hr)
 
 ----Main to-do----
 runs the application, starts all the classes
 1 - create layout diagram : make the layout diagram for Main (not done)
 2 - create way to launch program without intellJ, batch file? (not done)
+3 - set up
 
 ----Register Runner to-do----
 Runs the register program, handles prices, totals
