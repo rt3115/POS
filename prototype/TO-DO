@@ -11,7 +11,7 @@ layout
 [num] - [thing to do] : [short desc] ([date completed] : [est time taken])
 1 - make to do : create and fill the to-do list (5/8/19 : 15 min)
 
-----GUI to-do----
+----GUI to-do---- OLD , GUI needs to rewritten.
 creates and runs the gui
 1 - proto gui : create a prototype gui to demo (5/9/19 : 4 hr)
 2 - create refined layout : iron our issues and make it look nicer (not done)
@@ -22,6 +22,12 @@ creates and runs the gui
 7 - add labels to func : add proper labels to func buttons (not done)
 8 - add functionality : make the func buttons work (not done)
 9 - Change Item list : make item list a stack pane so that items can layered depending on options (4/11/19 : 1.5hr)
+
+----GUI NEW----
+new gui written to handle the register class also uses final layouts and proper styling
+1 - recreate old gui layout (not done)
+2 - find a button look (not done)
+3 - confirm a style (not done)
 
 ----Main to-do----
 runs the application, starts all the classes
@@ -71,6 +77,7 @@ extends basic foods, this item has toppings. both normal toppings and can add to
 3 - handle light, regular and extra (5/12/19 : 10 min)
 4 - handle no topping (5/12/19 : 5 min)
 5 - add copy (not done)
+6 - Make amount an ENUM (not done)
 
 
 
