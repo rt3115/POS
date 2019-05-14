@@ -53,6 +53,7 @@ Runs the register program, handles prices, totals
 12 - manual entry of a price
 13 - tell the gui what food and toppings to use
 14 - handle several food db
+15 - handle current access level
 
 
 ----Food DataBase to-do----
