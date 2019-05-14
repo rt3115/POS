@@ -108,12 +108,16 @@ public class GUIFinal extends Application {
         {
             Button allItemsButton = new Button("All");
             allItemsButton.setPrefSize(50, 40);
+            allItemsButton.setStyle(genStyle);
             Button drinksButton = new Button("Drinks");
             drinksButton.setPrefSize(70, 40);
+            drinksButton.setStyle(genStyle);
             Button deliButton = new Button("Deli");
             deliButton.setPrefSize(70, 40);
+            deliButton.setStyle(genStyle);
             Button foodButton = new Button("Food");
             foodButton.setPrefSize(70, 40);
+            foodButton.setStyle(genStyle);
 
             sortItemArea.getChildren().addAll(allItemsButton, drinksButton, deliButton, foodButton);
         }

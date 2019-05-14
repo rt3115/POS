@@ -38,6 +38,8 @@ runs the application, starts all the classes
 
 ----Register Runner to-do----
 Runs the register program, handles prices, totals
+    *NOTE* Register for testing purposes just contain a list of all foods, unless FoodBd is written before this class
+    Translist should have a list of Food Objects
 1 - create layout (not done)
 2 - make the classes (not done)
 3 - constructor function
