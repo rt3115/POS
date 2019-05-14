@@ -39,6 +39,21 @@ runs the application, starts all the classes
 Runs the register program, handles prices, totals
 1 - create layout (not done)
 2 - make the classes (not done)
+3 - constructor function
+4 - add item to trans
+5 - remove last item from trans
+6 - remove any item from trans
+7 - adjust last order
+8 - adjust any order
+9 - when a value changes the class needs to tell the gui that something has changed
+    *NOTE* we will not being using the standard model view controller layout, instead using a custom more complicated but more efficient system
+    where instead of the gui checking every object, the register will specify what to update limited the refreshes and RAM usage
+10 - get total
+11 - cashout, must handle partial payments and distinguish between credit and cash
+12 - manual entry of a price
+13 - tell the gui what food and toppings to use
+14 - handle several food db
+
 
 ----Food DataBase to-do----
 stores all the prices and needed information about food
@@ -78,6 +93,10 @@ extends basic foods, this item has toppings. both normal toppings and can add to
 4 - handle no topping (5/12/19 : 5 min)
 5 - add copy (not done)
 6 - Make amount an ENUM (not done)
+
+----function----
+a class meant for the functions, this class if an abstract as each function will be its own class that does a specified task
+
 
 
 
