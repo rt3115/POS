@@ -25,9 +25,10 @@ creates and runs the gui
 
 ----GUI NEW----
 new gui written to handle the register class also uses final layouts and proper styling
-1 - recreate old gui layout (not done)
-2 - find a button look (not done)
+1 - recreate old gui layout (5/14/19 : 2 hrs)
+2 - find a button look (done)
 3 - confirm a style (not done)
+4 - create a add item UI
 
 ----Main to-do----
 runs the application, starts all the classes
@@ -94,6 +95,8 @@ extends basic foods, this item has toppings. both normal toppings and can add to
 4 - handle no topping (5/12/19 : 5 min)
 5 - add copy (not done)
 6 - Make amount an ENUM (not done)
+7 - Toppings have a type (not done)
+    *NOTE* can be booleans, using enums would messy as there are lot of combinations to account for
 
 ----function----
 a class meant for the functions, this class if an abstract as each function will be its own class that does a specified task
