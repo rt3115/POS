@@ -1,6 +1,7 @@
 package common;
 
 public abstract class Item {
+
     private final String name;
     private final int id;
     public static int CURRID = 0;
