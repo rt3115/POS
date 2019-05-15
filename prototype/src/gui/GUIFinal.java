@@ -9,6 +9,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import main.Register;
 
 import java.awt.event.ActionEvent;
 
@@ -39,6 +40,9 @@ public class GUIFinal extends Application {
     @Override
     public void init() throws Exception {
         super.init();
+
+        Register register = new Register();
+
     }
 
     @Override
@@ -253,14 +257,46 @@ public class GUIFinal extends Application {
 
 
         //creating items UI
+        //ahh this going to be such a large area ree
         Pane newItemUI = new Pane();
         {
-            newItemUI.getChildren().addAll(new Label("Adding A new Item"));
             b2.setOnAction(ActionEvent -> {
                 changeView(newItemUI);
             });
 
+            AnchorPane itemMainRegion = new AnchorPane();
+            itemMainRegion.setStyle(regionStyle);
 
+            Label lb1 = new Label("Item Name: ");
+            Label itemName = new Label();
+            itemName.setStyle("" +
+                    "-fx-background-color: white;");
+            itemName.setPrefWidth(200);
+
+            Label lb2 = new Label("Item Description: ");
+            Label itemDesc = new Label();
+            itemDesc.setStyle("" +
+                    "-fx-background-color: white");
+            itemDesc.setPrefWidth(600);
+
+            //setting the anchors
+            {
+                AnchorPane.setTopAnchor(itemName, 1.0);
+                AnchorPane.setLeftAnchor(itemName, 100.0);
+
+                AnchorPane.setLeftAnchor(lb1, 1.0);
+                AnchorPane.setTopAnchor(lb1, 1.0);
+
+                AnchorPane.setTopAnchor(lb2, 20.0);
+                AnchorPane.setLeftAnchor(lb2, 1.0);
+
+                AnchorPane.setTopAnchor(itemDesc, 20.0);
+                AnchorPane.setLeftAnchor(itemDesc, 100.0);
+            }
+
+            itemMainRegion.getChildren().addAll(itemName, lb1, itemDesc, lb2);
+
+            newItemUI.getChildren().add(itemMainRegion);
             newItemUI.setVisible(false);
         }
 
@@ -283,6 +319,23 @@ public class GUIFinal extends Application {
             node.setVisible(true);
         }
     }
+
+    //functions for updating the GUI
+
+    public void refreshTotal(){
+
+    }
+
+    public void refreshKeyPad(){
+
+    }
+
+    public void refreshTransList(){
+
+    }
+
+
+
 
     public static void launch(){
         Application.launch();

@@ -34,10 +34,12 @@ public class Register {
         //don do
         //return new copy of itslef
     }
+
     public void addFood(Item item){
         list.add(item);
         //food also has changable food
     }
+
     public boolean removeIndex(int index){
         if(list.size()==0){
             return false;
@@ -45,6 +47,7 @@ public class Register {
         list.remove(index);
         return true;
     } //48sec
+
     public boolean removeLast() {
         if (list.size()==0){
             return false;
@@ -52,12 +55,15 @@ public class Register {
         list.remove(list.size()-1);
         return true;
     }
+
     public Item getIndex(int index){
         return list.get(index);
     }
+
     public Item getLast(){
         return list.get(list.size()-1);
     }
+
     public int getTotal(){
         int total=0;
         for(int i=0;i<list.size()-1;i++){
