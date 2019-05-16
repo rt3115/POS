@@ -1,9 +1,6 @@
 package main;
 
-import common.AdjustableFood;
-import common.BasicFood;
-import common.Item;
-import common.Topping;
+import common.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -23,10 +20,12 @@ public class Register {
         return foods;
     }
 
-    public List<Item> list = new LinkedList<>();
+    public List<Transaction> list = new LinkedList<>(); //this is now a list of transactions (will be moved to logger at some point)
+    private Transaction transaction = new Transaction(); //the current transaction
 
     public List<Item> getList() {
-        return list;
+        //returns the current
+        return transaction.list;
     }
 
     public Register(){
@@ -47,27 +46,12 @@ public class Register {
 
     }
 
-    private int entered = 0;
-    private int change = 0;
-    private int offSet = 0;
+
 
     private boolean transDone = false;
 
     public void cashout(int ent){
-        int temp = getTotal() - ent;
-        entered = ent;
-        if(temp < 0){
-            offSet = ent;
-            transDone = false;
-        }else if(temp == 0){
-            change = 0;
-            entered = ent;
-            transDone = true;
-        } else{
-            change = Math.abs(temp);
-            entered = ent;
-            transDone = true;
-        }
+        transDone = transaction.cashOut(ent);
     }
 
     public void addTopping(Item newItem){
@@ -77,8 +61,12 @@ public class Register {
     }
 
     public void addFood(Item item){
-        transDone = false;
-        list.add(item);
+        if(isTransDone()){
+            transDone = false;
+            list.add(transaction);
+            transaction = new Transaction();
+        }
+        transaction.list.add(item);
         //food also has changable food
     }
 
@@ -91,43 +79,37 @@ public class Register {
     } //48sec
 
     public boolean removeLast() {
-        if (list.size()==0){
-            return false;
-        }
-        list.remove(list.size()-1);
+        transaction.removeLast();
         return true;
     }
 
     public Item getIndex(int index){
-        return list.get(index);
+        return transaction.ItemGetIndex(index);
     }
 
     public Item getLast(){
-        if(list.size() == 0)
-            return null;
-        return list.get(list.size()-1);
+        return transaction.getLast();
+    }
+
+    public void voidTransaction(){
+        //this should void the transaction and make a new one
+        transaction = new Transaction();
     }
 
     public int getTotal(){
-        int total=0;
-        for(Item item : list){
-            total += item.getPrice();
-        }
-        return total - offSet;
-
+       return transaction.getTotal();
     }
 
     public int getEntered(){
-        return entered;
+        return transaction.entered;
     }
 
     public int getChange(){
-        return change;
+        return transaction.change;
     }
 
     public boolean isTransDone() {
         return transDone;
     }
 
-    //getprice, total price
 }
