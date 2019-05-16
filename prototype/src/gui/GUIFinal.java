@@ -367,6 +367,10 @@ public class GUIFinal extends Application {
             cashButton.setStyle(genStyle);
             cashButton.setPrefSize(140, 120);
             cashButton.setFont(Font.font(40));
+            cashButton.setOnAction(ActionEvent -> {
+                register.cashout((int)Double.parseDouble(currValueString)*100);
+                refreshTotal();
+            });
             Button creditButton = new Button("Credit");
             creditButton.setStyle(genStyle);
             creditButton.setPrefSize(140 ,120);
@@ -458,8 +462,10 @@ public class GUIFinal extends Application {
         refreshTransList();
     }
 
-    public void refreshTotal(){
-        total.setText("Total: " + register.getTotal()/100.00);
+    public void refreshTotal() {
+        total.setText("Total: " + register.getTotal() / 100.00);
+        amountEntered.setText("Amount Entered: " + register.getEntered()/100.00);
+        change.setText("Change: " + register.getChange());
     }
 
     public void refreshKeyPad(){

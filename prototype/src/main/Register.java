@@ -47,9 +47,27 @@ public class Register {
 
     }
 
+    private int entered = 0;
+    private int change = 0;
+    private int offSet = 0;
 
-    public void cashout(){
+    private boolean transDone = false;
 
+    public void cashout(int ent){
+        int temp = getTotal() - ent;
+        entered = ent;
+        if(temp < 0){
+            offSet = ent;
+            transDone = false;
+        }else if(temp == 0){
+            change = 0;
+            entered = ent;
+            transDone = true;
+        } else{
+            change = Math.abs(temp);
+            entered = ent;
+            transDone = true;
+        }
     }
 
     public void addTopping(Item newItem){
@@ -59,6 +77,7 @@ public class Register {
     }
 
     public void addFood(Item item){
+        transDone = false;
         list.add(item);
         //food also has changable food
     }
@@ -94,8 +113,21 @@ public class Register {
         for(Item item : list){
             total += item.getPrice();
         }
-        return total;
+        return total - offSet;
 
     }
+
+    public int getEntered(){
+        return entered;
+    }
+
+    public int getChange(){
+        return change;
+    }
+
+    public boolean isTransDone() {
+        return transDone;
+    }
+
     //getprice, total price
 }
