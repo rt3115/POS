@@ -9,13 +9,28 @@ public class AdjustableFood extends BasicFood {
     private List<Item> normalToppings = new LinkedList<>();
 
     public AdjustableFood(String name, double price, Item ... top){
-        super(name, price);
+        super(name, price/100);
         for(Item t : top){
             normalToppings.add(t);
         }
     }
 
-    public void addTopping(Item top){
+    public AdjustableFood(AdjustableFood copy){
+        super(copy.getName(), copy.getPrice());
+        normalToppings = copy.getNormalToppings();
+        toppings = new LinkedList<>();
+    }
+
+    public void addTopping(Topping top){
+        if(toppings.contains(top)){
+            int temp = toppings.indexOf(top);
+            Topping topTemp = (Topping)toppings.get(temp);
+            if((topTemp.getAmount()!= Topping.AMOUNT.NO && top.getAmount() == Topping.AMOUNT.NO) ||
+                    (top.getAmount() != Topping.AMOUNT.NO && topTemp.getAmount() == Topping.AMOUNT.NO)){
+                toppings.remove(top);
+            }
+            return;
+        }
         toppings.add(top);
     }
 

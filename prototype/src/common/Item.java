@@ -23,13 +23,13 @@ public abstract class Item {
 
     @Override
     public String toString() {
-        return id + " " + name;
+        return name;
     }
 
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Item){
-            if(((Item) obj).getId() == this.id){
+            if(((Item) obj).getId() == this.id || ((Item) obj).getName().equals(this.name)){
                 return true;
             }else{
                 return false;

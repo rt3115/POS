@@ -13,6 +13,12 @@ public class BasicFood extends Item {
         this.qty = 1;
     }
 
+    public BasicFood(BasicFood copy){
+        super(copy.getName());
+        this.price = copy.getPrice();
+        this.qty = 1;
+    }
+
     public int getPrice() {
         return price;
     }
