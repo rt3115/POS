@@ -10,13 +10,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.Register;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,9 +80,12 @@ public class GUIFinal extends Application {
 
         //Function Col
         VBox functionsList = new VBox();
-        Button b2 = new Button("Test Button");
+        Button b2 = new Button("View/Add Items");
+        {
+            Button changeLogin = new Button("Change Logg In");
 
-        functionsList.getChildren().addAll(new Button("Function Button"), b2);
+            functionsList.getChildren().addAll( changeLogin ,b2);
+        }
 
         //Register Area Anchor pane
         mainGrid = new GridPane();
@@ -319,6 +322,9 @@ public class GUIFinal extends Application {
             Button voidTrans = new Button("Void Trans");
             voidTrans.setStyle(genStyle);
             voidTrans.setPrefSize(145, 30);
+            voidTrans.setOnAction(ActionEvent -> {
+                voidTransaction();
+            });
             Button removeItem = new Button("Remove Item");
             removeItem.setStyle(genStyle);
             removeItem.setPrefSize(145, 30);
@@ -368,7 +374,11 @@ public class GUIFinal extends Application {
             cashButton.setPrefSize(140, 120);
             cashButton.setFont(Font.font(40));
             cashButton.setOnAction(ActionEvent -> {
-                register.cashout((int)Double.parseDouble(currValueString)*100);
+                if(currValueString != "") {
+                    register.cashout((int) (Double.parseDouble(currValueString) * 100));
+                }else{
+                    register.cashout(0);
+                }
                 currValueString = "";
                 refreshKeyPad();
                 refreshTotal();
@@ -400,17 +410,94 @@ public class GUIFinal extends Application {
             AnchorPane itemMainRegion = new AnchorPane();
             itemMainRegion.setStyle(regionStyle);
 
+            AnchorPane newFoodArea = new AnchorPane();
+            newFoodArea.setVisible(false);
+
+            AnchorPane newToppngArea = new AnchorPane();
+            newToppngArea.setVisible(false);
+
             Label lb1 = new Label("Item Name: ");
-            Label itemName = new Label();
+            TextField itemName = new TextField();
             itemName.setStyle("" +
                     "-fx-background-color: white;");
             itemName.setPrefWidth(200);
 
             Label lb2 = new Label("Item Description: ");
-            Label itemDesc = new Label();
+            TextField itemDesc = new TextField();
             itemDesc.setStyle("" +
                     "-fx-background-color: white");
             itemDesc.setPrefWidth(600);
+
+            Button doneButton = new Button("Add New Item");
+            doneButton.setStyle(genStyle);
+
+            HBox foodTypeButtons = new HBox();
+            //food type buttons
+            {
+                ToggleButton isBasicFoodButton = new ToggleButton("Food");
+                isBasicFoodButton.setStyle(genStyle);
+
+                ToggleButton isTopping = new ToggleButton("Topping");
+                isTopping.setStyle(genStyle);
+
+                isBasicFoodButton.setOnAction(ActionEvent -> {
+                    //isBasicFoodButton.setSelected(true);
+                    newFoodArea.setVisible(true);
+                    newToppngArea.setVisible(false);
+                    if(isBasicFoodButton.isSelected() && isTopping.isSelected()){
+                        isTopping.setSelected(false);
+
+                    }
+
+                });
+
+                isTopping.setOnAction(ActionEvent -> {
+                    //isTopping.setSelected(true);
+                    newToppngArea.setVisible(true);
+                    newFoodArea.setVisible(false);
+                    if(isTopping.isSelected() && isBasicFoodButton.isSelected()){
+                        isBasicFoodButton.setSelected(false);
+
+                    }
+
+                });
+
+                foodTypeButtons.getChildren().addAll(isBasicFoodButton, isTopping);
+            }
+
+            //if its a Food
+
+            {
+                ToggleButton isAdjustableFood = new ToggleButton("Adjustable");
+
+                TextField price = new TextField();
+                price.setStyle("" +
+                        "-fx-background-color: white;");
+                price.setPrefWidth(100);
+                Label priceLabel = new Label("Price");
+
+
+
+
+                //if its adjustable
+
+                {
+                    AnchorPane.setTopAnchor(isAdjustableFood, 1.00);
+                    AnchorPane.setLeftAnchor(isAdjustableFood, 1.00);
+
+                    AnchorPane.setTopAnchor(price, 30.00);
+                    AnchorPane.setLeftAnchor(price, 60.00);
+
+                    AnchorPane.setTopAnchor(priceLabel, 30.00);
+                    AnchorPane.setLeftAnchor(priceLabel, 1.00);
+
+                }
+                newFoodArea.getChildren().addAll(isAdjustableFood, price, priceLabel);
+            }
+
+            //if its a Topping
+
+
 
             //setting the anchors
             {
@@ -420,14 +507,23 @@ public class GUIFinal extends Application {
                 AnchorPane.setLeftAnchor(lb1, 1.0);
                 AnchorPane.setTopAnchor(lb1, 1.0);
 
-                AnchorPane.setTopAnchor(lb2, 20.0);
+                AnchorPane.setTopAnchor(lb2, 30.0);
                 AnchorPane.setLeftAnchor(lb2, 1.0);
 
-                AnchorPane.setTopAnchor(itemDesc, 20.0);
+                AnchorPane.setTopAnchor(itemDesc, 30.0);
                 AnchorPane.setLeftAnchor(itemDesc, 100.0);
+
+                AnchorPane.setTopAnchor(foodTypeButtons, 60.0);
+                AnchorPane.setLeftAnchor(foodTypeButtons, 1.00);
+
+                AnchorPane.setTopAnchor(newFoodArea, 90.00);
+                AnchorPane.setLeftAnchor(newFoodArea, 1.00);
+
+                AnchorPane.setBottomAnchor(doneButton, 1.00);
+                AnchorPane.setRightAnchor(doneButton, 1.00);
             }
 
-            itemMainRegion.getChildren().addAll(itemName, lb1, itemDesc, lb2);
+            itemMainRegion.getChildren().addAll(itemName, lb1, itemDesc, lb2, foodTypeButtons, newFoodArea, doneButton);
 
             newItemUI.getChildren().add(itemMainRegion);
             newItemUI.setVisible(false);
@@ -502,6 +598,11 @@ public class GUIFinal extends Application {
                 button.setSelected(false);
             }
         }
+    }
+
+    public void voidTransaction(){
+        register.voidTransaction();
+        refreshTransList();
     }
 
     public void addItem(Item item){

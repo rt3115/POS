@@ -25,6 +25,11 @@ public class Transaction {
     }
 
     public boolean cashOut(int ent){
+        if(ent == 0){
+            entered = getTotal();
+            change = 0;
+            return true;
+        }
         entered += ent;
          if(getTotal() - entered <= 0){
              change = entered - getTotal();
@@ -46,5 +51,6 @@ public class Transaction {
             return;
         list.remove(list.size()-1);
     }
+
 
 }

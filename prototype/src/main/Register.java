@@ -43,6 +43,7 @@ public class Register {
         foods.add(new BasicFood("Candy", 1.00));
         foods.add(new BasicFood("Ice Cream", 5.00));
         foods.add(new AdjustableFood("Plate", 10.00, new Topping("HomeFries", .00), new Topping("Mac Salad", 00), new Topping("Hot Sauce", 00)));
+//        foods.add(new AdjustableFood("Sub", 8.00));
 
     }
 

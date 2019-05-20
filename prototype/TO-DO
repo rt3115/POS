@@ -64,6 +64,10 @@ stores all the prices and needed information about food
 1 - create layout (not done)
 2 - create classes (not done)
 
+----Main DataBase----
+
+----Topping DataBase----
+
 ----Logger to-do----
 logs everything the system does, outputs to a text file and outputs to LEDs about system status
 1 - create layout (not done)

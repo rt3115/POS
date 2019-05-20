@@ -3,6 +3,7 @@ package common;
 public abstract class Item {
 
     private final String name;
+    private final String description;
     private final int id;
     public static int CURRID = 0;
 
@@ -10,6 +11,13 @@ public abstract class Item {
 
     public Item(String name){
         this.name = name;
+        this.id = Item.CURRID++;
+        description = "";
+    }
+
+    public Item(String name, String description){
+        this.name = name;
+        this.description = description;
         this.id = Item.CURRID++;
     }
 
