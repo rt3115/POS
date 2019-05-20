@@ -17,7 +17,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.Register;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -84,7 +86,17 @@ public class GUIFinal extends Application {
         {
             Button changeLogin = new Button("Change Logg In");
 
-            functionsList.getChildren().addAll( changeLogin ,b2);
+            Button refreshUI = new Button("ROOT:REFRESH UI");
+            refreshUI.setOnAction(ActionEvent -> {
+                mainSpace.getChildren().remove(0, 1);
+                try {
+                    this.start(stage);
+                }catch (Exception ex){
+                    System.err.println("RAAAA ERROR");
+                }
+            });
+
+            functionsList.getChildren().addAll( changeLogin ,b2,refreshUI);
         }
 
         //Register Area Anchor pane
@@ -476,11 +488,36 @@ public class GUIFinal extends Application {
                 price.setPrefWidth(100);
                 Label priceLabel = new Label("Price");
 
-
-
-
                 //if its adjustable
+                Label extraPriceLabel = new Label("Extra Price");
 
+                TextField extraPrice = new TextField();
+                extraPrice.setStyle("" +
+                        "-fx-background-color: white;");
+                extraPrice.setPrefWidth(100);
+
+                ScrollPane toppingsListScrollView = new ScrollPane();
+                GridPane toppingsList = new GridPane();
+
+                List<Item> tempAdd = new LinkedList<>();
+
+                for(int y = 0; y < 6; y++){
+                    for(int x = 0; x < 5; x++){
+                        if(register.toppings.size() > (y*5) + x) {
+                            int temp = (y * 5) + x;
+                            Item item = register.toppings.get(temp);
+                            ToggleButton b1 = new ToggleButton(item.getName());
+                            b1.setStyle(genStyle);
+                            b1.setPrefSize(120, 60);
+
+                            toppingsList.add(b1, x, y);
+                        }
+                    }
+                }
+
+                toppingsListScrollView.setContent(toppingsList);
+
+                //setting anchors
                 {
                     AnchorPane.setTopAnchor(isAdjustableFood, 1.00);
                     AnchorPane.setLeftAnchor(isAdjustableFood, 1.00);
@@ -491,8 +528,36 @@ public class GUIFinal extends Application {
                     AnchorPane.setTopAnchor(priceLabel, 30.00);
                     AnchorPane.setLeftAnchor(priceLabel, 1.00);
 
+                    AnchorPane.setTopAnchor(extraPriceLabel, 30.00);
+                    AnchorPane.setLeftAnchor( extraPriceLabel, 60.00);
+
+                    AnchorPane.setTopAnchor(extraPrice, 30.00);
+                    AnchorPane.setLeftAnchor(extraPrice, 100.00);
+
+                    AnchorPane.setLeftAnchor(toppingsListScrollView, 1.00);
+                    AnchorPane.setTopAnchor(toppingsListScrollView, 60.00);
                 }
-                newFoodArea.getChildren().addAll(isAdjustableFood, price, priceLabel);
+                newFoodArea.getChildren().addAll(isAdjustableFood, price, priceLabel, extraPrice ,extraPriceLabel, toppingsListScrollView);
+
+                doneButton.setOnAction(ActionEvent -> {
+                    //not final
+                    if(!isAdjustableFood.isSelected()) {
+                        String tName = itemName.getText();
+                        String tDesc = itemDesc.getText();
+                        Double tPrice = Double.parseDouble(price.getText());
+                        register.getFoods().add(new BasicFood(tName, tPrice));
+                    }else{
+                        String tName = itemName.getText();
+                        String tDesc = itemDesc.getText();
+                        Double tPrice = Double.parseDouble(price.getText());
+                        if(tempAdd.isEmpty()){
+                            register.getFoods().add(new AdjustableFood(tName, tPrice));
+                        }else{
+                            register.getFoods().add(new AdjustableFood(tName, tPrice, tempAdd));
+                            tempAdd.removeAll(tempAdd); //this may break everything
+                        }
+                    }
+                });
             }
 
             //if its a Topping

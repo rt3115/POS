@@ -15,6 +15,11 @@ public class AdjustableFood extends BasicFood {
         }
     }
 
+    public AdjustableFood(String name, double price, List<Item> top){
+        super(name, price/100);
+        normalToppings.addAll(top);
+    }
+
     public AdjustableFood(AdjustableFood copy){
         super(copy.getName(), copy.getPrice());
         normalToppings = copy.getNormalToppings();

@@ -13,6 +13,7 @@ public abstract class Item {
         this.name = name;
         this.id = Item.CURRID++;
         description = "";
+        System.err.println("*"+CURRID+"*");
     }
 
     public Item(String name, String description){
