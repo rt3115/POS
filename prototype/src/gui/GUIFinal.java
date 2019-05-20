@@ -529,10 +529,10 @@ public class GUIFinal extends Application {
                     AnchorPane.setLeftAnchor(priceLabel, 1.00);
 
                     AnchorPane.setTopAnchor(extraPriceLabel, 30.00);
-                    AnchorPane.setLeftAnchor( extraPriceLabel, 60.00);
+                    AnchorPane.setLeftAnchor(extraPriceLabel, 200.00);
 
                     AnchorPane.setTopAnchor(extraPrice, 30.00);
-                    AnchorPane.setLeftAnchor(extraPrice, 100.00);
+                    AnchorPane.setLeftAnchor(extraPrice, 240.00);
 
                     AnchorPane.setLeftAnchor(toppingsListScrollView, 1.00);
                     AnchorPane.setTopAnchor(toppingsListScrollView, 60.00);
