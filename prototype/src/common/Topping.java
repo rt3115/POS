@@ -11,38 +11,39 @@ public class Topping extends Item {
         NO,
         NORMAL,
         LIGHT,
-        EXTRA;
+        EXTRA,
+        SIDE;
     }
 
 
-    public Topping(String name, double price){
-        super(name);
+    public Topping(String name, String dplName, double price){
+        super(name, dplName);
         this.price = (int)(price*100);
         this.extraPrice = 0;
         this.isTopping = true;
         this.isSide = false;
     }
 
-    public Topping(String name, double price, double extraPrice){
-        this(name, price);
+    public Topping(String name, String dplName, double price, double extraPrice){
+        this(name, dplName, price);
         this.extraPrice = (int)(extraPrice*100);
     }
 
-    public Topping(String name, double price, boolean isTopping, boolean isSide){
-        this(name, price);
+    public Topping(String name, String dplName,  double price, boolean isTopping, boolean isSide){
+        this(name, dplName, price);
         this.extraPrice = 0;
         this.isSide = isSide;
         this.isTopping = isTopping;
     }
 
-    public Topping(String name, double price, double extraPrice, boolean isTopping, boolean isSide){
-        this(name, price, extraPrice);
+    public Topping(String name, String dplName, double price, double extraPrice, boolean isTopping, boolean isSide){
+        this(name, dplName, price, extraPrice);
         this.isTopping = isTopping;
         this.isSide = isSide;
     }
 
     public Topping(Topping copy){
-        this(copy.getName(), copy.getPrice(), copy.getExtraPrice());
+        this(copy.getName(), copy.getDplName(), copy.getPrice(), copy.getExtraPrice());
     }
 
     public int getPrice() {
@@ -72,12 +73,18 @@ public class Topping extends Item {
     @Override
     public String toString() {
         if(amount == AMOUNT.EXTRA){
-            return "EXTRA " + super.getName() + "   " + getExtraPrice();
+            return "EXTRA " + super.toString() + "   " + getExtraPrice();
         }else if(amount == AMOUNT.LIGHT){
-            return "LIGHT " + super.getName() + "   " + getPrice();
+            return "LIGHT " + super.toString()+ "   " + getPrice()/100.00;
         }else if(amount == AMOUNT.NO){
-            return "NO " + super.getName();
+            return "NO " + super.toString();
+        }else if(amount == AMOUNT.SIDE){
+            if(price != 0){
+                return "SIDE " + super.toString() + "   " +getPrice()/100.00;
+            }else {
+                return "SIDE " + super.toString();
+            }
         }
-        return super.getName() + "      " + getPrice()/100.00;
+        return super.toString() + "      " + getPrice()/100.00;
     }
 }

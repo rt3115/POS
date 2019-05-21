@@ -5,6 +5,7 @@ import common.BasicFood;
 import common.Item;
 import common.Topping;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,7 +18,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.Register;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,6 +58,7 @@ public class GUIFinal extends Application {
     private Button doneButton;
 
     private ArrayList<ToggleButton> toppingButton = new ArrayList<>();
+    private ArrayList<ToggleButton> sideButtons = new ArrayList<>();
 
     private Register register;
 
@@ -106,19 +107,24 @@ public class GUIFinal extends Application {
         AnchorPane itemViewRegion = new AnchorPane();
         itemViewRegion.setStyle(regionStyle);
 
-        GridPane itemView = new GridPane();
-        itemView.setStyle("" +
+        ScrollPane itemView = new ScrollPane();
+
+        GridPane itemViewGrid = new GridPane();
+
+        itemView.setContent(itemViewGrid);
+
+        itemViewGrid.setStyle("" +
                 "-fx-hgap: 2;" +
                 "-fx-vgap: 2");
         //Displaying the Item Buttons
         { //adding some test buttons
-            for(int y = 0; y < 6; y++){
+            for(int y = 0; y < 10; y++){
                 for(int x = 0; x < 3; x++){
                     if(register.getFoods().size() > (y*3) + x) {
                         int temp = (y*3) + x;
                         Item item = register.getFoods().get(temp);
                         System.err.println(item.getId() + " : " + register.getFoods().get(temp).getId());
-                        Button b1 = new Button(item.getName());
+                        Button b1 = new Button(item.getDplName());
                         b1.setStyle(genStyle);
                         b1.setPrefSize(120, 60);
 
@@ -130,22 +136,59 @@ public class GUIFinal extends Application {
                             //refreshTransList();
                         });
 
-                        itemView.add(b1, x ,y);
-                    }else{
-                        //break;
+                        itemViewGrid.add(b1, x ,y);
                     }
-
                 }
             }
         }
 
         //Sides
+        ScrollPane sidesView = new ScrollPane();
 
-        //Sauces
+        GridPane sidesViewGrid = new GridPane();
+
+        sidesView.setContent(sidesViewGrid);
+
+        {
+            for(int y = 0; y < 10; y++){
+                for(int x = 0; x < 3; x++) {
+                    if (register.toppings.size() > (y * 3) + x) {
+                        int temp = (y * 3) + x;
+                        Item item = register.toppings.get(temp);
+                        ToggleButton b1 = new ToggleButton(item.getName());
+                        b1.setStyle(genStyle);
+                        b1.setPrefSize(120, 60);
+
+                        b1.setOnAction(ActionEvent -> {
+                            Topping toppingTemp = new Topping((Topping) item);
+                            if (!b1.isSelected()) {
+                                BasicFood food = (BasicFood) register.getLast();
+                                toppingTemp.setAmount(Topping.AMOUNT.NO);
+                                food.addSide(toppingTemp);
+                                refreshTransList();
+                            } else {
+                                BasicFood food = (BasicFood) register.getLast();
+                                toppingTemp.setAmount(Topping.AMOUNT.SIDE);
+                                food.addSide(toppingTemp);
+                                refreshTransList();
+                            }
+                        });
+
+                        sidesViewGrid.add(b1, x, y);
+                        sideButtons.add(b1);
+                    }
+                }
+            }
+        }
+        sidesView.setVisible(false);
 
         //Toppings
-        GridPane toppingsView = new GridPane();
-        toppingsView.setStyle("" +
+        ScrollPane toppingsView = new ScrollPane();
+
+        GridPane toppingsViewGrid = new GridPane();
+
+        toppingsView.setContent(toppingsViewGrid);
+        toppingsViewGrid.setStyle("" +
                 "-fx-hgap: 2;" +
                 "-fx-vgap: 2;");
         //displaying the toppings
@@ -155,7 +198,7 @@ public class GUIFinal extends Application {
                     if(register.toppings.size() > (y*3) + x){
                         int temp = (y*3) + x;
                         Item item = register.toppings.get(temp);
-                        ToggleButton b1 = new ToggleButton(item.getName());
+                        ToggleButton b1 = new ToggleButton(item.getDplName());
                         b1.setStyle(genStyle);
                         b1.setPrefSize(120, 60);
 
@@ -175,8 +218,10 @@ public class GUIFinal extends Application {
                             }
                         });
 
+
+
                         toppingButton.add(b1);
-                        toppingsView.add(b1, x ,y);
+                        toppingsViewGrid.add(b1, x ,y);
                     }
                 }
             }
@@ -203,6 +248,14 @@ public class GUIFinal extends Application {
             addSideButton.setStyle(genStyle);
             addSideButton.setText("Add Side");
             addSideButton.setPrefSize(120, 60);
+            addSideButton.setOnAction(ActionEvent -> {
+                if(register.getLast() != null){
+                    sidesView.setVisible(true);
+                    itemView.setVisible(false);
+                    doneButton.setVisible(true);
+                }
+            });
+
             adjustSideArea.getChildren().addAll(adjustOrderButton, addSideButton);
             adjustSideArea.setStyle("" +
                     "-fx-spacing: 5;");
@@ -214,6 +267,7 @@ public class GUIFinal extends Application {
             doneButton.setOnAction(ActionEvent -> {
                 itemView.setVisible(true);
                 toppingsView.setVisible(false);
+                sidesView.setVisible(false);
                 doneButton.setVisible(false);
             });
 
@@ -238,7 +292,9 @@ public class GUIFinal extends Application {
             sortItemArea.getChildren().addAll(allItemsButton, drinksButton, deliButton, foodButton);
         }
 
-        itemViewRegion.getChildren().addAll(itemView, toppingsView, adjustSideArea, sortItemArea);
+
+
+        itemViewRegion.getChildren().addAll(itemView, toppingsView, sidesView, adjustSideArea, sortItemArea);
         //setting the anchors
         {
             AnchorPane.setBottomAnchor(adjustSideArea, 1.00);
@@ -252,6 +308,10 @@ public class GUIFinal extends Application {
             AnchorPane.setLeftAnchor(toppingsView, 1.00);
             AnchorPane.setRightAnchor(toppingsView, 1.00);
             AnchorPane.setTopAnchor(toppingsView, 45.00);
+
+            AnchorPane.setLeftAnchor(sidesView, 1.00);
+            AnchorPane.setRightAnchor(sidesView, 1.00);
+            AnchorPane.setTopAnchor(sidesView, 45.00);
 
             AnchorPane.setLeftAnchor(sortItemArea, 1.00);
             AnchorPane.setRightAnchor(sortItemArea, 1.00);
@@ -296,7 +356,7 @@ public class GUIFinal extends Application {
             addButton.setPrefSize(80, 70);
             addButton.setStyle(genStyle);
             addButton.setOnAction(ActionEvent -> {
-                addItem(new BasicFood("Item Manual", Double.parseDouble(currValueString)));
+                addItem(new BasicFood("Item Manual", "Item Manual", Double.parseDouble(currValueString)));
                 currValueString = "";
                 refreshKeyPad();
             });
@@ -432,7 +492,7 @@ public class GUIFinal extends Application {
             TextField itemName = new TextField();
             itemName.setStyle("" +
                     "-fx-background-color: white;");
-            itemName.setPrefWidth(200);
+            itemName.setPrefWidth(300);
 
             Label lb2 = new Label("Item Description: ");
             TextField itemDesc = new TextField();
@@ -440,23 +500,30 @@ public class GUIFinal extends Application {
                     "-fx-background-color: white");
             itemDesc.setPrefWidth(600);
 
+            Label dplNameLabel = new Label("Display Name");
+            TextField dplName = new TextField();
+            dplName.setStyle("" +
+                    "-fx-background-color: white");
+            dplName.setPrefWidth(200);
+
+
             Button doneButton = new Button("Add New Item");
             doneButton.setStyle(genStyle);
 
             HBox foodTypeButtons = new HBox();
+            ToggleButton isBasicFoodButton = new ToggleButton("Food");
+            ToggleButton isTopping = new ToggleButton("Topping");
             //food type buttons
             {
-                ToggleButton isBasicFoodButton = new ToggleButton("Food");
                 isBasicFoodButton.setStyle(genStyle);
 
-                ToggleButton isTopping = new ToggleButton("Topping");
                 isTopping.setStyle(genStyle);
 
                 isBasicFoodButton.setOnAction(ActionEvent -> {
                     //isBasicFoodButton.setSelected(true);
                     newFoodArea.setVisible(true);
                     newToppngArea.setVisible(false);
-                    if(isBasicFoodButton.isSelected() && isTopping.isSelected()){
+                    if (isBasicFoodButton.isSelected() && isTopping.isSelected()) {
                         isTopping.setSelected(false);
 
                     }
@@ -467,7 +534,7 @@ public class GUIFinal extends Application {
                     //isTopping.setSelected(true);
                     newToppngArea.setVisible(true);
                     newFoodArea.setVisible(false);
-                    if(isTopping.isSelected() && isBasicFoodButton.isSelected()){
+                    if (isTopping.isSelected() && isBasicFoodButton.isSelected()) {
                         isBasicFoodButton.setSelected(false);
 
                     }
@@ -478,28 +545,20 @@ public class GUIFinal extends Application {
             }
 
             //if its a Food
-
+            TextField price = new TextField();
+            ToggleButton isAdjustableFood = new ToggleButton("Adjustable");
+            List<Item> tempAdd = new LinkedList<>();
             {
-                ToggleButton isAdjustableFood = new ToggleButton("Adjustable");
 
-                TextField price = new TextField();
                 price.setStyle("" +
                         "-fx-background-color: white;");
                 price.setPrefWidth(100);
                 Label priceLabel = new Label("Price");
 
-                //if its adjustable
-                Label extraPriceLabel = new Label("Extra Price");
-
-                TextField extraPrice = new TextField();
-                extraPrice.setStyle("" +
-                        "-fx-background-color: white;");
-                extraPrice.setPrefWidth(100);
 
                 ScrollPane toppingsListScrollView = new ScrollPane();
                 GridPane toppingsList = new GridPane();
-
-                List<Item> tempAdd = new LinkedList<>();
+                toppingsListScrollView.setVisible(false);
 
                 for(int y = 0; y < 6; y++){
                     for(int x = 0; x < 5; x++){
@@ -510,10 +569,26 @@ public class GUIFinal extends Application {
                             b1.setStyle(genStyle);
                             b1.setPrefSize(120, 60);
 
+                            b1.setOnAction(ActionEvent -> {
+                                if(b1.isSelected()){
+                                    tempAdd.add(item);
+                                }else{
+                                    tempAdd.remove(item);
+                                }
+                            });
+
                             toppingsList.add(b1, x, y);
                         }
                     }
                 }
+
+                isAdjustableFood.setOnAction(ActionEvent -> {
+                    if(isAdjustableFood.isSelected()){
+                        toppingsListScrollView.setVisible(true);
+                    }else{
+                        toppingsListScrollView.setVisible(false);
+                    }
+                });
 
                 toppingsListScrollView.setContent(toppingsList);
 
@@ -528,41 +603,61 @@ public class GUIFinal extends Application {
                     AnchorPane.setTopAnchor(priceLabel, 30.00);
                     AnchorPane.setLeftAnchor(priceLabel, 1.00);
 
-                    AnchorPane.setTopAnchor(extraPriceLabel, 30.00);
-                    AnchorPane.setLeftAnchor(extraPriceLabel, 200.00);
-
-                    AnchorPane.setTopAnchor(extraPrice, 30.00);
-                    AnchorPane.setLeftAnchor(extraPrice, 240.00);
-
                     AnchorPane.setLeftAnchor(toppingsListScrollView, 1.00);
                     AnchorPane.setTopAnchor(toppingsListScrollView, 60.00);
                 }
-                newFoodArea.getChildren().addAll(isAdjustableFood, price, priceLabel, extraPrice ,extraPriceLabel, toppingsListScrollView);
+                newFoodArea.getChildren().addAll(isAdjustableFood, price, priceLabel, toppingsListScrollView);
 
-                doneButton.setOnAction(ActionEvent -> {
-                    //not final
-                    if(!isAdjustableFood.isSelected()) {
-                        String tName = itemName.getText();
-                        String tDesc = itemDesc.getText();
-                        Double tPrice = Double.parseDouble(price.getText());
-                        register.getFoods().add(new BasicFood(tName, tPrice));
-                    }else{
-                        String tName = itemName.getText();
-                        String tDesc = itemDesc.getText();
-                        Double tPrice = Double.parseDouble(price.getText());
-                        if(tempAdd.isEmpty()){
-                            register.getFoods().add(new AdjustableFood(tName, tPrice));
-                        }else{
-                            register.getFoods().add(new AdjustableFood(tName, tPrice, tempAdd));
-                            tempAdd.removeAll(tempAdd); //this may break everything
-                        }
-                    }
-                });
+
             }
 
             //if its a Topping
 
+            ToggleButton isToppingButton = new ToggleButton("is Topping");
+            ToggleButton isSideButton = new ToggleButton("is Side");
+            TextField price2 = new TextField();
+            TextField extraPrice = new TextField();
+            {
+                isToppingButton.setStyle(genStyle);
+                isToppingButton.setPrefWidth(80);
 
+                isSideButton.setStyle(genStyle);
+                isSideButton.setPrefWidth(60);
+
+                Label priceLabel = new Label("Price");
+                Label extraPriceLabel = new Label("Extra Price");
+
+                price2.setStyle("" +
+                        "-fx-background-color: white;");
+                price2.setPrefWidth(40);
+
+                extraPrice.setStyle("" +
+                        "-fx-background-color: white;");
+                extraPrice.setPrefWidth(40);
+
+                //setting the anchors
+                {
+                    AnchorPane.setTopAnchor(isToppingButton, 1.00);
+                    AnchorPane.setLeftAnchor(isToppingButton, 1.00);
+
+                    AnchorPane.setTopAnchor(isSideButton, 1.00);
+                    AnchorPane.setLeftAnchor(isSideButton, 81.00);
+
+                    AnchorPane.setTopAnchor(price2, 30.00);
+                    AnchorPane.setLeftAnchor(price2, 30.00);
+
+                    AnchorPane.setTopAnchor(priceLabel, 30.00);
+                    AnchorPane.setLeftAnchor(priceLabel, 1.00);
+
+                    AnchorPane.setTopAnchor(extraPrice, 30.000);
+                    AnchorPane.setLeftAnchor(extraPrice, 140.00);
+
+                    AnchorPane.setTopAnchor(extraPriceLabel, 30.00);
+                    AnchorPane.setLeftAnchor(extraPriceLabel, 80.00);
+                }
+
+                newToppngArea.getChildren().addAll(price2, priceLabel, extraPrice, extraPriceLabel, isSideButton, isToppingButton);
+            }
 
             //setting the anchors
             {
@@ -571,6 +666,12 @@ public class GUIFinal extends Application {
 
                 AnchorPane.setLeftAnchor(lb1, 1.0);
                 AnchorPane.setTopAnchor(lb1, 1.0);
+
+                AnchorPane.setTopAnchor(dplNameLabel, 1.00);
+                AnchorPane.setLeftAnchor(dplNameLabel, 410.0);
+
+                AnchorPane.setTopAnchor(dplName, 1.00);
+                AnchorPane.setLeftAnchor(dplName, 500.00);
 
                 AnchorPane.setTopAnchor(lb2, 30.0);
                 AnchorPane.setLeftAnchor(lb2, 1.0);
@@ -586,9 +687,53 @@ public class GUIFinal extends Application {
 
                 AnchorPane.setBottomAnchor(doneButton, 1.00);
                 AnchorPane.setRightAnchor(doneButton, 1.00);
+
+                AnchorPane.setTopAnchor(newToppngArea, 90.0);
+                AnchorPane.setLeftAnchor(newToppngArea, 1.00);
             }
 
-            itemMainRegion.getChildren().addAll(itemName, lb1, itemDesc, lb2, foodTypeButtons, newFoodArea, doneButton);
+            //done buttons
+            doneButton.setOnAction(ActionEvent -> {
+                //not final
+                if(!isTopping.isSelected()) {
+                    if (!isAdjustableFood.isSelected()) {
+                        String tName = itemName.getText();
+                        String tDesc = itemDesc.getText();
+                        Double tPrice = Double.parseDouble(price.getText());
+                        register.getFoods().add(new BasicFood(tName, dplName.getText(), tPrice));
+                    } else {
+                        String tName = itemName.getText();
+                        String tDesc = itemDesc.getText();
+                        Double tPrice = Double.parseDouble(price.getText());
+                        if (tempAdd.isEmpty()) {
+                            register.getFoods().add(new AdjustableFood(tName, dplName.getText(), tPrice));
+                        } else {
+                            register.getFoods().add(new AdjustableFood(tName, dplName.getText(), tPrice, tempAdd));
+                            tempAdd.removeAll(tempAdd); //this may break everything
+                        }
+                    }
+                    itemName.setText("");
+                    itemDesc.setText("");
+                    price.setText("");
+                    isBasicFoodButton.setSelected(false);
+                    isAdjustableFood.setSelected(false);
+                }else{
+                    if(isToppingButton.isSelected() || isSideButton.isSelected()){
+                        String tName = itemName.getText();
+                        String tDesc = itemDesc.getText();
+                        Double tPrice = Double.parseDouble(price2.getText());
+                        register.toppings.add(new Topping(tName, dplName.getText(), tPrice, isToppingButton.isSelected(), isSideButton.isSelected()));
+                        itemName.setText("");
+                        itemDesc.setText("");
+                        price2.setText("");
+                        isTopping.setSelected(false);
+                        isSideButton.setSelected(false);
+                        isToppingButton.setSelected(false);
+                    }
+                }
+            });
+
+            itemMainRegion.getChildren().addAll(itemName, lb1, itemDesc, lb2, dplNameLabel, dplName,foodTypeButtons, newFoodArea, doneButton, newToppngArea);
 
             newItemUI.getChildren().add(itemMainRegion);
             newItemUI.setVisible(false);
@@ -656,13 +801,22 @@ public class GUIFinal extends Application {
     }
 
     public void refreshToppingToggleButtons(AdjustableFood item){
+        //use this function to update the buttons so a new function is not needed
         for (ToggleButton button : toppingButton){
-            if(item.getNormalToppings().contains(new Topping(button.getText(), 00))){
-                button.setSelected(true);
-            }else{
-                button.setSelected(false);
+            for(Item top : item.getNormalToppings()){
+                System.err.println(top.toString());
+                if(top.getName().equals(button.getText()) || top.getDplName().equals(button.getText())){
+                    button.setSelected(true);
+                }
             }
         }
+        if(toppingButton.size() < register.toppings.size()){
+            System.err.println("Missing Toppings");
+        }
+    }
+
+    public void refreshSidesToggleButtons(BasicFood item){
+
     }
 
     public void voidTransaction(){

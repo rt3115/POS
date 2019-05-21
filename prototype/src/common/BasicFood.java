@@ -1,22 +1,42 @@
 package common;
 
+import javafx.scene.layout.Pane;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class BasicFood extends Item {
     private final int price;
     private int qty;
+    private List<Topping> sides = new LinkedList<>();
 
-    public BasicFood(String name, double price){
-        super(name);
+    public BasicFood(String name, String dplName, double price){
+        super(name, dplName);
         this.price = (int)(price * 100);
         this.qty = 1;
     }
 
     public BasicFood(BasicFood copy){
-        super(copy.getName());
+        super(copy.getName(), copy.getDplName());
         this.price = copy.getPrice();
         this.qty = 1;
+    }
+
+    public List<Topping> getSides() {
+        return sides;
+    }
+
+    public void addSide(Topping top){
+        if(sides.contains(top)){
+            int temp = sides.indexOf(top);
+            Topping topTemp = (Topping)sides.get(temp);
+            if((topTemp.getAmount()!= Topping.AMOUNT.NO && top.getAmount() == Topping.AMOUNT.NO) ||
+                    (top.getAmount() != Topping.AMOUNT.NO && topTemp.getAmount() == Topping.AMOUNT.NO)){
+                sides.remove(top);
+            }
+            return;
+        }
+        sides.add(top);
     }
 
     public int getPrice() {
@@ -33,6 +53,17 @@ public class BasicFood extends Item {
 
     @Override
     public String toString(){
-        return super.toString() + "    " + qty + "     " + (price/100.00);
+        if(sides.size() == 0) {
+            return super.toString() + "    " + qty + "     " + (price / 100.00);
+        }else{
+            String temp = super.toString() + "    " + qty + "      " + (price/100.00);
+            temp += "\n";
+            for(Item top : sides){
+                top = (Topping)top;
+                temp += "      " + top.toString() + "\n";
+            }
+            temp += "SubTotal: " + getPrice()/100.00;
+            return temp;
+        }
     }
 }

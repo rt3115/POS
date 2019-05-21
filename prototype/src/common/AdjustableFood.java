@@ -8,20 +8,20 @@ public class AdjustableFood extends BasicFood {
     private List<Item> toppings = new LinkedList<>();
     private List<Item> normalToppings = new LinkedList<>();
 
-    public AdjustableFood(String name, double price, Item ... top){
-        super(name, price/100);
+    public AdjustableFood(String name, String dplName,  double price, Item ... top){
+        super(name, dplName,price/100);
         for(Item t : top){
             normalToppings.add(t);
         }
     }
 
-    public AdjustableFood(String name, double price, List<Item> top){
-        super(name, price/100);
+    public AdjustableFood(String name, String dplName, double price, List<Item> top){
+        super(name, dplName,price/100);
         normalToppings.addAll(top);
     }
 
     public AdjustableFood(AdjustableFood copy){
-        super(copy.getName(), copy.getPrice());
+        super(copy.getName(), copy.getDplName(), copy.getPrice());
         normalToppings = copy.getNormalToppings();
         toppings = new LinkedList<>();
     }
