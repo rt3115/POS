@@ -470,14 +470,18 @@ public class GUIFinal extends Application {
         mainGrid.add(transViewRegion, 1, 0);
         mainGrid.add(paymentRegion, 1, 1);
 
+        //add and views items
+        VBox viewAddItems = new VBox();
+        viewAddItems.setVisible(false);
+        b2.setOnAction(ActionEvent -> {
+            changeView(viewAddItems);
+        });
 
         //creating items UI
         //ahh this going to be such a large area ree
         Pane newItemUI = new Pane();
         {
-            b2.setOnAction(ActionEvent -> {
-                changeView(newItemUI);
-            });
+
 
             AnchorPane itemMainRegion = new AnchorPane();
             itemMainRegion.setStyle(regionStyle);
@@ -736,11 +740,45 @@ public class GUIFinal extends Application {
             itemMainRegion.getChildren().addAll(itemName, lb1, itemDesc, lb2, dplNameLabel, dplName,foodTypeButtons, newFoodArea, doneButton, newToppngArea);
 
             newItemUI.getChildren().add(itemMainRegion);
-            newItemUI.setVisible(false);
+//            newItemUI.setVisible(false);
         }
 
+        //views items
+        Pane viewItemsUI = new Pane();
+        {
+            AnchorPane itemUIPane = new AnchorPane();
+            itemUIPane.setStyle(regionStyle);
+
+            HBox buttons = new HBox();
+
+            {
+                ToggleButton allItemsButton = new ToggleButton("All Items");
+                allItemsButton.setStyle(genStyle);
+
+                ToggleButton foodsButton = new ToggleButton("Foods");
+                foodsButton.setStyle(genStyle);
+
+                ToggleButton toppingsAndSidesButton = new ToggleButton("Toppgins/Sides");
+                toppingsAndSidesButton.setStyle(genStyle);
+
+                buttons.getChildren().addAll(allItemsButton, foodsButton, toppingsAndSidesButton);
+            }
+
+            itemUIPane.getChildren().addAll(buttons);
+            //setting the anchors
+            {
+                AnchorPane.setTopAnchor(itemUIPane, 1.00);
+                AnchorPane.setLeftAnchor(itemUIPane, 1.00);
+            }
+
+            viewItemsUI.getChildren().addAll(itemUIPane);
+        }
+//        viewItemsUI.setVisible(false);
+
+        viewAddItems.getChildren().addAll(newItemUI, viewItemsUI);
+
         mainPane = new Pane();
-        mainPane.getChildren().addAll(mainGrid, newItemUI);
+        mainPane.getChildren().addAll(mainGrid, viewAddItems);
 
         mainSpace.getChildren().addAll(functionsList, mainPane);
         Scene scene = new Scene(mainSpace);
