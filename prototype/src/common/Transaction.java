@@ -17,6 +17,9 @@ public class Transaction {
     }
 
     public Item getLast(){
+        if(list.size() == 0){
+            return null;
+        }
         return list.get(list.size()-1);
     }
 
@@ -46,10 +49,11 @@ public class Transaction {
         return temp;
     }
 
-    public void removeLast(){
+    public boolean removeLast(){
         if(list.size() == 0)
-            return;
+            return false;
         list.remove(list.size()-1);
+        return true;
     }
 
 

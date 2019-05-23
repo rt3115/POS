@@ -5,6 +5,7 @@ public abstract class Item {
     private final String name;
     private final String dplName;
     private final String description;
+    private int overidePrice = 0;
     private final int id;
     public static int CURRID = 0;
 
@@ -31,6 +32,14 @@ public abstract class Item {
 
     public int getId() {
         return id;
+    }
+
+    public void setOveridePrice(int overidePrice){
+        this.overidePrice = overidePrice;
+    }
+
+    public int getOveridePrice() {
+        return overidePrice;
     }
 
     public String getDplName(){

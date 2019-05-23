@@ -3,9 +3,11 @@ package common;
 public class Topping extends Item {
     private int price;
     private int extraPrice;
+    private int sidePrice;
     private AMOUNT amount;
     private boolean isTopping;
     private boolean isSide;
+
 
     public enum AMOUNT {
         NO,
@@ -22,6 +24,7 @@ public class Topping extends Item {
         this.extraPrice = 0;
         this.isTopping = true;
         this.isSide = false;
+        this.sidePrice = 0;
     }
 
     public Topping(String name, String dplName, double price, double extraPrice){
@@ -48,6 +51,30 @@ public class Topping extends Item {
 
     public int getPrice() {
         return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = (int) (price * 100);
+    }
+
+    public void setExtraPrice(double extraPrice){
+        this.price = (int)(extraPrice*100);
+    }
+
+    public void setSidePrice(double sidePrice){
+        this.price = (int)(sidePrice*100);
+    }
+
+    public int getSidePrice(){
+        return sidePrice;
+    }
+
+    public void setSide(boolean isSide){
+        this.isSide = isSide;
+    }
+
+    public void setTopping(boolean isTopping){
+        this.isTopping = isTopping;
     }
 
     public AMOUNT getAmount() {

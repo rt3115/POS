@@ -56,9 +56,22 @@ public class Register {
     }
 
     public void addTopping(Item newItem){
-        //go back change food
-        //don do
-        //return new copy of itslef
+        //need to do this, register should handle adding a topping not the gui
+    }
+
+    public void addSide(Item newItem){
+        //adds a side to the last item in the transaction
+        //if there is no items in the list then just add a side right to the list
+        if(getLast() == null){
+            BasicFood temp = new BasicFood("Item Manual", "Item Manual", 00);
+            transaction.list.add(temp);
+            temp.addSide((Topping)newItem);
+        }else{
+            if(transaction.getLast() instanceof BasicFood)
+                ((BasicFood) transaction.getLast()).addSide((Topping)newItem); //this is a annoying line
+            else
+                transaction.list.add(newItem);
+        }
     }
 
     public void addFood(Item item){
@@ -80,8 +93,9 @@ public class Register {
     } //48sec
 
     public boolean removeLast() {
-        transaction.removeLast();
-        return true;
+        if(transaction.removeLast())
+            return true;
+        return false;
     }
 
     public Item getIndex(int index){

@@ -162,14 +162,16 @@ public class GUIFinal extends Application {
                         b1.setOnAction(ActionEvent -> {
                             Topping toppingTemp = new Topping((Topping) item);
                             if (!b1.isSelected()) {
-                                BasicFood food = (BasicFood) register.getLast();
+//                                BasicFood food = (BasicFood) register.getLast();
                                 toppingTemp.setAmount(Topping.AMOUNT.NO);
-                                food.addSide(toppingTemp);
+                                register.addSide(toppingTemp);
+//                                food.addSide(toppingTemp);
                                 refreshTransList();
                             } else {
-                                BasicFood food = (BasicFood) register.getLast();
+//                                BasicFood food = (BasicFood) register.getLast();
                                 toppingTemp.setAmount(Topping.AMOUNT.SIDE);
-                                food.addSide(toppingTemp);
+                                register.addSide(toppingTemp);
+//                                food.addSide(toppingTemp);
                                 refreshTransList();
                             }
                         });
@@ -249,11 +251,12 @@ public class GUIFinal extends Application {
             addSideButton.setText("Add Side");
             addSideButton.setPrefSize(120, 60);
             addSideButton.setOnAction(ActionEvent -> {
-                if(register.getLast() != null){
+                //if(register.getLast() != null){
                     sidesView.setVisible(true);
                     itemView.setVisible(false);
                     doneButton.setVisible(true);
-                }
+                    refreshSidesToggleButtons(register.getLast());
+                //}
             });
 
             adjustSideArea.getChildren().addAll(adjustOrderButton, addSideButton);
@@ -269,6 +272,8 @@ public class GUIFinal extends Application {
                 toppingsView.setVisible(false);
                 sidesView.setVisible(false);
                 doneButton.setVisible(false);
+                refreshToppingToggleButtons(null);
+                refreshSidesToggleButtons(null);
             });
 
             adjustSideArea.getChildren().add(doneButton);
@@ -621,6 +626,7 @@ public class GUIFinal extends Application {
             ToggleButton isSideButton = new ToggleButton("is Side");
             TextField price2 = new TextField();
             TextField extraPrice = new TextField();
+            TextField sidePrice = new TextField();
             {
                 isToppingButton.setStyle(genStyle);
                 isToppingButton.setPrefWidth(80);
@@ -630,6 +636,7 @@ public class GUIFinal extends Application {
 
                 Label priceLabel = new Label("Price");
                 Label extraPriceLabel = new Label("Extra Price");
+                Label sidePricelabel = new Label("Side Price");
 
                 price2.setStyle("" +
                         "-fx-background-color: white;");
@@ -638,6 +645,10 @@ public class GUIFinal extends Application {
                 extraPrice.setStyle("" +
                         "-fx-background-color: white;");
                 extraPrice.setPrefWidth(40);
+
+                sidePrice.setStyle("" +
+                        "-fx-background-color: white");
+                sidePrice.setPrefWidth(40);
 
                 //setting the anchors
                 {
@@ -658,9 +669,15 @@ public class GUIFinal extends Application {
 
                     AnchorPane.setTopAnchor(extraPriceLabel, 30.00);
                     AnchorPane.setLeftAnchor(extraPriceLabel, 80.00);
+
+                    AnchorPane.setTopAnchor(sidePrice, 30.00);
+                    AnchorPane.setLeftAnchor(sidePrice, 250.00);
+
+                    AnchorPane.setTopAnchor(sidePricelabel, 30.00);
+                    AnchorPane.setLeftAnchor(sidePricelabel, 190.00);
                 }
 
-                newToppngArea.getChildren().addAll(price2, priceLabel, extraPrice, extraPriceLabel, isSideButton, isToppingButton);
+                newToppngArea.getChildren().addAll(price2, priceLabel, extraPrice, extraPriceLabel, sidePrice, sidePricelabel, isSideButton, isToppingButton);
             }
 
             //setting the anchors
@@ -840,12 +857,18 @@ public class GUIFinal extends Application {
 
     public void refreshToppingToggleButtons(AdjustableFood item){
         //use this function to update the buttons so a new function is not needed
-        for (ToggleButton button : toppingButton){
-            for(Item top : item.getNormalToppings()){
-                System.err.println(top.toString());
-                if(top.getName().equals(button.getText()) || top.getDplName().equals(button.getText())){
-                    button.setSelected(true);
+        if(item != null) {
+            for (ToggleButton button : toppingButton) {
+                for (Item top : item.getNormalToppings()) {
+                    System.err.println(top.toString());
+                    if (top.getName().equals(button.getText()) || top.getDplName().equals(button.getText())) {
+                        button.setSelected(true);
+                    }
                 }
+            }
+        }else{
+            for(ToggleButton button : toppingButton){
+                button.setSelected(false);
             }
         }
         if(toppingButton.size() < register.toppings.size()){
@@ -853,8 +876,37 @@ public class GUIFinal extends Application {
         }
     }
 
-    public void refreshSidesToggleButtons(BasicFood item){
-
+    public void refreshSidesToggleButtons(Item item){
+        if(item != null) {
+            if(item instanceof Topping){
+                for(ToggleButton button : sideButtons){
+                    for(Item side : register.getList()){
+                        if(side.getName().equals(button.getText()) || side.getDplName().equals(button.getText())){
+                            button.setSelected(true);
+                        }else{
+                            button.setSelected(false);
+                        }
+                    }
+                }
+            }else {
+                for (ToggleButton button : sideButtons) {
+                    for (Item side : ((BasicFood) item).getSides()) {
+                        if (side.getName().equals(button.getText()) || side.getDplName().equals(button.getText())) {
+                            button.setSelected(true);
+                        }else{
+                            button.setSelected(false);
+                        }
+                    }
+                }
+            }
+        }else{
+            for(ToggleButton button : sideButtons){
+                button.setSelected(false);
+            }
+        }
+        if(sideButtons.size() < register.toppings.size()){
+            System.err.println("Missing Sides");
+        }
     }
 
     public void voidTransaction(){
