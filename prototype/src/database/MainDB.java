@@ -1,5 +1,7 @@
 package database;
 
+import common.BasicFood;
+import common.Item;
 import common.Topping;
 
 import java.util.LinkedList;
@@ -15,13 +17,42 @@ public class MainDB {
         toppings.add(new Topping("Tomato", "Tomato", .00));
         toppings.add(new Topping("Onions", "Onions",.00));
         toppings.add(new Topping("Cheese", "Cheese",.00, .50));
+
+        //start?
     }
+
     public List<Topping> getTopping(){
         //i need to read in the database? or load it in or something?
         return toppings;
     }
     public void getFood(){//cant have food List?
 
+    }
+
+
+    public void addTopping(Topping topp){
+        //if(topp==NULL){
+            //if not a topping don't add? make boolean?-return false
+        //}
+        save();
+    }
+
+    public void addFood(Item item){
+        //add item
+        save();
+    }
+
+    public void editTopping(Topping topp){
+        //edit, but how? is it like a present I open?
+        save();
+    }
+    public void editItem(Item item){
+        // I have no idea
+        save();
+    }
+
+    public void save(){
+        //save to file
     }
 
 }
