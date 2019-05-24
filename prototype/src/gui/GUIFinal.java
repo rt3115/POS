@@ -58,7 +58,9 @@ public class GUIFinal extends Application {
     private Button doneButton;
 
     private ArrayList<ToggleButton> toppingButton = new ArrayList<>();
+    private GridPane toppingButtonsGrid = new GridPane();
     private ArrayList<ToggleButton> sideButtons = new ArrayList<>();
+    private GridPane sideButtonsGrid = new GridPane();
 
     private Register register;
 
@@ -84,8 +86,9 @@ public class GUIFinal extends Application {
         //Function Col
         VBox functionsList = new VBox();
         Button b2 = new Button("View/Add Items");
+        Button changeLogin = new Button("Change Logg In");
+        Button salesButton = new Button("Sales");
         {
-            Button changeLogin = new Button("Change Logg In");
 
             Button refreshUI = new Button("ROOT:REFRESH UI");
             refreshUI.setOnAction(ActionEvent -> {
@@ -97,11 +100,17 @@ public class GUIFinal extends Application {
                 }
             });
 
-            functionsList.getChildren().addAll( changeLogin ,b2,refreshUI);
+            functionsList.getChildren().addAll( changeLogin ,b2,refreshUI, salesButton);
         }
 
         //Register Area Anchor pane
         mainGrid = new GridPane();
+
+        {
+            salesButton.setOnAction(ActionEvent -> {
+                changeView(mainGrid);
+            });
+        }
 
         //Item View
         AnchorPane itemViewRegion = new AnchorPane();
@@ -366,8 +375,18 @@ public class GUIFinal extends Application {
                 refreshKeyPad();
             });
 
+            Button discountButton = new Button("Discount");
+            discountButton.setStyle(genStyle);
+            discountButton.setPrefSize(80, 70);
+            discountButton.setOnAction(ActionEvent -> {
+                addItem(new BasicFood("DISCOUNT", "DISCOUNT",-Double.parseDouble(currValueString)));
+                currValueString ="";
+                refreshKeyPad();
+            });
+
             keyPadButtons.add(clearButton, 3, 0);
             keyPadButtons.add(addButton, 3 , 1);
+            keyPadButtons.add(discountButton, 3, 2);
 
             Button zeroButton = new Button("0");
             zeroButton.setStyle(genStyle);
@@ -743,7 +762,13 @@ public class GUIFinal extends Application {
                         String tName = itemName.getText();
                         String tDesc = itemDesc.getText();
                         Double tPrice = Double.parseDouble(price2.getText());
-                        register.toppings.add(new Topping(tName, dplName.getText(), tPrice, isToppingButton.isSelected(), isSideButton.isSelected()));
+                        Topping temp = new Topping(tName, dplName.getText(), tPrice, isTopping.isSelected(), isSideButton.isSelected());
+                        if(temp.isSide()){
+                            temp.setSidePrice(Double.parseDouble(sidePrice.getText()));
+                        }
+                        register.toppings.add(temp);
+//                        register.toppings.add(new Topping(tName, dplName.getText(), tPrice, isToppingButton.isSelected(), isSideButton.isSelected()));
+//                        register.toppings.get(register.toppings.size()-1).setSidePrice(Double.parseDouble(sidePrice.getText()));
                         itemName.setText("");
                         itemDesc.setText("");
                         price2.setText("");
@@ -763,29 +788,187 @@ public class GUIFinal extends Application {
         //views items
         Pane viewItemsUI = new Pane();
         {
+            //yes i used a boolean object dont worry about it
+
+            //stuff to view and edit item
+            Label nameLabel = new Label("Name:");
+            TextField nameField = new TextField();
+
+            Label dplNamelabel = new Label("Display Name:");
+            TextField dplNameField = new TextField();
+
+            Label priceLabel = new Label("Price:");
+            TextField priceField = new TextField();
+            priceField.setPrefWidth(40);
+
+            Label extraPriceLabel = new Label("Extra Price:");
+            TextField extraPriceField = new TextField();
+            extraPriceField.setPrefWidth(40);
+
+            Label sidePriceLabel = new Label("Side Price:");
+            TextField sidePriceField = new TextField();
+            sidePriceField.setPrefWidth(40);
+
+            Button makeEdit = new Button("Make Edit");
+
             AnchorPane itemUIPane = new AnchorPane();
             itemUIPane.setStyle(regionStyle);
+
+            GridPane allItems = new GridPane();
+            allItems.setVisible(false);
+            {
+
+            }
+
+            GridPane foodItems = new GridPane();
+            foodItems.setVisible(false);
+            {
+                for(int y = 0; y < 6; y++){
+                    for(int x = 0; x < 5; x++){
+                        if(register.getFoods().size() > (y*5) + x) {
+                            int temp = (y * 5) + x;
+                            Item item = register.getFoods().get(temp);
+                            Button b1 = new Button(item.getName());
+                            b1.setStyle(genStyle);
+                            b1.setPrefSize(120, 60);
+
+                            b1.setOnAction(ActionEvent -> {
+                                nameField.setText(item.getName());
+                                dplNameField.setText(item.getDplName());
+                                priceField.setText("" + item.getPrice()/100.00);
+                                extraPriceField.setText("");
+                                sidePriceField.setText("");
+                            });
+
+                            foodItems.add(b1, x, y);
+                        }
+                    }
+                }
+            }
+
+            GridPane toppingItems = new GridPane();
+            toppingItems.setVisible(false);
+            {
+                for(int y = 0; y < 6; y++){
+                    for(int x = 0; x < 5; x++){
+                        if(register.toppings.size() > (y*5) + x) {
+                            int temp = (y * 5) + x;
+                            Item item = register.toppings.get(temp);
+                            Button b1 = new Button(item.getName());
+                            b1.setStyle(genStyle);
+                            b1.setPrefSize(120, 60);
+
+                            b1.setOnAction(ActionEvent -> {
+                                nameField.setText(item.getName());
+                                dplNameField.setText(item.getDplName());
+                                priceField.setText("" + item.getPrice()/100.0);
+                                extraPriceField.setText("" + ((Topping) item).getExtraPrice()/100.0);
+                                sidePriceField.setText("" + ((Topping) item).getSidePrice()/100.0);
+                            });
+
+                            toppingItems.add(b1, x, y);
+                        }
+                    }
+                }
+            }
 
             HBox buttons = new HBox();
 
             {
                 ToggleButton allItemsButton = new ToggleButton("All Items");
                 allItemsButton.setStyle(genStyle);
-
                 ToggleButton foodsButton = new ToggleButton("Foods");
                 foodsButton.setStyle(genStyle);
-
                 ToggleButton toppingsAndSidesButton = new ToggleButton("Toppgins/Sides");
                 toppingsAndSidesButton.setStyle(genStyle);
+
+                allItemsButton.setOnAction(ActionEvent -> {
+                    allItemsButton.setSelected(true);
+                    foodsButton.setSelected(false);
+                    toppingsAndSidesButton.setSelected(false);
+                    foodItems.setVisible(false);
+                    toppingItems.setVisible(false);
+                    allItems.setVisible(true);
+                });
+
+                foodsButton.setOnAction(ActionEvent -> {
+                    allItemsButton.setSelected(false);
+                    toppingsAndSidesButton.setSelected(false);
+                    foodsButton.setSelected(true);
+                    foodItems.setVisible(true);
+                    toppingItems.setVisible(false);
+                    allItems.setVisible(false);
+                });
+
+                toppingsAndSidesButton.setOnAction(ActionEvent -> {
+                    allItemsButton.setSelected(false);
+                    toppingsAndSidesButton.setSelected(true);
+                    foodsButton.setSelected(false);
+                    foodItems.setVisible(false);
+                    allItems.setVisible(false);
+                    toppingItems.setVisible(true);
+                });
+
+                makeEdit.setOnAction(ActionEvent -> {
+                    if(foodsButton.isSelected()){
+
+                    }else if(toppingsAndSidesButton.isSelected()){
+
+                    }else{
+                        System.err.println("NO");
+                    }
+                });
 
                 buttons.getChildren().addAll(allItemsButton, foodsButton, toppingsAndSidesButton);
             }
 
-            itemUIPane.getChildren().addAll(buttons);
+            itemUIPane.getChildren().addAll(buttons, foodItems, toppingItems, nameField, nameLabel, dplNameField, dplNamelabel);
+            itemUIPane.getChildren().addAll(priceLabel, priceField, sidePriceField, sidePriceLabel, extraPriceField, extraPriceLabel, makeEdit);
             //setting the anchors
             {
-                AnchorPane.setTopAnchor(itemUIPane, 1.00);
-                AnchorPane.setLeftAnchor(itemUIPane, 1.00);
+//                AnchorPane.setTopAnchor(itemUIPane, 10.00);
+//                AnchorPane.setLeftAnchor(itemUIPane, 1.00);
+                AnchorPane.setTopAnchor(buttons, 60.00);
+                AnchorPane.setLeftAnchor(buttons, 1.0);
+
+                AnchorPane.setTopAnchor(foodItems, 100.00);
+                AnchorPane.setLeftAnchor(foodItems, 1.00);
+
+                AnchorPane.setTopAnchor(toppingItems, 100.00);
+                AnchorPane.setLeftAnchor(toppingItems, 1.00);
+
+                AnchorPane.setTopAnchor(nameLabel, 1.00);
+                AnchorPane.setLeftAnchor(nameLabel, 1.00);
+
+                AnchorPane.setTopAnchor(nameField, 1.00);
+                AnchorPane.setLeftAnchor(nameField, 40.00);
+
+                AnchorPane.setTopAnchor(dplNamelabel, 1.00);
+                AnchorPane.setLeftAnchor(dplNamelabel, 200.00);
+
+                AnchorPane.setTopAnchor(dplNameField, 1.00);
+                AnchorPane.setLeftAnchor(dplNameField, 280.00);
+
+                AnchorPane.setTopAnchor(priceLabel, 30.00);
+                AnchorPane.setLeftAnchor(priceLabel, 1.00);
+
+                AnchorPane.setTopAnchor(priceField, 30.00);
+                AnchorPane.setLeftAnchor(priceField, 35.00);
+
+                AnchorPane.setTopAnchor(extraPriceLabel, 30.00);
+                AnchorPane.setLeftAnchor(extraPriceLabel, 80.00);
+
+                AnchorPane.setTopAnchor(extraPriceField, 30.00);
+                AnchorPane.setLeftAnchor(extraPriceField, 140.00);
+
+                AnchorPane.setTopAnchor(sidePriceLabel, 30.00);
+                AnchorPane.setLeftAnchor(sidePriceLabel, 190.00);
+
+                AnchorPane.setTopAnchor(sidePriceField, 30.00);
+                AnchorPane.setLeftAnchor(sidePriceField, 250.00);
+
+                AnchorPane.setTopAnchor(makeEdit, 1.00);
+                AnchorPane.setRightAnchor(makeEdit, 1.00);
             }
 
             viewItemsUI.getChildren().addAll(itemUIPane);
@@ -794,8 +977,45 @@ public class GUIFinal extends Application {
 
         viewAddItems.getChildren().addAll(newItemUI, viewItemsUI);
 
+
+        //change log in UI
+        AnchorPane changeLogInPane = new AnchorPane();
+        changeLogInPane.setVisible(false);
+        changeLogInPane.setStyle(regionStyle);
+
+        changeLogin.setOnAction(ActionEvent -> {
+            changeView(changeLogInPane);
+        });
+
+        {
+
+            Label logInLabel = new Label("Employee code:");
+            TextField logInField = new TextField();
+
+            Button logInButton = new Button("Log in");
+            logInButton.setStyle(genStyle);
+
+            changeLogInPane.getChildren().addAll(logInLabel, logInField, logInButton);
+            {
+                AnchorPane.setTopAnchor(logInLabel, 100.00);
+                AnchorPane.setLeftAnchor(logInLabel, 100.00);
+                AnchorPane.setBottomAnchor(logInLabel, 100.00);
+//                AnchorPane.setRightAnchor(logInLabel, 100.00);
+
+                AnchorPane.setTopAnchor(logInField, 100.00);
+                AnchorPane.setLeftAnchor(logInField, 190.00);
+                AnchorPane.setBottomAnchor(logInField, 100.00);
+                AnchorPane.setRightAnchor(logInField, 190.00);
+
+                AnchorPane.setTopAnchor(logInButton, 100.00);
+                AnchorPane.setLeftAnchor(logInButton, 320.00);
+                AnchorPane.setBottomAnchor(logInButton, 100.00);
+//                AnchorPane.setRightAnchor(logInButton, 90);
+            }
+        }
+
         mainPane = new Pane();
-        mainPane.getChildren().addAll(mainGrid, viewAddItems);
+        mainPane.getChildren().addAll(mainGrid, viewAddItems, changeLogInPane);
 
         mainSpace.getChildren().addAll(functionsList, mainPane);
         Scene scene = new Scene(mainSpace);
@@ -805,6 +1025,11 @@ public class GUIFinal extends Application {
     }
 
     public void changeView(Node node){
+        for(Node nod2 : mainPane.getChildren()){
+            nod2.setVisible(false);
+        }
+        node.setVisible(true);
+        /*
         if(node.isVisible()){
             node.setVisible(false);
             mainGrid.setVisible(true);
@@ -812,6 +1037,7 @@ public class GUIFinal extends Application {
             mainGrid.setVisible(false);
             node.setVisible(true);
         }
+        */
     }
 
     //functions for updating the GUI
@@ -906,8 +1132,12 @@ public class GUIFinal extends Application {
         }
         if(sideButtons.size() < register.toppings.size()){
             System.err.println("Missing Sides");
+
+            int dif = sideButtons.size() - register.toppings.size();
+
         }
     }
+
 
     public void voidTransaction(){
         register.voidTransaction();
