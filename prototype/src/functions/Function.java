@@ -25,8 +25,4 @@ public abstract class Function {
         this.name = name;
         this.accessLevel = accessLevel;
     }
-
-
-    public abstract void execute();
-
 }

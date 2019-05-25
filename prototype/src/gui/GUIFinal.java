@@ -57,6 +57,8 @@ public class GUIFinal extends Application {
 
     private Button doneButton;
 
+    private GridPane foodButtons = new GridPane();
+
     private ArrayList<ToggleButton> toppingButton = new ArrayList<>();
     private GridPane toppingButtonsGrid = new GridPane();
     private ArrayList<ToggleButton> sideButtons = new ArrayList<>();
@@ -83,11 +85,17 @@ public class GUIFinal extends Application {
         HBox mainSpace = new HBox();
         mainSpace.setStyle(mainBackground);
 
+        //the buttons will be replaced with a loop that goes through and adds all the functions based on the functions list in Main
+
         //Function Col
         VBox functionsList = new VBox();
-        Button b2 = new Button("View/Add Items");
-        Button changeLogin = new Button("Change Logg In");
-        Button salesButton = new Button("Sales");
+        Button b2 = new Button("View/Add Items"); //view and add items
+        Button changeLogin = new Button("Change Logg In"); //change the current log in
+        Button salesButton = new Button("Sales"); //go back to the sales screen
+        Button viewTransactionsButton = new Button("Transactions"); //view/void past transactions
+        Button summaryButton = new Button("Summary");
+        Button addViewEmployeesButton = new Button("View/Add Employees");
+        Button changePermissionLevelsButton = new Button("Permission Levels");
         {
 
             Button refreshUI = new Button("ROOT:REFRESH UI");
@@ -100,7 +108,7 @@ public class GUIFinal extends Application {
                 }
             });
 
-            functionsList.getChildren().addAll( changeLogin ,b2,refreshUI, salesButton);
+            functionsList.getChildren().addAll( changeLogin ,b2,refreshUI, salesButton, viewTransactionsButton, summaryButton, addViewEmployeesButton, changePermissionLevelsButton);
         }
 
         //Register Area Anchor pane
@@ -119,6 +127,7 @@ public class GUIFinal extends Application {
         ScrollPane itemView = new ScrollPane();
 
         GridPane itemViewGrid = new GridPane();
+        foodButtons = itemViewGrid;
 
         itemView.setContent(itemViewGrid);
 
@@ -503,6 +512,9 @@ public class GUIFinal extends Application {
 
         //creating items UI
         //ahh this going to be such a large area ree
+
+        GridPane foodItems = new GridPane();
+
         Pane newItemUI = new Pane();
         {
 
@@ -732,6 +744,8 @@ public class GUIFinal extends Application {
                 AnchorPane.setLeftAnchor(newToppngArea, 1.00);
             }
 
+
+
             //done buttons
             doneButton.setOnAction(ActionEvent -> {
                 //not final
@@ -757,6 +771,8 @@ public class GUIFinal extends Application {
                     price.setText("");
                     isBasicFoodButton.setSelected(false);
                     isAdjustableFood.setSelected(false);
+                    refreshFoodsButtons(foodItems);
+                    refreshFoodsButtons(foodButtons);
                 }else{
                     if(isToppingButton.isSelected() || isSideButton.isSelected()){
                         String tName = itemName.getText();
@@ -820,8 +836,9 @@ public class GUIFinal extends Application {
 
             }
 
-            GridPane foodItems = new GridPane();
+
             foodItems.setVisible(false);
+
             {
                 for(int y = 0; y < 6; y++){
                     for(int x = 0; x < 5; x++){
@@ -992,10 +1009,12 @@ public class GUIFinal extends Application {
             Label logInLabel = new Label("Employee code:");
             TextField logInField = new TextField();
 
+            Label feedBack = new Label();
+
             Button logInButton = new Button("Log in");
             logInButton.setStyle(genStyle);
 
-            changeLogInPane.getChildren().addAll(logInLabel, logInField, logInButton);
+            changeLogInPane.getChildren().addAll(logInLabel, logInField, logInButton, feedBack);
             {
                 AnchorPane.setTopAnchor(logInLabel, 100.00);
                 AnchorPane.setLeftAnchor(logInLabel, 100.00);
@@ -1011,6 +1030,9 @@ public class GUIFinal extends Application {
                 AnchorPane.setLeftAnchor(logInButton, 320.00);
                 AnchorPane.setBottomAnchor(logInButton, 100.00);
 //                AnchorPane.setRightAnchor(logInButton, 90);
+
+                AnchorPane.setTopAnchor(feedBack, 150.00);
+                AnchorPane.setLeftAnchor(feedBack, 200.00);
             }
         }
 
@@ -1029,6 +1051,7 @@ public class GUIFinal extends Application {
             nod2.setVisible(false);
         }
         node.setVisible(true);
+        refreshFoodsButtons(foodButtons);
         /*
         if(node.isVisible()){
             node.setVisible(false);
@@ -1081,6 +1104,31 @@ public class GUIFinal extends Application {
         refreshTotal();
     }
 
+    public void refreshFoodsButtons(GridPane gridPane){
+        if(register.getFoods().size() > gridPane.getChildren().size()){
+            System.err.println("Missing Foods");
+            //int dif = register.getFoods().size() - foodButtons.getChildren().size();
+            int start = gridPane.getChildren().size();
+            int col = gridPane.getColumnCount();
+            int row = gridPane.getRowCount();
+            Item item = register.getFoods().get(start);
+            Button b1 = new Button(item.getDplName());
+            b1.setPrefSize(120, 60);
+
+            b1.setOnAction(ActionEvent -> {
+                if(register.getFoods().get(start) instanceof AdjustableFood)
+                    addItem(new AdjustableFood((AdjustableFood)register.getFoods().get(start)));
+                else
+                    addItem(new BasicFood((BasicFood)register.getFoods().get(start)));
+            });
+
+            gridPane.add(b1, (start%col) , (start/col));
+//            foodButtons.getChildren()
+            refreshFoodsButtons(gridPane);//recursive functions :)
+        }
+
+    }
+
     public void refreshToppingToggleButtons(AdjustableFood item){
         //use this function to update the buttons so a new function is not needed
         if(item != null) {
@@ -1099,6 +1147,8 @@ public class GUIFinal extends Application {
         }
         if(toppingButton.size() < register.toppings.size()){
             System.err.println("Missing Toppings");
+
+
         }
     }
 
