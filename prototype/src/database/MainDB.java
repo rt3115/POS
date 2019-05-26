@@ -3,57 +3,78 @@ package database;
 import common.BasicFood;
 import common.Item;
 import common.Topping;
+import javafx.scene.layout.Pane;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainDB {
-    public List<Topping> toppings = new LinkedList<>();
-    public MainDB(){
-        toppings.add(new Topping("HomeFries", "HomeFries", .00));
-        toppings.add(new Topping("Mac Salad","Mac Salad", .00));
-        toppings.add(new Topping("Hot Sauce", "Hot Sauce", .00, .50, true, true));
-        toppings.add(new Topping("Lettuce" , "Lettuce",  .00));
-        toppings.add(new Topping("Tomato", "Tomato", .00));
-        toppings.add(new Topping("Onions", "Onions",.00));
-        toppings.add(new Topping("Cheese", "Cheese",.00, .50));
+public class MainDB implements Runnable{
 
-        //start?
+    private List<Item> items = new LinkedList<>(); //load all the items into this list from the file and save this file
+    //toppings and foods are only there for easy of use
+    private List<Topping> toppings = new LinkedList<>();
+    private List<BasicFood> foods = new LinkedList<>();
+
+    public MainDB(){
+        //starts the DB by loading the file and calling the sort methods
+        //also starts the thread that saves the dataBase
     }
 
-    public List<Topping> getTopping(){
-        //i need to read in the database? or load it in or something?
+    public List<Topping> getToppings() {
         return toppings;
     }
-    public void getFood(){//cant have food List?
+
+    public List<BasicFood> getFoods() {
+        return foods;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    private void forceSave(){
+        //forces a save
+    }
+
+    private void forceLoad(){
+        //forces a load
+    }
+
+    private void load(){
+        //reads in the file
+    }
+
+    private void save(){
+        //saves the main list to the file
+    }
+
+    private void sortToppings(){
+        //puts the toppings objects into their list
+    }
+
+    private void sortFoods(){
+        //puts the foods into their list
+    }
+
+    public Item getItem(int id){
+        //returns a item given the id
+        //not sure how important this method will be
+
+        return null;
+    }
+
+    public void editItem(Item edit){
+        //makes an edit to a item
+    }
+
+    @Override
+    public void run() {
 
     }
 
+    //you can make a edit food and edit topping that editItem can call if you want to
 
-    public void addTopping(Topping topp){
-        //if(topp==NULL){
-            //if not a topping don't add? make boolean?-return false
-        //}
-        save();
-    }
 
-    public void addFood(Item item){
-        //add item
-        save();
-    }
-
-    public void editTopping(Topping topp){
-        //edit, but how? is it like a present I open?
-        save();
-    }
-    public void editItem(Item item){
-        // I have no idea
-        save();
-    }
-
-    public void save(){
-        //save to file
-    }
 
 }
 //list of foods, can be anything list array list costom?

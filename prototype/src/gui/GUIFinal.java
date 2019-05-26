@@ -1145,6 +1145,35 @@ public class GUIFinal extends Application {
         }
     }
 
+    public void refreshSidesButtons(GridPane gridPane, boolean isSide){
+        if(register.toppings.size() > gridPane.getChildren().size()){
+            System.err.println("Missing Sides");
+            int start = gridPane.getChildren().size();
+            int col = gridPane.getColumnCount();
+            if(col != 0){
+                col = 3;
+            }
+            Item item = register.toppings.get(start);
+            Button b1 = new Button(item.getDplName());
+            b1.setPrefSize(120, 60);
+
+            b1.setOnAction(ActionEvent -> {
+                if(isSide)
+                    register.addSide(item);
+                else
+                    register.addTopping(item);
+            });
+
+            try {
+                gridPane.add(b1, (start % col), (start / col));
+            }catch (Exception e){
+                gridPane.add(b1, (0), (0));
+            }
+
+            refreshSidesButtons(gridPane, isSide);
+        }
+    }
+
     public void refreshFoodsButtonsView(GridPane gridPane){
         if(register.getFoods().size() > gridPane.getChildren().size()){
             System.err.println("Missing Foods");
