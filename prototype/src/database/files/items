@@ -1,0 +1,7 @@
+name,dplName,price,type,ListOfToppings.../ExtraPrice,SidePrice,isTopping,isSide
+Apple,Apple,1.00,BasicFood
+Apple2,Apple2,2.00,BasicFood
+HomeFries,HomeFries,00,Topping,.50,2.00,true,true
+Mac Salad,Mac Salad,00,Topping,.50,1.50,true,true
+Hot Sauce, Hot Sauce,00,Topping,.50, 00,true,false
+Plate,Plate,10.00,AdjustableFood,HomeFries,Mac Salad,Hot Sauce
