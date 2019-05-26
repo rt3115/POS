@@ -60,9 +60,9 @@ public class GUIFinal extends Application {
     private GridPane foodButtons = new GridPane();
 
     private ArrayList<ToggleButton> toppingButton = new ArrayList<>();
-    private GridPane toppingButtonsGrid = new GridPane();
     private ArrayList<ToggleButton> sideButtons = new ArrayList<>();
-    private GridPane sideButtonsGrid = new GridPane();
+
+    ArrayList<TextField> editFields = new ArrayList<>();
 
     private Register register;
 
@@ -135,6 +135,7 @@ public class GUIFinal extends Application {
                 "-fx-hgap: 2;" +
                 "-fx-vgap: 2");
         //Displaying the Item Buttons
+        /*
         { //adding some test buttons
             for(int y = 0; y < 10; y++){
                 for(int x = 0; x < 3; x++){
@@ -159,6 +160,8 @@ public class GUIFinal extends Application {
                 }
             }
         }
+        */
+        refreshFoodsButtons(foodButtons);
 
         //Sides
         ScrollPane sidesView = new ScrollPane();
@@ -771,7 +774,8 @@ public class GUIFinal extends Application {
                     price.setText("");
                     isBasicFoodButton.setSelected(false);
                     isAdjustableFood.setSelected(false);
-                    refreshFoodsButtons(foodItems);
+//                    refreshFoodsButtons(foodItems);
+                    refreshFoodsButtonsView(foodItems);
                     refreshFoodsButtons(foodButtons);
                 }else{
                     if(isToppingButton.isSelected() || isSideButton.isSelected()){
@@ -824,6 +828,12 @@ public class GUIFinal extends Application {
             Label sidePriceLabel = new Label("Side Price:");
             TextField sidePriceField = new TextField();
             sidePriceField.setPrefWidth(40);
+
+            editFields.add(nameField);
+            editFields.add(priceField);
+            editFields.add(dplNameField);
+            editFields.add(extraPriceField);
+            editFields.add(sidePriceField);
 
             Button makeEdit = new Button("Make Edit");
 
@@ -1110,23 +1120,52 @@ public class GUIFinal extends Application {
             //int dif = register.getFoods().size() - foodButtons.getChildren().size();
             int start = gridPane.getChildren().size();
             int col = gridPane.getColumnCount();
+            if(col != 0){
+                col = 3;
+            }
             int row = gridPane.getRowCount();
             Item item = register.getFoods().get(start);
             Button b1 = new Button(item.getDplName());
             b1.setPrefSize(120, 60);
 
             b1.setOnAction(ActionEvent -> {
-                if(register.getFoods().get(start) instanceof AdjustableFood)
-                    addItem(new AdjustableFood((AdjustableFood)register.getFoods().get(start)));
+                if (register.getFoods().get(start) instanceof AdjustableFood)
+                    addItem(new AdjustableFood((AdjustableFood) register.getFoods().get(start)));
                 else
-                    addItem(new BasicFood((BasicFood)register.getFoods().get(start)));
+                        addItem(new BasicFood((BasicFood) register.getFoods().get(start)));
             });
 
-            gridPane.add(b1, (start%col) , (start/col));
+            try {
+                gridPane.add(b1, (start % col), (start / col));
+            }catch (Exception e){
+                gridPane.add(b1, (0), (0));
+            }
 //            foodButtons.getChildren()
             refreshFoodsButtons(gridPane);//recursive functions :)
         }
+    }
 
+    public void refreshFoodsButtonsView(GridPane gridPane){
+        if(register.getFoods().size() > gridPane.getChildren().size()){
+            System.err.println("Missing Foods");
+            int start = gridPane.getChildren().size();
+            int col = gridPane.getColumnCount();
+            if(col != 6)
+                col = 6;
+            Item item = register.getFoods().get(start);
+            Button b1 = new Button(item.getDplName());
+            b1.setPrefSize(120, 60);
+
+            b1.setOnAction(ActionEvent -> {
+                editFields.get(0).setText(item.getName());
+                editFields.get(1).setText("" + item.getPrice()/100.00);
+                editFields.get(2).setText(item.getDplName());
+            });
+
+            gridPane.add(b1, (start%col), (start/col));
+
+            refreshFoodsButtonsView(gridPane);
+        }
     }
 
     public void refreshToppingToggleButtons(AdjustableFood item){
@@ -1188,7 +1227,6 @@ public class GUIFinal extends Application {
         }
     }
 
-
     public void voidTransaction(){
         register.voidTransaction();
         refreshTransList();
@@ -1199,11 +1237,8 @@ public class GUIFinal extends Application {
         refreshTransList();
     }
 
-
-
     public static void launch(){
         Application.launch();
     }
-
 
 }
