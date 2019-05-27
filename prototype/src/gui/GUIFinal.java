@@ -1175,7 +1175,7 @@ public class GUIFinal extends Application {
     }
 
     public void refreshFoodsButtonsView(GridPane gridPane){
-        if(register.getFoods().size() > gridPane.getChildren().size()){
+        if(register.getFoods().size() > gridPane.getChildren().size()){//all the foods that exist. diplay grid item
             System.err.println("Missing Foods");
             int start = gridPane.getChildren().size();
             int col = gridPane.getColumnCount();

@@ -5,6 +5,9 @@ import common.Item;
 import common.Topping;
 import javafx.scene.layout.Pane;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,10 +17,18 @@ public class MainDB implements Runnable{
     //toppings and foods are only there for easy of use
     private List<Topping> toppings = new LinkedList<>();
     private List<BasicFood> foods = new LinkedList<>();
+    private FileWriter write;
+    PrintWriter print_line;
 
     public MainDB(){
         //starts the DB by loading the file and calling the sort methods
         //also starts the thread that saves the dataBase
+        try {
+            write= new FileWriter("files/items",true);
+            print_line = new PrintWriter( write );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Topping> getToppings() {
@@ -42,11 +53,16 @@ public class MainDB implements Runnable{
 
     private void load(){
         //reads in the file
+        //while()
     }
 
     private void save(){
         //saves the main list to the file
-
+        //print_line.printf("%s+%n", items);
+        for(int i=0; i> items.size()-1; i++){
+            print_line.printf("%s+%n", items.get(i));
+        }
+        print_line.close();
     }
 
     private void sortToppings(){
