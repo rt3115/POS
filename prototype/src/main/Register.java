@@ -15,6 +15,7 @@ public class Register {
     //debug lists
     public List<Topping> toppings = new LinkedList<>(); //fill this list with toppings
     public List<Item> foods = new LinkedList<>(); //fill this list with foods
+    public List<Side> sides = new LinkedList<>();
 
     public List<Item> getFoods(){
         return foods;
@@ -45,6 +46,9 @@ public class Register {
         foods.add(new AdjustableFood("Plate", "Plate", 10.00, new Topping("HomeFries", "HomeFries", .00), new Topping("Mac Salad", "Mac Salad", 00), new Topping("Hot Sauce", "Hot Sauce",00)));
 //        foods.add(new AdjustableFood("Sub", 8.00));
 
+        sides.add(new Side("Home Fries", "Home Fries", 2.00));
+        sides.add(new Side("Mac Salad", "Mac Salad", 1.50));
+        sides.add(new Side("Fries", "Fries", 3.00));
     }
 
 
@@ -57,21 +61,17 @@ public class Register {
 
     public void addTopping(Item newItem){
         //need to do this, register should handle adding a topping not the gui
+        AdjustableFood temp = (AdjustableFood)getLast();
+        temp.addTopping((Topping)newItem);
     }
 
     public void addSide(Item newItem){
-        //adds a side to the last item in the transaction
-        //if there is no items in the list then just add a side right to the list
-        if(getLast() == null){
-            BasicFood temp = new BasicFood("Item Manual", "Item Manual", 00);
-            transaction.list.add(temp);
-            temp.addSide((Topping)newItem);
-        }else{
-            if(transaction.getLast() instanceof BasicFood)
-                ((BasicFood) transaction.getLast()).addSide((Topping)newItem); //this is a annoying line
-            else
-                transaction.list.add(newItem);
-        }
+        //if no item is selected then the item is added right to the list
+        transaction.list.add(newItem);
+    }
+
+    public void addSide(Item newItem, Item selected){
+        //if an item is selected then it will add the side to that item
     }
 
     public void addFood(Item item){

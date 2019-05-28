@@ -8,7 +8,7 @@ import java.util.List;
 public class BasicFood extends Item {
     private final int price;
     private int qty;
-    private List<Topping> sides = new LinkedList<>();
+    private List<Side> sides = new LinkedList<>();
 
     public BasicFood(String name, String dplName, double price){
         super(name, dplName);
@@ -22,20 +22,11 @@ public class BasicFood extends Item {
         this.qty = 1;
     }
 
-    public List<Topping> getSides() {
+    public List<Side> getSides() {
         return sides;
     }
 
-    public void addSide(Topping top){
-        if(sides.contains(top)){
-            int temp = sides.indexOf(top);
-            Topping topTemp = (Topping)sides.get(temp);
-            if((topTemp.getAmount()!= Topping.AMOUNT.NO && top.getAmount() == Topping.AMOUNT.NO) ||
-                    (top.getAmount() != Topping.AMOUNT.NO && topTemp.getAmount() == Topping.AMOUNT.NO)){
-                sides.remove(top);
-            }
-            return;
-        }
+    public void addSide(Side top){
         sides.add(top);
     }
 

@@ -34,9 +34,19 @@ public class AdjustableFood extends BasicFood {
                     (top.getAmount() != Topping.AMOUNT.NO && topTemp.getAmount() == Topping.AMOUNT.NO)){
                 toppings.remove(top);
             }
+//            return;
+        }
+        if(normalToppings.contains(top) && top.getAmount() == Topping.AMOUNT.NORMAL) {
+            toppings.remove(top);
             return;
         }
-        toppings.add(top);
+        if(!normalToppings.contains(top) && top.getAmount() == Topping.AMOUNT.NO){
+            toppings.remove(top);
+            return;
+        }
+
+        if(!toppings.contains(top))
+            toppings.add(top);
     }
 
     public void removeTopping(Item top){
