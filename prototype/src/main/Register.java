@@ -33,7 +33,7 @@ public class Register {
 
         toppings.add(new Topping("HomeFries", "HomeFries", .00));
         toppings.add(new Topping("Mac Salad","Mac Salad", .00));
-        toppings.add(new Topping("Hot Sauce", "Hot Sauce", .00, .50, true, true));
+        toppings.add(new Topping("Hot Sauce", "Hot Sauce", .00, .50));
         toppings.add(new Topping("Lettuce" , "Lettuce",  .00));
         toppings.add(new Topping("Tomato", "Tomato", .00));
         toppings.add(new Topping("Onions", "Onions",.00));

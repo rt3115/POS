@@ -22,8 +22,6 @@ public class Topping extends Item {
         super(name, dplName);
         this.price = (int)(price*100);
         this.extraPrice = 0;
-        this.isTopping = true;
-        this.isSide = false;
         this.sidePrice = 0;
     }
 
@@ -32,18 +30,11 @@ public class Topping extends Item {
         this.extraPrice = (int)(extraPrice*100);
     }
 
-    public Topping(String name, String dplName,  double price, boolean isTopping, boolean isSide){
-        this(name, dplName, price);
-        this.extraPrice = 0;
-        this.isSide = isSide;
-        this.isTopping = isTopping;
+    public Topping(String name, String dplName, double price, double extraPrice, double sidePrice){
+        this(name, dplName, price, extraPrice);
+        this.sidePrice = (int)(sidePrice*100);
     }
 
-    public Topping(String name, String dplName, double price, double extraPrice, boolean isTopping, boolean isSide){
-        this(name, dplName, price, extraPrice);
-        this.isTopping = isTopping;
-        this.isSide = isSide;
-    }
 
     public Topping(Topping copy){
         this(copy.getName(), copy.getDplName(), copy.getPrice(), copy.getExtraPrice());
