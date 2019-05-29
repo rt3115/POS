@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 public class MainDB implements Runnable{
 
@@ -18,6 +19,7 @@ public class MainDB implements Runnable{
     private List<BasicFood> foods = new LinkedList<>();
     private FileWriter write;
     PrintWriter print_line;
+    private Scanner in;
 
     public MainDB(){
         //starts the DB by loading the file and calling the sort methods
@@ -53,13 +55,30 @@ public class MainDB implements Runnable{
     private void load(){
         //reads in the file
         //while()
+
+        in = new Scanner("files/items.txt");
+        String [] line;
+        while (in.hasNext()) {
+            line = in.next().split(",");
+            //create new object line[0]
+            if(line[3]=="BasicFood"){
+//                BasicFood food= new BasicFood("common?");//line[0]
+//                foods.add(food);
+//                items.add(food);
+            }else if(line[3]=="Topping"){
+//                Topping topping= new Topping("common?");
+//                toppings.add(topping);
+//                items.add(topping);
+            }
+            //Item item= new
+        }
     }
 
     private void save(){
         //saves the main list to the file
         //print_line.printf("%s+%n", items);
         for(int i=0; i> items.size()-1; i++){
-            print_line.printf("%s+%n", items.get(i));
+            print_line.printf("%s+%n", items.get(i));//print the actual line.
         }
         print_line.close();
     }
