@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import main.Main;
 import main.Register;
 
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ public class GUIFinal extends Application {
             "-fx-spacing: 5;" +
             "-fx-background-insets: 1.5 1.5 1.5 1.5;";
 
+    Stage stage;
+    public String title = "POS";
+
     private GridPane mainGrid;
     private Pane mainPane;
 
@@ -53,6 +57,8 @@ public class GUIFinal extends Application {
     private GridPane foodButtons = new GridPane();
     private GridPane sideButtons = new GridPane();
     private GridPane toppingButtons = new GridPane();
+
+    AnchorPane changeLogInPane;
 
     private ArrayList<ToggleButton> toppingButton = new ArrayList<>();
 //    private ArrayList<ToggleButton> sideButtons = new ArrayList<>();
@@ -984,6 +990,7 @@ public class GUIFinal extends Application {
 
         //change log in UI
         AnchorPane changeLogInPane = new AnchorPane();
+        this.changeLogInPane = changeLogInPane;
         changeLogInPane.setVisible(false);
         changeLogInPane.setStyle(regionStyle);
 
@@ -1000,6 +1007,17 @@ public class GUIFinal extends Application {
 
             Button logInButton = new Button("Log in");
             logInButton.setStyle(genStyle);
+            logInButton.setOnAction(ActionEvent -> {
+                Main.employeeDB.logIn(logInField.getText());
+                logInField.setText("");
+                updateTitle();
+            });
+
+            logInField.setOnAction(ActionEvent -> {
+                Main.employeeDB.logIn(logInField.getText());
+                logInField.setText("");
+                updateTitle();
+            });
 
             changeLogInPane.getChildren().addAll(logInLabel, logInField, logInButton, feedBack);
             {
@@ -1028,9 +1046,11 @@ public class GUIFinal extends Application {
 
         mainSpace.getChildren().addAll(functionsList, mainPane);
         Scene scene = new Scene(mainSpace);
-        stage.setTitle("POS ***Logged in as: ROOT/OWNER***");
+        this.stage = stage;
+        stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
+        startUp();
     }
 
     public void changeView(Node node){
@@ -1264,6 +1284,21 @@ public class GUIFinal extends Application {
         }
     }
 
+    public void startUp(){
+        //Application.launch();
+        changeView(changeLogInPane);
+        title += " ***Logged in as: " + Register.employee.getName() + " - Access Level: " + Register.employee.getAccessLevel()+  "***";
+        stage.setTitle(title);
+    }
+
+    public void updateTitle(){
+        title = "POS ***Logged in as: " + Register.employee.getName() + " - Access Level: " + Register.employee.getAccessLevel()+  "***";
+        stage.setTitle(title);
+    }
+
+    public void startUpFirst(){
+
+    }
 
     public void voidTransaction(){
         register.voidTransaction();

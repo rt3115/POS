@@ -12,6 +12,8 @@ public class Register {
     //make the classes
     //constructor
 
+    public static Employee employee;
+
     //debug lists
     public List<Topping> toppings = new LinkedList<>(); //fill this list with toppings
     public List<Item> foods = new LinkedList<>(); //fill this list with foods

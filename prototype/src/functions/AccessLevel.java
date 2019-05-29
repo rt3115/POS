@@ -2,6 +2,7 @@ package functions;
 
 public enum AccessLevel {
 
+    NOTLOGGEDIN,
     NORMAL, //regular usage
     MANAGER, //manager level functions (no sale, changing items, adding items)
     OWNER, //owner level control (everything before plus, changing permissions, added Manager keys, can see the system log)
