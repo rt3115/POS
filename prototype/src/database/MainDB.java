@@ -1,8 +1,13 @@
 package database;
 
+
+import common.*;
+import javafx.scene.layout.Pane;
+
 import common.BasicFood;
 import common.Item;
 import common.Topping;
+
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -61,16 +66,30 @@ public class MainDB implements Runnable{
         while (in.hasNext()) {
             line = in.next().split(",");
             //create new object line[0]
-            if(line[3]=="BasicFood"){
-//                BasicFood food= new BasicFood("common?");//line[0]
-//                foods.add(food);
-//                items.add(food);
-            }else if(line[3]=="Topping"){
-//                Topping topping= new Topping("common?");
-//                toppings.add(topping);
-//                items.add(topping);
+            if(line[3].equals("BasicFood")){
+                BasicFood food= new BasicFood(line[0],line[1],Double.parseDouble(line[2]));// can't do new basic food?
+                foods.add(food);
+                items.add(food);
+            }else if(line[3].equals("Topping")){
+                //cry
+                Topping topping= new Topping(line[0],line[1],Double.parseDouble(line[2]));//use third constuctor<- name, disp, price,
+//                regular price
+                toppings.add(topping);
+                items.add(topping);
+            }else if(line[3].equals("side")){
+                Side s= new Side(line[0],line[1],Double.parseDouble(line[2]));
+                items.add(s);
+                //name display name and price
+            }else {//adjustable food
+                //need to be topping item
+                //
+                //create method in main database public method
+//                for(int top=4; top<line.length;top++){
+//
+//                }
+//                AdjustableFood adj= new AdjustableFood(line[0],line[1],Double.parseDouble(line[2]),list);//name, dip, price, list of topp<-can give nothing, three variables
+//                items.add(adj);
             }
-            //Item item= new
         }
     }
 
