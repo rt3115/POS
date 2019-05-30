@@ -97,7 +97,8 @@ public class MainDB implements Runnable{
         //saves the main list to the file
         //print_line.printf("%s+%n", items);
         for(int i=0; i> items.size()-1; i++){
-            print_line.printf("%s+%n", items.get(i));//print the actual line.
+            print_line.printf("%s+%n", items.get(i).saveLine());//print the actual line.
+            //.get name
         }
         print_line.close();
     }

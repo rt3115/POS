@@ -88,6 +88,8 @@ public class Topping extends Item {
         return extraPrice;
     }
 
+    public String saveLine(){return super.getName()+","+super.getDplName()+","+getPrice();}
+
     @Override
     public String toString() {
         if(amount == AMOUNT.EXTRA){

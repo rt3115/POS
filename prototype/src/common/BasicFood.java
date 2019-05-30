@@ -42,6 +42,8 @@ public class BasicFood extends Item {
         this.qty = qty;
     }
 
+    public String saveLine(){return super.getName()+","+super.getDplName()+","+getPrice();}
+
     @Override
     public String toString(){
         if(sides.size() == 0) {

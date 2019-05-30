@@ -10,6 +10,7 @@ public abstract class Item {
     public static int CURRID = 0;
 
     public abstract int getPrice();
+    public abstract String saveLine();
 
     public Item(String name, String dplName){
         this.name = name;

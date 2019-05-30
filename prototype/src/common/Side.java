@@ -9,6 +9,10 @@ public class Side extends Item {
         this.price = (int)price*100;
     }
 
+    public String saveLine(){
+        return(super.getName()+","+super.getDplName()+","+price);
+    }
+
     @Override
     public int getPrice() {
         return price;
