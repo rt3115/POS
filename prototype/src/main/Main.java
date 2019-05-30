@@ -28,6 +28,9 @@ public class Main {
         employeeDB.logIn(null);
         employeeDB.addEmployee(new Employee("Ronnie", "007", AccessLevel.ROOT));
         employeeDB.addEmployee(new Employee("Default", "1", AccessLevel.NORMAL));
+        employeeDB.addEmployee(new Employee("Manager", "2", AccessLevel.MANAGER));
+        employeeDB.addEmployee(new Employee("Owner", "3", AccessLevel.OWNER));
+        employeeDB.addEmployee(new Employee("Kerry", "2019", AccessLevel.OWNER));
 
 //        GUIFinal guiFinal = new GUIFinal();
 //        guiFinal.startUp();
