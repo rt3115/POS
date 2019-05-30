@@ -1012,7 +1012,7 @@ public class GUIFinal extends Application {
                 logInField.setText("");
                 updateTitle();
             });
-
+            logInField.requestFocus();
             logInField.setOnAction(ActionEvent -> {
                 Main.employeeDB.logIn(logInField.getText());
                 logInField.setText("");
