@@ -2,6 +2,7 @@ package main;
 
 import common.Employee;
 import database.EmployeeDB;
+import database.TransactionDB;
 import functions.AccessLevel;
 import functions.AddItem;
 import functions.Function;
@@ -15,6 +16,7 @@ public class Main {
 
     public static List<Function> functions = new LinkedList<>();
     public static EmployeeDB employeeDB = new EmployeeDB();
+    public static TransactionDB transactionDB = new TransactionDB();
 
     public static void main(String[] args) {
 

@@ -59,6 +59,7 @@ public class Register {
 
     public void cashout(int ent){
         transDone = transaction.cashOut(ent);
+        Main.transactionDB.addTransToCurr(transaction);
     }
 
     public void addTopping(Item newItem){
@@ -83,6 +84,7 @@ public class Register {
             transaction = new Transaction();
         }
         transaction.list.add(item);
+
         //food also has changable food
     }
 

@@ -1,5 +1,8 @@
 package common;
 
+import java.sql.Time;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,11 +12,14 @@ public class Transaction {
     public int entered;
     public int id;
     public static int CURRID = 0;
+    public Date date;
 
     public List<Item> list = new LinkedList();
 
     public Transaction(){
         id = CURRID++;
+        Calendar cal = Calendar.getInstance();
+        date = cal.getTime();
     }
 
     public Item getLast(){
@@ -56,5 +62,19 @@ public class Transaction {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return id + "  -  " + getTotal()/100.00 + "  -  " + date.getHours() +":"+date.getMinutes();
+    }
 
+    public String descString(){
+        String temp  = id + " - " + date.toString();
+
+        for(Item item : list){
+            temp += '\n';
+            temp += "\t\t" + item.toString();
+        }
+        temp += '\n' + "Total: " + getTotal()/100.00 + '\n' + "Entered: " + entered/100.00 + '\n' + "Change: " + change/100.00;
+        return temp;
+    }
 }

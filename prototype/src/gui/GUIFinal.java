@@ -1,7 +1,13 @@
 package gui;
 
 import common.*;
+import functions.AccessLevel;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -59,6 +65,7 @@ public class GUIFinal extends Application {
     private GridPane toppingButtons = new GridPane();
 
     AnchorPane changeLogInPane;
+    AnchorPane transactionsPane;
 
     private ArrayList<ToggleButton> toppingButton = new ArrayList<>();
 //    private ArrayList<ToggleButton> sideButtons = new ArrayList<>();
@@ -96,6 +103,10 @@ public class GUIFinal extends Application {
         Button changeLogin = new Button("Change Logg In"); //change the current log in
         Button salesButton = new Button("Sales"); //go back to the sales screen
         Button viewTransactionsButton = new Button("Transactions"); //view/void past transactions
+        viewTransactionsButton.setOnAction(ActionEvent -> {
+            changeView(transactionsPane);
+            refreshTransView();
+        });
         Button summaryButton = new Button("Summary");
         Button addViewEmployeesButton = new Button("View/Add Employees");
         Button changePermissionLevelsButton = new Button("Permission Levels");
@@ -103,11 +114,15 @@ public class GUIFinal extends Application {
 
             Button refreshUI = new Button("ROOT:REFRESH UI");
             refreshUI.setOnAction(ActionEvent -> {
-                mainSpace.getChildren().remove(0, 1);
-                try {
-                    this.start(stage);
-                }catch (Exception ex){
-                    System.err.println("RAAAA ERROR");
+                if(Register.employee.getAccessLevel().equals(AccessLevel.ROOT)) {
+                    mainSpace.getChildren().remove(0, 1);
+                    try {
+                        this.start(stage);
+                    } catch (Exception ex) {
+                        System.err.println("RAAAA ERROR");
+                    }
+                }else{
+                    System.err.println("Not ROOT!");
                 }
             });
 
@@ -1041,8 +1056,56 @@ public class GUIFinal extends Application {
             }
         }
 
+        //transaction view
+        transactionsPane = new AnchorPane();
+        transactionsPane.setStyle(regionStyle);
+        transactionsPane.setVisible(false);
+
+        ObservableList<Transaction> transactions = FXCollections.<Transaction>observableArrayList();
+        transList = new ListView<Transaction>();
+        transList.getItems().addAll(transactions);
+
+
+        ScrollPane transView = new ScrollPane();
+        transViewBox = new VBox();
+        transView.setContent(transViewBox);
+
+        transList.setOnMouseClicked(ActionEvent -> {
+            refreshTransView();
+        });
+
+
+        {
+            Button moveUp = new Button("UP");
+            moveUp.setOnAction(ActionEvent ->{
+                transList.getSelectionModel().selectPrevious();
+                refreshTransView();
+            });
+
+            Button moveDown = new Button("Down");
+            moveDown.setOnAction(ActionEvent -> {
+                transList.getSelectionModel().selectNext();
+                refreshTransView();
+            });
+
+
+            refreshTransView();
+            transactionsPane.getChildren().addAll(transList, transView, moveUp, moveDown);
+            //setting the anchors
+            {
+                AnchorPane.setLeftAnchor(transView, 300.00);
+                AnchorPane.setTopAnchor(transView, 10.00);
+
+                AnchorPane.setLeftAnchor(moveUp, 250.00);
+                AnchorPane.setTopAnchor(moveUp, 10.00);
+
+                AnchorPane.setLeftAnchor(moveDown, 250.00);
+                AnchorPane.setTopAnchor(moveDown, 50.00);
+            }
+        }
+
         mainPane = new Pane();
-        mainPane.getChildren().addAll(mainGrid, viewAddItems, changeLogInPane);
+        mainPane.getChildren().addAll(mainGrid, viewAddItems, changeLogInPane, transactionsPane);
 
         mainSpace.getChildren().addAll(functionsList, mainPane);
         Scene scene = new Scene(mainSpace);
@@ -1068,6 +1131,32 @@ public class GUIFinal extends Application {
             node.setVisible(true);
         }
         */
+    }
+
+    ListView transList;
+    VBox transViewBox;
+
+    public void refreshTransView(){
+        System.err.println("Hello");
+        if(transList.getItems().size() != Main.transactionDB.getCurrList().size()) {
+            for (int i = transList.getItems().size() - 1; i >= 0; i--) {
+                transList.getItems().remove(i);
+            }
+            for (Transaction transaction : Main.transactionDB.getCurrList()) {
+                transList.getItems().add(transaction);
+            }
+            refreshTransView();
+            return;
+        }
+        for(int i = transViewBox.getChildren().size() -1; i >= 0; i--){
+            transViewBox.getChildren().remove(i);
+        }
+        ObservableList observableList = transList.getSelectionModel().getSelectedItems();
+
+        for(Object o : observableList){
+            transViewBox.getChildren().add(new Label("" + ((Transaction)o).descString()));
+        }
+
     }
 
     //functions for updating the GUI
@@ -1297,6 +1386,7 @@ public class GUIFinal extends Application {
     }
 
     public void startUpFirst(){
+
 
     }
 
