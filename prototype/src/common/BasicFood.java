@@ -1,6 +1,7 @@
 package common;
 
 import javafx.scene.layout.Pane;
+import main.Main;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,18 +9,21 @@ import java.util.List;
 public class BasicFood extends Item {
     private final int price;
     private int qty;
+    private int tax;
     private List<Side> sides = new LinkedList<>();
 
     public BasicFood(String name, String dplName, double price){
         super(name, dplName);
         this.price = (int)(price * 100);
         this.qty = 1;
+        tax = (int)(price * Main.values.TAX_RATE);
     }
 
     public BasicFood(BasicFood copy){
         super(copy.getName(), copy.getDplName());
         this.price = copy.getPrice();
         this.qty = 1;
+        tax = (int)(price * Main.values.TAX_RATE);
     }
 
     public List<Side> getSides() {
@@ -31,7 +35,17 @@ public class BasicFood extends Item {
     }
 
     public int getPrice() {
+        if(super.isTaxable()){
+            if(super.isTaxIsPartOfPrice()){
+                return price;
+            }
+            return price + tax;
+        }
         return price;
+    }
+
+    public int getTax() {
+        return tax;
     }
 
     public int getQty() {

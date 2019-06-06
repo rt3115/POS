@@ -66,6 +66,7 @@ public class GUIFinal extends Application {
 
     AnchorPane changeLogInPane;
     AnchorPane transactionsPane;
+    AnchorPane summaryPane;
 
     private ArrayList<ToggleButton> toppingButton = new ArrayList<>();
 //    private ArrayList<ToggleButton> sideButtons = new ArrayList<>();
@@ -108,6 +109,9 @@ public class GUIFinal extends Application {
             refreshTransView();
         });
         Button summaryButton = new Button("Summary");
+        summaryButton.setOnAction(Action -> {
+            changeView(summaryPane);
+        });
         Button addViewEmployeesButton = new Button("View/Add Employees");
         Button changePermissionLevelsButton = new Button("Permission Levels");
         {
@@ -1104,8 +1108,52 @@ public class GUIFinal extends Application {
             }
         }
 
+        //getting a summary
+        summaryPane = new AnchorPane();
+        summaryPane.setVisible(false);
+        summaryPane.setStyle(regionStyle);
+
+        {
+            HBox buttons = new HBox();
+
+            Button fullSummaryButton = new Button("Full Summary");
+            fullSummaryButton.setStyle(genStyle);
+            //not sure what other summaries are needed but they can be done
+
+            buttons.getChildren().addAll(fullSummaryButton);
+
+            Button printButton = new Button("Print");
+
+            //summary view
+            ScrollPane scrollPane = new ScrollPane();
+            Label label = new Label();
+            scrollPane.setContent(label);
+
+            fullSummaryButton.setOnAction(ActionEvent -> {
+                String temp = "";
+                ArrayList<Double> arrayList = Main.transactionDB.getSummary(Main.transactionDB.getStartIdCurr());
+                temp += "Total Sales: " + arrayList.get(0) + "\n";
+                temp += "Total Value of Sales: " + arrayList.get(1)/100.00 + "\n";
+                temp += "No Sales: " + arrayList.get(2) + "\n";
+                label.setText(temp);
+            });
+
+            summaryPane.getChildren().addAll(buttons, scrollPane, printButton);
+            {
+                AnchorPane.setTopAnchor(buttons, 1.00);
+                AnchorPane.setLeftAnchor(buttons, 1.00);
+
+                AnchorPane.setTopAnchor(scrollPane, 100.00);
+                AnchorPane.setLeftAnchor(scrollPane, 1.00);
+
+                AnchorPane.setTopAnchor(printButton, 70.00);
+                AnchorPane.setLeftAnchor(printButton, 1.00);
+            }
+        }
+
+
         mainPane = new Pane();
-        mainPane.getChildren().addAll(mainGrid, viewAddItems, changeLogInPane, transactionsPane);
+        mainPane.getChildren().addAll(mainGrid, viewAddItems, changeLogInPane, transactionsPane, summaryPane);
 
         mainSpace.getChildren().addAll(functionsList, mainPane);
         Scene scene = new Scene(mainSpace);
@@ -1376,7 +1424,7 @@ public class GUIFinal extends Application {
     public void startUp(){
         //Application.launch();
         changeView(changeLogInPane);
-        title += " ***Logged in as: " + Register.employee.getName() + " - Access Level: " + Register.employee.getAccessLevel()+  "***";
+        title = "POS ***Logged in as: " + Register.employee.getName() + " - Access Level: " + Register.employee.getAccessLevel()+  "***";
         stage.setTitle(title);
     }
 

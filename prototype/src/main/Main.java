@@ -17,10 +17,14 @@ public class Main {
     public static List<Function> functions = new LinkedList<>();
     public static EmployeeDB employeeDB = new EmployeeDB();
     public static TransactionDB transactionDB = new TransactionDB();
+    public static Values values = new Values();
 
     public static void main(String[] args) {
 
         //main runner of the program!!
+
+        //set the values of the program
+        values.readValues();
 
         //add all the functions to the function list
         functions.add(new AddItem());

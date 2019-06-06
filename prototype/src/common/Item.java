@@ -8,6 +8,24 @@ public abstract class Item {
     private int overidePrice = 0;
     private final int id;
     public static int CURRID = 0;
+    private boolean isTaxable = false;
+    private boolean taxIsPartOfPrice = false;
+
+    public void setTaxable(boolean taxable) {
+        isTaxable = taxable;
+    }
+
+    public void setTaxIsPartOfPrice(boolean taxIsPartOfPrice) {
+        this.taxIsPartOfPrice = taxIsPartOfPrice;
+    }
+
+    public boolean isTaxable() {
+        return isTaxable;
+    }
+
+    public boolean isTaxIsPartOfPrice() {
+        return taxIsPartOfPrice;
+    }
 
     public abstract int getPrice();
     public abstract String saveLine();
