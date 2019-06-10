@@ -29,6 +29,7 @@ public abstract class Item {
 
     public abstract int getPrice();
     public abstract String saveLine();
+    public abstract int getTax();
 
     public Item(String name, String dplName){
         this.name = name;

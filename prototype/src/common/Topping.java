@@ -88,6 +88,10 @@ public class Topping extends Item {
         return extraPrice;
     }
 
+    public int getTax(){
+        return 0;
+    }
+
     public String saveLine(){return super.getName()+","+super.getDplName()+","+getPrice();}
 
     @Override

@@ -56,6 +56,7 @@ public class GUIFinal extends Application {
 
     private Label total;
     private Label amountEntered;
+    private Label taxAmount;
     private Label change;
 
     private Button doneButton;
@@ -138,7 +139,10 @@ public class GUIFinal extends Application {
 
         {
             salesButton.setOnAction(ActionEvent -> {
-                changeView(mainGrid);
+                if(Main.functions.get(1).getAccessLevel().isGreateThan(Register.employee.getAccessLevel()))
+                    changeView(mainGrid);
+                else
+                    System.err.println("Not Logged In");
             });
         }
 
@@ -462,6 +466,15 @@ public class GUIFinal extends Application {
                     "-fx-border-color: black;");
             amountEntered.setPrefWidth(280);
             amountEntered.setFont(Font.font(15));
+
+            taxAmount = new Label("Tax: ");
+            taxAmount.setStyle("" +
+                    "-fx-background-color: white;" +
+                    "-fx-border-width: 1px;" +
+                    "-fx-border-color: black;");
+            taxAmount.setPrefWidth(280);
+            taxAmount.setFont(Font.font(15));
+
             change = new Label("Change: ");
             change.setStyle("" +
                     "-fx-background-color: white;" +
@@ -491,7 +504,7 @@ public class GUIFinal extends Application {
             creditButton.setFont(Font.font(34));
             methodsArea.getChildren().addAll(cashButton, creditButton);
 
-            paymentRegion.getChildren().addAll(total, amountEntered, change, methodsArea);
+            paymentRegion.getChildren().addAll(total, amountEntered, taxAmount, change, methodsArea);
         }
 
         //setting the grid
@@ -504,7 +517,10 @@ public class GUIFinal extends Application {
         VBox viewAddItems = new VBox();
         viewAddItems.setVisible(false);
         b2.setOnAction(ActionEvent -> {
-            changeView(viewAddItems);
+            if(Main.functions.get(0).getAccessLevel().isGreateThan(Register.employee.getAccessLevel()))
+                changeView(viewAddItems);
+            else
+            System.err.println("Not a : " + Main.functions.get(0).getAccessLevel());
         });
 
         //creating items UI
@@ -547,6 +563,42 @@ public class GUIFinal extends Application {
             ToggleButton isBasicFoodButton = new ToggleButton("Food");
             ToggleButton isTopping = new ToggleButton("Topping");
             ToggleButton isSide = new ToggleButton("Side");
+
+            HBox taxButtons = new HBox();
+            {
+                CheckBox noTax = new CheckBox("No Tax  ");
+                noTax.setSelected(true);
+                noTax.setPrefSize(70, 30);
+                CheckBox yesTax = new CheckBox("Has Tax  ");
+                yesTax.setPrefSize(70, 30);
+                CheckBox partOfPrice = new CheckBox("Tax is Part of price  ");
+                partOfPrice.setPrefSize(140, 30);
+
+                noTax.setOnAction(ActionEvent -> {
+                    noTax.setSelected(true);
+                    yesTax.setSelected(false);
+                    partOfPrice.setSelected(false);
+                });
+
+                yesTax.setOnAction(ActionEvent -> {
+                    if(yesTax.isSelected()){
+                        noTax.setSelected(false);
+                    }else{
+                        noTax.setSelected(true);
+                        partOfPrice.setSelected(false);
+                    }
+                });
+
+                partOfPrice.setOnAction(ActionEvent -> {
+                    if(partOfPrice.isSelected()){
+                        yesTax.setSelected(true);
+                        noTax.setSelected(false);
+                    }
+                });
+
+                taxButtons.getChildren().addAll(noTax, yesTax, partOfPrice);
+            }
+
             //food type buttons
             {
                 isBasicFoodButton.setStyle(genStyle);
@@ -735,6 +787,9 @@ public class GUIFinal extends Application {
                 AnchorPane.setTopAnchor(foodTypeButtons, 60.0);
                 AnchorPane.setLeftAnchor(foodTypeButtons, 1.00);
 
+                AnchorPane.setTopAnchor(taxButtons, 60.00);
+                AnchorPane.setLeftAnchor(taxButtons, 200.00);
+
                 AnchorPane.setTopAnchor(newFoodArea, 90.00);
                 AnchorPane.setLeftAnchor(newFoodArea, 1.00);
 
@@ -758,15 +813,26 @@ public class GUIFinal extends Application {
                         String tName = itemName.getText();
                         String tDesc = itemDesc.getText();
                         Double tPrice = Double.parseDouble(price.getText());
-                        register.getFoods().add(new BasicFood(tName, dplName.getText(), tPrice));
+                        BasicFood temp = new BasicFood(tName, dplName.getText(), tPrice);
+                        temp.setTaxable(((CheckBox)(taxButtons.getChildren().get(1))).isSelected());
+                        temp.setTaxIsPartOfPrice(((CheckBox)(taxButtons.getChildren().get(2))).isSelected());
+                        register.getFoods().add(temp);
+//                        register.getFoods().add(new BasicFood(tName, dplName.getText(), tPrice));
                     } else {
                         String tName = itemName.getText();
                         String tDesc = itemDesc.getText();
                         Double tPrice = Double.parseDouble(price.getText());
                         if (tempAdd.isEmpty()) {
-                            register.getFoods().add(new AdjustableFood(tName, dplName.getText(), tPrice));
+                            AdjustableFood temp = new AdjustableFood(tName, dplName.getText(), tPrice);
+                            temp.setTaxable(((CheckBox)(taxButtons.getChildren().get(1))).isSelected());
+                            temp.setTaxIsPartOfPrice(((CheckBox)(taxButtons.getChildren().get(2))).isSelected());
+                            register.getFoods().add(temp);
                         } else {
-                            register.getFoods().add(new AdjustableFood(tName, dplName.getText(), tPrice, tempAdd));
+                            AdjustableFood temp = new AdjustableFood(tName, dplName.getText(), tPrice, tempAdd);
+                            temp.setTaxable(((CheckBox)(taxButtons.getChildren().get(1))).isSelected());
+                            temp.setTaxIsPartOfPrice(((CheckBox)(taxButtons.getChildren().get(2))).isSelected());
+                            register.getFoods().add(temp);
+//                            register.getFoods().add(new AdjustableFood(tName, dplName.getText(), tPrice, tempAdd));
                             tempAdd.removeAll(tempAdd); //this may break everything
                         }
                     }
@@ -813,7 +879,7 @@ public class GUIFinal extends Application {
                 }
             });
 
-            itemMainRegion.getChildren().addAll(itemName, lb1, itemDesc, lb2, dplNameLabel, dplName,foodTypeButtons, newFoodArea, doneButton, newToppngArea, newSideArea);
+            itemMainRegion.getChildren().addAll(itemName, lb1, itemDesc, lb2, dplNameLabel, dplName,foodTypeButtons, taxButtons, newFoodArea, doneButton, newToppngArea, newSideArea);
 
             newItemUI.getChildren().add(itemMainRegion);
 //            newItemUI.setVisible(false);
@@ -1221,6 +1287,7 @@ public class GUIFinal extends Application {
     public void refreshTotal() {
         total.setText("Total: " + register.getTotal() / 100.00);
         amountEntered.setText("Amount Entered: " + register.getEntered()/100.00);
+        taxAmount.setText("Tax: " + register.getTax()/100.00);
         change.setText("Change: " + Math.abs(register.getChange()/100.00));
     }
 

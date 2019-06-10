@@ -10,6 +10,7 @@ public class Transaction {
 
     public int change;
     public int entered;
+    public int tax;
     public int id;
     public static int CURRID = 0;
     public Date date;
@@ -51,6 +52,14 @@ public class Transaction {
         int temp = 0;
         for(Item item : list){
             temp += item.getPrice();
+        }
+        return temp;
+    }
+
+    public int getTax(){
+        int temp = 0;
+        for(Item item : list){
+            temp += item.getTax();
         }
         return temp;
     }

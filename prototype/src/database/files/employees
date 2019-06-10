@@ -1,4 +1,4 @@
 name,logIn,AccessLevel
-ronnie,4182,employee
-kerry,001,owner
-eric,002,manager
+ronnie,000,EMPLOYEE
+kerry,001,OWNER
+eric,002,MANAGER

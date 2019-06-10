@@ -123,6 +123,10 @@ public class Register {
         return transaction.entered;
     }
 
+    public int getTax(){
+        return transaction.tax;
+    }
+
     public int getChange(){
         return transaction.change;
     }

@@ -6,6 +6,7 @@ import database.TransactionDB;
 import functions.AccessLevel;
 import functions.AddItem;
 import functions.Function;
+import functions.Sales;
 import gui.GUI;
 import gui.GUIFinal;
 
@@ -28,15 +29,13 @@ public class Main {
 
         //add all the functions to the function list
         functions.add(new AddItem());
+        functions.add(new Sales());
 
         //Employee Database
 
         employeeDB.logIn(null);
-        employeeDB.addEmployee(new Employee("Ronnie", "007", AccessLevel.ROOT));
-        employeeDB.addEmployee(new Employee("Default", "1", AccessLevel.NORMAL));
-        employeeDB.addEmployee(new Employee("Manager", "2", AccessLevel.MANAGER));
-        employeeDB.addEmployee(new Employee("Owner", "3", AccessLevel.OWNER));
-        employeeDB.addEmployee(new Employee("Kerry", "2019", AccessLevel.OWNER));
+        employeeDB.addEmployee(new Employee("Ronnie", "please", AccessLevel.ROOT));
+        employeeDB.load();
 
 //        GUIFinal guiFinal = new GUIFinal();
 //        guiFinal.startUp();
