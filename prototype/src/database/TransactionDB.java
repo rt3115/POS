@@ -12,13 +12,14 @@ public class TransactionDB {
         public int startId;
         public int endId;
         public String fileName;
-        public Data date;
+        public int day;
     }
 
     private int startIdCurr = 0;
     private int endIdCurr;
     private HashMap<Integer, Transaction> currList = new HashMap<>(); //hash of the current list of transactions
-    private HashMap<Data,transFileRange> transFiles = new HashMap<>(); //hash of the locations of transactions
+    private HashMap<Integer, Transaction> tempList = new HashMap<>();
+    private HashMap<Integer,transFileRange> transFiles = new HashMap<>(); //hash of the locations of transactions
 
     public HashMap<Integer, Transaction> getCurrHash() {
         return currList;
@@ -30,6 +31,16 @@ public class TransactionDB {
             temp.add(currList.get(t));
         }
         return temp;
+    }
+
+    public Transaction getTransaction(int id){
+        if(currList.containsKey(id)){
+            return currList.get(id);
+        }else{
+            System.err.println("Not In current list");
+        }
+
+        return null;
     }
 
     public List<Transaction> getCurrList(int start){

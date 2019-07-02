@@ -22,19 +22,14 @@ public class MainDB implements Runnable{
     //toppings and foods are only there for easy of use
     private List<Topping> toppings = new LinkedList<>();
     private List<BasicFood> foods = new LinkedList<>();
-    private FileWriter write;
-    PrintWriter print_line;
-    private Scanner in;
+    private List<Side> sides = new LinkedList<>();
+
+    private String fileName;
 
     public MainDB(){
         //starts the DB by loading the file and calling the sort methods
         //also starts the thread that saves the dataBase
-        try {
-            write= new FileWriter("files/items",true);
-            print_line = new PrintWriter( write );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        load();
     }
 
     public List<Topping> getToppings() {
@@ -49,58 +44,16 @@ public class MainDB implements Runnable{
         return items;
     }
 
-    private void forceSave(){
-        //forces a save
-    }
-
-    private void forceLoad(){
-        //forces a load
-    }
-
     private void load(){
         //reads in the file
         //while()
 
-        in = new Scanner("files/items.txt");
-        String [] line;
-        while (in.hasNext()) {
-            line = in.next().split(",");
-            //create new object line[0]
-            if(line[3].equals("BasicFood")){
-                BasicFood food= new BasicFood(line[0],line[1],Double.parseDouble(line[2]));// can't do new basic food?
-                foods.add(food);
-                items.add(food);
-            }else if(line[3].equals("Topping")){
-                //cry
-                Topping topping= new Topping(line[0],line[1],Double.parseDouble(line[2]));//use third constuctor<- name, disp, price,
-//                regular price
-                toppings.add(topping);
-                items.add(topping);
-            }else if(line[3].equals("side")){
-                Side s= new Side(line[0],line[1],Double.parseDouble(line[2]));
-                items.add(s);
-                //name display name and price
-            }else {//adjustable food
-                //need to be topping item
-                //
-                //create method in main database public method
-//                for(int top=4; top<line.length;top++){
-//
-//                }
-//                AdjustableFood adj= new AdjustableFood(line[0],line[1],Double.parseDouble(line[2]),list);//name, dip, price, list of topp<-can give nothing, three variables
-//                items.add(adj);
-            }
-        }
     }
 
     private void save(){
         //saves the main list to the file
         //print_line.printf("%s+%n", items);
-        for(int i=0; i> items.size()-1; i++){
-            print_line.printf("%s+%n", items.get(i).saveLine());//print the actual line.
-            //.get name
-        }
-        print_line.close();
+
     }
 
     private void sortToppings(){
@@ -111,6 +64,10 @@ public class MainDB implements Runnable{
         //puts the foods into their list
     }
 
+    private void sortSides(){
+
+    }
+
     public Item getItem(int id){
         //returns a item given the id
         //not sure how important this method will be
@@ -118,7 +75,7 @@ public class MainDB implements Runnable{
         return null;
     }
 
-    public void editItem(Item edit){
+    public void editItem(int id,Item edit){
         //makes an edit to a item
     }
 
@@ -132,17 +89,3 @@ public class MainDB implements Runnable{
 
 
 }
-//list of foods, can be anything list array list costom?
-//list of toppings list of sides. sides and toppings are same object
-//grab list of everything.
-//how store? may only need one class
-//add food, add topping. toppings vs sides.
-//needs to be able to editItem- one function has to check one list.
-
-//list food, topping, side, everything getlists
-//addItem/Addfoodtopping- just adds to list
-//editeItem/Editfoodtopping
-//constructor, can have start
-//start read in file database
-//periodically save
-//load, reload by request. changes made outside of program, csv-c  can open files in excel

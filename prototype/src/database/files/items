@@ -1,4 +1,4 @@
-name,dplName,price,type,ListOfToppings.../ExtraPrice,SidePrice,isTopping,isSide
+name,dplName,price,type,ListOfToppings.../ExtraPrice,SidePrice
 Apple,Apple,1.00,BasicFood
 Apple2,Apple2,2.00,BasicFood
 HomeFries,HomeFries,00,Topping,.50,2.00,true,true

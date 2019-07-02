@@ -1,14 +1,9 @@
 package gui;
 
 import common.*;
-import functions.AccessLevel;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -119,7 +114,7 @@ public class GUIFinal extends Application {
 
             Button refreshUI = new Button("ROOT:REFRESH UI");
             refreshUI.setOnAction(ActionEvent -> {
-                if(Register.employee.getAccessLevel().equals(AccessLevel.ROOT)) {
+                /*if(Register.employee.getAccessLevel().equals(AccessLevel.ROOT)) {
                     mainSpace.getChildren().remove(0, 1);
                     try {
                         this.start(stage);
@@ -128,7 +123,7 @@ public class GUIFinal extends Application {
                     }
                 }else{
                     System.err.println("Not ROOT!");
-                }
+                }*/
             });
 
             functionsList.getChildren().addAll( changeLogin ,b2,refreshUI, salesButton, viewTransactionsButton, summaryButton, addViewEmployeesButton, changePermissionLevelsButton);
@@ -139,10 +134,7 @@ public class GUIFinal extends Application {
 
         {
             salesButton.setOnAction(ActionEvent -> {
-                if(Main.functions.get(1).getAccessLevel().isGreateThan(Register.employee.getAccessLevel()))
-                    changeView(mainGrid);
-                else
-                    System.err.println("Not Logged In");
+                changeView(mainGrid);
             });
         }
 
@@ -517,10 +509,10 @@ public class GUIFinal extends Application {
         VBox viewAddItems = new VBox();
         viewAddItems.setVisible(false);
         b2.setOnAction(ActionEvent -> {
-            if(Main.functions.get(0).getAccessLevel().isGreateThan(Register.employee.getAccessLevel()))
+            //if(Main.functions.get(0).getAccessLevel().isGreateThan(Register.employee.getAccessLevel()))
                 changeView(viewAddItems);
-            else
-            System.err.println("Not a : " + Main.functions.get(0).getAccessLevel());
+            //else
+            //System.err.println("Not a : " + Main.functions.get(0).getAccessLevel());
         });
 
         //creating items UI
@@ -1093,13 +1085,13 @@ public class GUIFinal extends Application {
             Button logInButton = new Button("Log in");
             logInButton.setStyle(genStyle);
             logInButton.setOnAction(ActionEvent -> {
-                Main.employeeDB.logIn(logInField.getText());
+                //Main.employeeDB.logIn(logInField.getText());
                 logInField.setText("");
                 updateTitle();
             });
             logInField.requestFocus();
             logInField.setOnAction(ActionEvent -> {
-                Main.employeeDB.logIn(logInField.getText());
+                //Main.employeeDB.logIn(logInField.getText());
                 logInField.setText("");
                 updateTitle();
             });
@@ -1158,9 +1150,14 @@ public class GUIFinal extends Application {
                 refreshTransView();
             });
 
+            Button voidButton = new Button("Void");
+            voidButton.setOnAction(ActionEvent -> {
+                System.err.println("I should probably do something");
+            });
+
 
             refreshTransView();
-            transactionsPane.getChildren().addAll(transList, transView, moveUp, moveDown);
+            transactionsPane.getChildren().addAll(transList, transView, moveUp, moveDown, voidButton);
             //setting the anchors
             {
                 AnchorPane.setLeftAnchor(transView, 300.00);
@@ -1171,6 +1168,9 @@ public class GUIFinal extends Application {
 
                 AnchorPane.setLeftAnchor(moveDown, 250.00);
                 AnchorPane.setTopAnchor(moveDown, 50.00);
+
+                AnchorPane.setLeftAnchor(voidButton, 250.00);
+                AnchorPane.setTopAnchor(voidButton, 80.00);
             }
         }
 
@@ -1491,12 +1491,12 @@ public class GUIFinal extends Application {
     public void startUp(){
         //Application.launch();
         changeView(changeLogInPane);
-        title = "POS ***Logged in as: " + Register.employee.getName() + " - Access Level: " + Register.employee.getAccessLevel()+  "***";
+        //title = "POS ***Logged in as: " + Register.employee.getName() + " - Access Level: " + Register.employee.getAccessLevel()+  "***";
         stage.setTitle(title);
     }
 
     public void updateTitle(){
-        title = "POS ***Logged in as: " + Register.employee.getName() + " - Access Level: " + Register.employee.getAccessLevel()+  "***";
+        //title = "POS ***Logged in as: " + Register.employee.getName() + " - Access Level: " + Register.employee.getAccessLevel()+  "***";
         stage.setTitle(title);
     }
 

@@ -14,6 +14,7 @@ public class Transaction {
     public int id;
     public static int CURRID = 0;
     public Date date;
+    private boolean isVoid = false;
 
     public List<Item> list = new LinkedList();
 
@@ -69,6 +70,14 @@ public class Transaction {
             return false;
         list.remove(list.size()-1);
         return true;
+    }
+
+    public void voidTrans(){
+        this.isVoid = true;
+    }
+
+    public boolean isVoid() {
+        return isVoid;
     }
 
     @Override
