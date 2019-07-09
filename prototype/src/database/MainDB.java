@@ -23,6 +23,7 @@ public class MainDB implements Runnable{
     private List<Topping> toppings = new LinkedList<>();
     private List<BasicFood> foods = new LinkedList<>();
     private List<Side> sides = new LinkedList<>();
+    private List<Drink> drinks = new LinkedList<>();
 
     private String fileName;
 
@@ -44,10 +45,30 @@ public class MainDB implements Runnable{
         return items;
     }
 
-    private void load(){
-        //reads in the file
-        //while()
+    public List<Side> getSides() { return sides; }
 
+    private void load(){
+        //temp stuff to get it all working
+        toppings.add(new Topping("Lettuce", "Lettuce", 0));
+        toppings.add(new Topping("Onion", "Onion", 0));
+        toppings.add(new Topping("Hot Sauce", "Hot Sauce", 0));
+        toppings.add(new Topping("Mac Salad", "Mac Salad", 0));
+        toppings.add(new Topping("Home Fries", "Home Fries", 0));
+
+        foods.add(new BasicFood("Ice Cream", "Ice Cream" , 5));
+        foods.add(new BasicFood("Pizza", "Pizza", 2.50));
+        foods.add(new BasicFood("Hot Dog", "Hot Dog" , 3));
+        foods.add(new AdjustableFood("Plate", "Plate", 10.00, toppings.get(2), toppings.get(3), toppings.get(4)));
+        foods.add(new AdjustableFood("HamBurger", "HamBurger", 6.00));
+
+        drinks.add(new Drink("Water", "Water", 1));
+        drinks.add(new Drink("Soda", "Soda", 2));
+
+        items.addAll(foods);
+        items.addAll(drinks);
+
+        sides.add(new Side("Fries", "Fries", 2));
+        sides.add(new Side("Home Fries", "Home Fries", 3));
     }
 
     private void save(){

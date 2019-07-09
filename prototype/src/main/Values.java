@@ -11,6 +11,7 @@ public class Values {
     //in order for the system to run every value must be filled
     public double TAX_RATE;
     public double DEBUG_MODE;
+    public double ITEM_VIEW_WIDTH;
 
     private String fileLocation = "C:\\Users\\happy\\OneDrive\\Ronnie\\Documents\\Clawsons\\POS\\prototype\\src\\main\\Values";
 
@@ -29,6 +30,8 @@ public class Values {
                         break;
                     case "DEBUG_MODE":
                         DEBUG_MODE = Double.parseDouble(words[1]);
+                    case "ITEM_VIEW_WIDTH":
+                        ITEM_VIEW_WIDTH = Double.parseDouble(words[1]);
                         default:
                             System.err.println("Not a proper value");
                 }

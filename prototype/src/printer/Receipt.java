@@ -1,0 +1,77 @@
+package printer;
+
+import common.Transaction;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Receipt {
+
+    public void print(byte[] bytes){
+        //sends the information to the printer to print
+    }
+
+    public void print_Receipt(Transaction transaction){
+        //prints the given transaction onto a receipt
+        try{
+            byte[] data;
+            ArrayList<Byte> list = new ArrayList<Byte>();
+            Byte[] tempList;
+
+            data = new byte[] {0x1b, 0x1c, 0x70, 0x02, 0x00};
+            tempList = new Byte[data.length];
+            copyArray(data, tempList);
+            list.addAll(Arrays.asList(tempList));
+
+            data = ("Clawson's on the GO! \n Data: " + transaction.date.toString() + "\n Order Number: \n").getBytes();
+            tempList = new Byte[data.length];
+            copyArray(data, tempList);
+            list.addAll(Arrays.asList(tempList));
+
+            data = new byte[] {0x1b, 0x69, 0x01, 0x01}; //expand the chars
+            tempList = new Byte[data.length];
+            copyArray(data, tempList);
+            list.addAll(Arrays.asList(tempList));
+
+            //To-Do: make it so that trans id is only the last two digits
+            data = ("" + transaction.id).getBytes(); //prints out the current id for the transaction
+            tempList = new Byte[data.length];
+            copyArray(data, tempList);
+            list.addAll(Arrays.asList(tempList));
+
+            data = new byte[] {0x1b, 0x69, 0x00, 0x00}; //back to normal
+            tempList = new Byte[data.length];
+            copyArray(data, tempList);
+            list.addAll(Arrays.asList(tempList));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /*
+            data = ("Within " + "\u001b\u002d\u0001" + "30 days\u001b\u002d\u0000" + " with receipt\r\n").getBytes();  //Specify/Cancel Underline Printing
+            tempList = new Byte[data.length];
+            CopyArray(data, tempList);
+            list.addAll(Arrays.asList(tempList));
+
+            data = new byte[list.size()];
+            for (int index = 0; index < data.length; index++) {
+                data[index] = (Byte) list.get(index);
+            }
+
+            byte[] data;
+            ArrayList<Byte> list = new ArrayList<Byte>();
+     */
+
+    private void copyArray(byte[] array1, Byte[] array2) {
+
+        int index = 0;
+        while(index < array2.length)
+        {
+            array2[index] = array1[index];
+            index++;
+        }
+    }
+
+}

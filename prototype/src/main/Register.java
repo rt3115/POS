@@ -1,6 +1,9 @@
 package main;
 
 import common.*;
+import gui.GUI;
+import gui.GUIKeyPad;
+import gui.GUIMain;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -24,12 +27,26 @@ public class Register {
     public List<Transaction> list = new LinkedList<>(); //this is now a list of transactions (will be moved to logger at some point)
     private Transaction transaction = new Transaction(); //the current transaction
 
+    private GUIKeyPad guiKeyPad;
+
+    public void setGuiKeyPad(GUIKeyPad guiKeyPad) {
+        this.guiKeyPad = guiKeyPad;
+    }
+
+    private List<Observer<Register>> observers = new LinkedList<>();
+
+    public void addObserver(Observer<Register> observer){
+        observers.add(observer);
+    }
+
     public List<Item> getList() {
         //returns the current
         return transaction.list;
     }
 
+
     public Register(){
+
 
         toppings.add(new Topping("HomeFries", "HomeFries", .00));
         toppings.add(new Topping("Mac Salad","Mac Salad", .00));
@@ -55,15 +72,24 @@ public class Register {
 
     private boolean transDone = false;
 
+    public void cashout(){
+        cashout((int)(guiKeyPad.getValue()*100));
+    }
+
     public void cashout(int ent){
         transDone = transaction.cashOut(ent);
         Main.transactionDB.addTransToCurr(transaction);
+        alertObservers();
     }
 
     public void addTopping(Item newItem){
-        //need to do this, register should handle adding a topping not the gui
         AdjustableFood temp = (AdjustableFood)getLast();
         temp.addTopping((Topping)newItem);
+        alertObservers();
+    }
+
+    public boolean canAddTopping(){
+        return (getLast() instanceof AdjustableFood);
     }
 
     public void addSide(Item newItem){
@@ -81,8 +107,13 @@ public class Register {
             list.add(transaction);
             transaction = new Transaction();
         }
-        transaction.list.add(item);
-
+        if(item instanceof AdjustableFood){
+            //if its an adjustable food it must be a new instance becuase of the toppings
+            transaction.list.add(new AdjustableFood((AdjustableFood) item));
+        } else{
+            transaction.list.add(item);
+        }
+        alertObservers();
         //food also has changable food
     }
 
@@ -95,9 +126,12 @@ public class Register {
     } //48sec
 
     public boolean removeLast() {
-        if(transaction.removeLast())
+        if(transaction.removeLast()) {
+            alertObservers();
             return true;
+        }
         return false;
+
     }
 
     public Item getIndex(int index){
@@ -111,6 +145,7 @@ public class Register {
     public void voidTransaction(){
         //this should void the transaction and make a new one
         transaction = new Transaction();
+        alertObservers();
     }
 
     public int getTotal(){
@@ -136,6 +171,11 @@ public class Register {
     public void alertObservers(){
         //update the GUIs related to the register
         //update total and translist
+
+        for(Observer<Register> obs : this.observers){
+            obs.update(this);
+        }
+
     }
 
 }

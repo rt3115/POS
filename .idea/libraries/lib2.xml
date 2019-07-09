@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib2">
+    <CLASSES>
+      <root url="file://C:/Program Files (x86)/Java/javaPOS/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://C:/Program Files (x86)/Java/javaPOS/lib" recursive="false" />
+  </library>
+</component>

@@ -6,7 +6,10 @@ import functions.AddItem;
 import functions.Function;
 import functions.Sales;
 import gui.GUIMain;
+import printer.testPrint;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,6 +19,7 @@ public class Main {
     public static TransactionDB transactionDB = new TransactionDB();
     public static Values values = new Values();
     public static MainDB mainDB = new MainDB();
+    public static GUIMain guiMain = new GUIMain();
     public static Register register = new Register();
 
     public static void main(String[] args) {
@@ -37,6 +41,78 @@ public class Main {
         //set the values of the program
         values.readValues();
 
+
+        //print stuff
+        testPrint printerService = new testPrint();
+
+        System.out.println(printerService.getPrinters());
+        String rec;
+        {
+            //seeing what a receit looks like
+            rec = "Clawson's on the go! \n";
+            rec += "Date: 7/7/2019 : 24:00 \n";
+            rec += "Order Number: 17\n";
+            rec += "\n\n\n\n";
+            rec += "Hot Dog Plate \t 10.00\n";
+            rec += "\t No HomeFries\n";
+            rec += "\t Extra Onions\n";
+            rec += "\n\n";
+            rec += "Soda \t 2.00\n\n";
+            rec += "Chicken Sandwich \t 8.00\n";
+            rec += "\t Am Cheese\n";
+            rec += "\t Tomatoes\n";
+            rec += "\t Lettuce\n";
+            rec += "\t Onions\n";
+            rec += "\t Mayo\n";
+            rec += "\n\n";
+            rec += "Water \t 1.00";
+            rec += "\n\n\n\n";
+            rec += "Sub Total: 21.00";
+
+            //should be at the end
+            rec += "\n\n\n\n\n\n\n\n\n\n\n";
+        }
+
+        ArrayList<byte[]> toPrint = new ArrayList<>();
+        toPrint.add(new byte[] {0x1b, 0x1c, 0x70, 0x02, 0x00});
+        toPrint.add(new byte[] {0x1b, 0x69, 0x01, 0x01});
+        toPrint.add("Total: 21.00".getBytes());
+        //toPrint.add(new byte[] {0x1b, 0x69, 0x00, 0x00});
+        //toPrint.add("\n\n\n\n".getBytes());
+
+
+
+        /*rec = "\n\n\n\n";
+        rec += "ABCDEFG/123456 - : absdegf/!@#$#$\n";
+        rec += "ABCDEFG/123456 - : absdegf/!@#$#$";
+        rec += "\n\n\n\n\n\n\n\n\n\n";*/
+        //print some stuff. Change the printer name to your thermal printer name.
+
+        /*
+        printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1B,0x1E,0x46,0x10}); //setting the font size (largest I have found) 01 and 00 are smaller
+        printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1b, 0x45}); //bold on
+        printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1b, 0x46}); //bold off
+        printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1b, 0x69, 0x01, 0x01}); //character expansion
+        printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1b, 0x69, 0x00, 0x00}); //Cancel Character Expansion
+        printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1b, 0x1c, 0x70, 0x02, 0x00}); //prints logo
+        */
+
+
+        //printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1B,0x32});
+        //printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1B,0x32});
+
+//        printerService.printString("TSP654II - BT:COM3", rec);
+
+        printerService.printSetOfBytes("TSP654II - BT:COM3", toPrint);
+        printerService.printString("TSP654II - BT:COM3", rec);
+        //0x1d, 'V', 1
+        // cut that paper!
+        byte[] cutP = new byte[] { 0x1B,0x64,0x01}; //00 full cut 01 partial cut 02 feed and full cut
+
+        printerService.printBytes("TSP654II - BT:COM3", cutP);
+
+
+
         //load in all of the foods
 
 
@@ -47,7 +123,8 @@ public class Main {
 //        GUIFinal guiFinal = new GUIFinal();
 //        guiFinal.startUp();
      //   GUIFinal.launch();
-           GUIMain.launch();
+//           GUIMain.launch();
+        guiMain.launch();
     }
 
 }

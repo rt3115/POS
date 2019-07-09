@@ -18,5 +18,6 @@ public class ItemButton extends Button {
 
     public void setItem(Item item) {
         this.item = item;
+        super.setText(item.getDplName());
     }
 }
