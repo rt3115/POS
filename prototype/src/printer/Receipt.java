@@ -1,17 +1,50 @@
 package printer;
 
+import common.Item;
 import common.Transaction;
 
+import javax.print.*;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Receipt {
 
-    public void print(byte[] bytes){
+    public static void print(byte[] bytes, String printerName){
         //sends the information to the printer to print
+        DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+        PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+
+        PrintService printService[] = PrintServiceLookup.lookupPrintServices(
+                flavor, pras);
+        PrintService service = findPrintService(printerName, printService);
+
+        DocPrintJob job = service.createPrintJob();
+
+        try {
+
+            Doc doc = new SimpleDoc(bytes, flavor, null);
+
+            job.print(doc, null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void print_Receipt(Transaction transaction){
+    private static PrintService findPrintService(String printerName,
+                                          PrintService[] services) {
+        for (PrintService service : services) {
+            if (service.getName().equalsIgnoreCase(printerName)) {
+                return service;
+            }
+        }
+
+        return null;
+    }
+
+    public static void print_Receipt(Transaction transaction){
         //prints the given transaction onto a receipt
         try{
             byte[] data;
@@ -33,13 +66,23 @@ public class Receipt {
             copyArray(data, tempList);
             list.addAll(Arrays.asList(tempList));
 
-            //To-Do: make it so that trans id is only the last two digits
+            //TODO: make it so that trans id is only the last two digits
             data = ("" + transaction.id).getBytes(); //prints out the current id for the transaction
             tempList = new Byte[data.length];
             copyArray(data, tempList);
             list.addAll(Arrays.asList(tempList));
 
             data = new byte[] {0x1b, 0x69, 0x00, 0x00}; //back to normal
+            tempList = new Byte[data.length];
+            copyArray(data, tempList);
+            list.addAll(Arrays.asList(tempList));
+
+            data = ("" + transaction.getReceiptString()).getBytes(); //prints the items and total
+            tempList = new Byte[data.length];
+            copyArray(data, tempList);
+            list.addAll(Arrays.asList(tempList));
+
+            data = new byte[] {0x1B,0x64,0x01}; //cut the paper
             tempList = new Byte[data.length];
             copyArray(data, tempList);
             list.addAll(Arrays.asList(tempList));
@@ -64,7 +107,7 @@ public class Receipt {
             ArrayList<Byte> list = new ArrayList<Byte>();
      */
 
-    private void copyArray(byte[] array1, Byte[] array2) {
+    private static void copyArray(byte[] array1, Byte[] array2) {
 
         int index = 0;
         while(index < array2.length)

@@ -95,4 +95,16 @@ public class Transaction {
         temp += '\n' + "Total: " + getTotal()/100.00 + '\n' + "Entered: " + entered/100.00 + '\n' + "Change: " + change/100.00;
         return temp;
     }
+
+    public String getReceiptString(){
+        String temp = "";
+
+        for(Item item : list){
+            temp += "\n" + item.toString();
+        }
+
+        temp += '\n' + "Total: " + getTotal()/100.00 + "\n Tax: " + getTax()/100.00 + "\n Entered: " + entered/100.00 + "\n Change: " + change/100.00;
+
+        return temp;
+    }
 }

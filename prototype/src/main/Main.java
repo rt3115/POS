@@ -46,32 +46,6 @@ public class Main {
         testPrint printerService = new testPrint();
 
         System.out.println(printerService.getPrinters());
-        String rec;
-        {
-            //seeing what a receit looks like
-            rec = "Clawson's on the go! \n";
-            rec += "Date: 7/7/2019 : 24:00 \n";
-            rec += "Order Number: 17\n";
-            rec += "\n\n\n\n";
-            rec += "Hot Dog Plate \t 10.00\n";
-            rec += "\t No HomeFries\n";
-            rec += "\t Extra Onions\n";
-            rec += "\n\n";
-            rec += "Soda \t 2.00\n\n";
-            rec += "Chicken Sandwich \t 8.00\n";
-            rec += "\t Am Cheese\n";
-            rec += "\t Tomatoes\n";
-            rec += "\t Lettuce\n";
-            rec += "\t Onions\n";
-            rec += "\t Mayo\n";
-            rec += "\n\n";
-            rec += "Water \t 1.00";
-            rec += "\n\n\n\n";
-            rec += "Sub Total: 21.00";
-
-            //should be at the end
-            rec += "\n\n\n\n\n\n\n\n\n\n\n";
-        }
 
         ArrayList<byte[]> toPrint = new ArrayList<>();
         toPrint.add(new byte[] {0x1b, 0x1c, 0x70, 0x02, 0x00});
@@ -103,13 +77,13 @@ public class Main {
 
 //        printerService.printString("TSP654II - BT:COM3", rec);
 
-        printerService.printSetOfBytes("TSP654II - BT:COM3", toPrint);
-        printerService.printString("TSP654II - BT:COM3", rec);
+//        printerService.printSetOfBytes("TSP654II - BT:COM3", toPrint);
+//        printerService.printString("TSP654II - BT:COM3", rec);
         //0x1d, 'V', 1
         // cut that paper!
-        byte[] cutP = new byte[] { 0x1B,0x64,0x01}; //00 full cut 01 partial cut 02 feed and full cut
-
-        printerService.printBytes("TSP654II - BT:COM3", cutP);
+//        byte[] cutP = new byte[] { 0x1B,0x64,0x01}; //00 full cut 01 partial cut 02 feed and full cut
+//
+//        printerService.printBytes("TSP654II - BT:COM3", cutP);
 
 
 
