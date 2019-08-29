@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import main.Main;
 
@@ -50,6 +51,7 @@ public class GUIKeyPad {
         for(int x = 3; x >= 1; x--){
             for(int y = 3; y >= 1; y--){
                 Button temp = new Button("" + i);
+                temp.setPrefSize(70, 70);
                 keyPadGrid.add(temp, y , x);
                 int tempInt = i;
                 temp.setOnAction(actionEvent -> {
@@ -63,23 +65,30 @@ public class GUIKeyPad {
             }
         }
 
+        zeroButton.setPrefSize(140, 70);
         zeroButton.setOnAction(actionEvent -> {
             textField.setText(textField.getText() + "0");
         });
 
+        dotButton.setPrefSize(70, 70);
         dotButton.setOnAction(ActionEvent -> {
             textField.setText(textField.getText() + ".");
         });
 
+        clearButton.setPrefSize(120, 70);
         clearButton.setOnAction(ActionEvent -> {
             clear();
         });
 
+        addButton.setPrefSize(120, 70);
         addButton.setOnAction(ActionEvent -> {
-            Main.register.addFood(new BasicFood("Man Add", "Man Add", getValue()));
+            if(getValue() != 0) {
+                Main.register.addFood(new BasicFood("Man Add", "Man Add", getValue()));
+            }
             clear();
         });
 
+        discountButton.setPrefSize(120, 70);
         discountButton.setOnAction(actionEvent -> {
             Main.register.addFood(new BasicFood("DISCOUNT", "DISCOUNT", -1 * getValue()));
             clear();
@@ -89,6 +98,8 @@ public class GUIKeyPad {
 
         HBox box = new HBox();
         box.getChildren().addAll(zeroButton, dotButton);
+
+        textField.setFont(new Font(20));
 
         vBox.getChildren().addAll(textField, hBox, box);
 

@@ -43,14 +43,38 @@ public class Main {
 
 
         //print stuff
+        /*
         testPrint printerService = new testPrint();
 
+        printerService.printBytes(values.PRINTER_NAME, new byte[] {0x1b, 0x45}); //bold on
+        printerService.printBytes(values.PRINTER_NAME, ("Register Online!" +
+                "\nImportant Startup stuff goes here!" +
+                "\nDate" +
+                "\nSystem status?" +
+                "\nUp time" +
+                "\nPrinter name" +
+                "\nall of the values" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n\n\n\n\n\n\n\n").getBytes());
+        printerService.printBytes(values.PRINTER_NAME, new byte[] {0x1b, 0x46}); //bold off
+        printerService.printBytes(values.PRINTER_NAME, new byte[] {0x1B,0x64,0x01});
+        */
+
+        /*
         System.out.println(printerService.getPrinters());
 
         ArrayList<byte[]> toPrint = new ArrayList<>();
         toPrint.add(new byte[] {0x1b, 0x1c, 0x70, 0x02, 0x00});
         toPrint.add(new byte[] {0x1b, 0x69, 0x01, 0x01});
         toPrint.add("Total: 21.00".getBytes());
+        */
         //toPrint.add(new byte[] {0x1b, 0x69, 0x00, 0x00});
         //toPrint.add("\n\n\n\n".getBytes());
 

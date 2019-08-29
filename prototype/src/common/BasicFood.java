@@ -7,9 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BasicFood extends Item {
-    private final int price;
+    private int price;
     private int qty;
     private int tax;
+    private boolean isDeposit; //for drink only
     private List<Side> sides = new LinkedList<>();
 
     public BasicFood(String name, String dplName, double price){
@@ -17,6 +18,12 @@ public class BasicFood extends Item {
         this.price = (int)(price * 100);
         this.qty = 1;
         tax = (int)(price * Main.values.TAX_RATE);
+    }
+
+    public BasicFood(String name, String dplName, double price, boolean hasDeposit){
+        this(name, dplName, price);
+
+        this.isDeposit = hasDeposit;
     }
 
     public BasicFood(BasicFood copy){
@@ -44,6 +51,18 @@ public class BasicFood extends Item {
         return price;
     }
 
+    public boolean isDeposit() {
+        return isDeposit;
+    }
+
+    public void setDeposit(boolean deposit) {
+        isDeposit = deposit;
+    }
+
+    public void setPrice(double price){
+        this.price = (int)(price*100);
+    }
+
     public int getTax() {
         return tax;
     }
@@ -56,14 +75,16 @@ public class BasicFood extends Item {
         this.qty = qty;
     }
 
-    public String saveLine(){return super.getName()+","+super.getDplName()+","+getPrice();}
+    public String saveLine(){
+        return super.getName()+","+super.getDplName()+",BASIC_FOOD,"+getPrice() +"," + getTax() + "," + isDeposit;
+    }
 
     @Override
     public String toString(){
         if(sides.size() == 0) {
-            return super.toString() + "    " + qty + "     " + (price / 100.00);
+            return super.toString() + "         " + (price / 100.00);
         }else{
-            String temp = super.toString() + "    " + qty + "      " + (price/100.00);
+            String temp = super.toString() + "          " + (price/100.00);
             temp += "\n";
             for(Item top : sides){
                 top = (Topping)top;

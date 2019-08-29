@@ -12,6 +12,8 @@ public class Values {
     public double TAX_RATE;
     public double DEBUG_MODE;
     public double ITEM_VIEW_WIDTH;
+    public String PRINTER_NAME;
+    public double BOTTLE_DEPOSIT;
 
     private String fileLocation = "C:\\Users\\happy\\OneDrive\\Ronnie\\Documents\\Clawsons\\POS\\prototype\\src\\main\\Values";
 
@@ -21,20 +23,20 @@ public class Values {
 
             Scanner in = new Scanner(new File(fileLocation));
             while (in.hasNext()){
-                String line = in.next();
+                String line = in.nextLine();
                 String[] words = line.split(",");
                 System.err.println(line);
-                switch (words[0]){
-                    case "TAX_RATE":
-                        TAX_RATE = Double.parseDouble(words[1]);
-                        break;
-                    case "DEBUG_MODE":
-                        DEBUG_MODE = Double.parseDouble(words[1]);
-                    case "ITEM_VIEW_WIDTH":
-                        ITEM_VIEW_WIDTH = Double.parseDouble(words[1]);
-                        default:
-                            System.err.println("Not a proper value");
-                }
+                if(words[0].equals("TAX_RATE"))
+                    TAX_RATE = Double.parseDouble(words[1]);
+                if(words[0].equals("DEBUG_MODE"))
+                    DEBUG_MODE = Double.parseDouble(words[1]);
+                if(words[0].equals("ITEM_VIEW_WIDTH"))
+                    ITEM_VIEW_WIDTH = Double.parseDouble(words[1]);
+                if(words[0].equals("PRINTER_NAME"))
+                    PRINTER_NAME = words[1];
+                if(words[0].equals("BOTTLE_DEPOSIT"))
+                    BOTTLE_DEPOSIT = Double.parseDouble(words[1]);
+
             }
 
         }catch (Exception e){

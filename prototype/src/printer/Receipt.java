@@ -2,10 +2,12 @@ package printer;
 
 import common.Item;
 import common.Transaction;
+import main.Main;
 
 import javax.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -77,15 +79,25 @@ public class Receipt {
             copyArray(data, tempList);
             list.addAll(Arrays.asList(tempList));
 
-            data = ("" + transaction.getReceiptString()).getBytes(); //prints the items and total
+            data = ("" + transaction.getReceiptString() + "\n\n\n\n\n\n").getBytes(); //prints the items and total
             tempList = new Byte[data.length];
             copyArray(data, tempList);
             list.addAll(Arrays.asList(tempList));
+
 
             data = new byte[] {0x1B,0x64,0x01}; //cut the paper
             tempList = new Byte[data.length];
             copyArray(data, tempList);
             list.addAll(Arrays.asList(tempList));
+
+
+
+            data = new byte[list.size()];
+            for (int index = 0; index < data.length; index++) {
+                data[index] = (Byte) list.get(index);
+            }
+
+            print(data, Main.values.PRINTER_NAME);
 
         }catch (Exception e){
             e.printStackTrace();

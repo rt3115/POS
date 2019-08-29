@@ -1,6 +1,7 @@
 package gui;
 
 import common.*;
+import database.MainDB;
 import gui.CustomGUIElements.ItemButton;
 import gui.CustomGUIElements.ItemToggleButton;
 import javafx.application.Application;
@@ -14,12 +15,14 @@ import javafx.stage.Stage;
 import main.Main;
 import main.Register;
 
-import java.awt.event.ActionEvent;
 
-public class GUIItemView implements Observer<Register> {
+public class GUIItemView implements Observer<Register>{
 
     GUIMain main;
     Pane pane;
+
+    double width = 150;
+    double length = 75;
 
     ScrollPane scrollPane = new ScrollPane();
     Pane itemsPane = new Pane();
@@ -47,17 +50,20 @@ public class GUIItemView implements Observer<Register> {
         sidesGird.setVisible(false);
 
         scrollPane.setContent(itemsPane);
-        scrollPane.setPrefSize(400, 300);
+        scrollPane.setPrefSize(610, 300);
         itemsPane.getChildren().addAll(mainGrid, toppingsGrid, sidesGird);
 
         Button adjustOrderButton = new Button("Adjust Order");
+        adjustOrderButton.setPrefSize(100, 75);
         Button addSideButton = new Button("Add Side");
+        addSideButton.setPrefSize(100, 75);
         Button doneButton = new Button("Done");
+        doneButton.setPrefSize(100, 75);
         doneButton.setVisible(false);
         functionRow.getChildren().addAll(adjustOrderButton, addSideButton, doneButton);
 
         adjustOrderButton.setOnAction(actionEvent -> {
-            if(Main.register.canAddTopping()){
+            if(Main.register.canAddTopping() && !Main.register.isTransDone()){
                 mainGrid.setVisible(false);
                 toppingsGrid.setVisible(true);
                 doneButton.setVisible(true);
@@ -67,6 +73,7 @@ public class GUIItemView implements Observer<Register> {
 
         addSideButton.setOnAction(actionEvent -> {
             mainGrid.setVisible(false);
+            toppingsGrid.setVisible(false);
             adjustOrderButton.setVisible(false);
             doneButton.setVisible(true);
             sidesGird.setVisible(true);
@@ -81,10 +88,20 @@ public class GUIItemView implements Observer<Register> {
             adjustOrderButton.setVisible(true);
         });
 
+        ToggleGroup group = new ToggleGroup();
         ToggleButton lightButton = new ToggleButton("Light");
+        lightButton.setPrefSize(80, 40);
+        lightButton.setToggleGroup(group);
         ToggleButton normalButton = new ToggleButton("Normal");
+        normalButton.setPrefSize(80, 40);
+        normalButton.setToggleGroup(group);
+        normalButton.setSelected(true);
         ToggleButton extraButton = new ToggleButton("Extra");
+        extraButton.setPrefSize(80, 40);
+        extraButton.setToggleGroup(group);
         ToggleButton sideButton = new ToggleButton("Side");
+        sideButton.setPrefSize(80, 40);
+        sideButton.setToggleGroup(group);
         sizesBox.getChildren().addAll(lightButton, normalButton, extraButton, sideButton);
 
         mainPane.getChildren().addAll(scrollPane, functionRow, sizesBox);
@@ -92,13 +109,14 @@ public class GUIItemView implements Observer<Register> {
 
         //setting the anchors
         {
-            AnchorPane.setTopAnchor(scrollPane, 30.00);
+            AnchorPane.setTopAnchor(scrollPane, 50.00);
 
-            AnchorPane.setTopAnchor(functionRow, 400.00);
+            AnchorPane.setTopAnchor(functionRow, 350.00);
         }
 
         updateItems();
         Main.register.addObserver(this);
+        Main.mainDB.addObserver(this);
     }
 
     public void updateMainGrid(){
@@ -117,6 +135,7 @@ public class GUIItemView implements Observer<Register> {
                     }
                 }else{
                     ItemButton temp = new ItemButton(Main.mainDB.getItems().get(i));
+                    temp.setPrefSize(width, length);
                     temp.setOnAction(ActionEvent -> {
                         Main.register.addFood(temp.getItem());
                     });
@@ -143,11 +162,27 @@ public class GUIItemView implements Observer<Register> {
                     }
                 }else {
                     ItemToggleButton temp = new ItemToggleButton(Main.mainDB.getToppings().get(i));
+                    temp.setPrefSize(width, length);
                     temp.setOnAction(actionEvent -> {
                         if(!temp.isSelected())
                             ((Topping)temp.getItem()).setAmount(Topping.AMOUNT.NO);
-                        else
-                            ((Topping)temp.getItem()).setAmount(Topping.AMOUNT.NORMAL);
+                        else {
+                            if (((ToggleButton) (sizesBox.getChildren().get(0))).isSelected()) {
+                                ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.LIGHT);
+                                ((ToggleButton) (sizesBox.getChildren().get(1))).fire();
+                            }
+                            if (((ToggleButton) (sizesBox.getChildren().get(1))).isSelected()) {
+                                ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.NORMAL);
+                            }
+                            if (((ToggleButton) (sizesBox.getChildren().get(2))).isSelected()) {
+                                ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.EXTRA);
+                                ((ToggleButton) (sizesBox.getChildren().get(1))).fire();
+                            }
+                            if (((ToggleButton) (sizesBox.getChildren().get(3))).isSelected()) {
+                                ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.SIDE);
+                                ((ToggleButton) (sizesBox.getChildren().get(1))).fire();
+                            }
+                        }
                         Main.register.addTopping(temp.getItem());
                     });
                     toppingsGrid.add(temp, x,y);
@@ -174,6 +209,7 @@ public class GUIItemView implements Observer<Register> {
                     }
                 }else{
                     ItemButton temp = new ItemButton(Main.mainDB.getSides().get(i));
+                    temp.setPrefSize(width, length);
                     temp.setOnAction(actionEvent -> {
                         Main.register.addSide(temp.getItem());
                     });
@@ -192,7 +228,9 @@ public class GUIItemView implements Observer<Register> {
     }
 
     public void update(Register register){
-        if(register.getLast() instanceof AdjustableFood)
+        if(register == null){
+            updateItems();
+        }else if(register.getLast() instanceof AdjustableFood)
             refreshToppings((AdjustableFood)register.getLast());
     }
 
@@ -217,4 +255,7 @@ public class GUIItemView implements Observer<Register> {
         }
     }
 
+    public void update(MainDB mainDB) {
+        updateItems();
+    }
 }

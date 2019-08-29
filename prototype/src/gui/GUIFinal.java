@@ -482,9 +482,9 @@ public class GUIFinal extends Application {
             cashButton.setFont(Font.font(40));
             cashButton.setOnAction(ActionEvent -> {
                 if(currValueString != "") {
-                    register.cashout((int) (Double.parseDouble(currValueString) * 100));
+//                    register.cashout((int) (Double.parseDouble(currValueString) * 100));
                 }else{
-                    register.cashout(0);
+//                    register.cashout(0);
                 }
                 currValueString = "";
                 refreshKeyPad();

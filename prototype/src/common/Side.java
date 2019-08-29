@@ -28,6 +28,8 @@ public class Side extends Item {
         return price;
     }
 
+    public void setPrice(double price) {this.price = (int)(price*100); }
+
     public int getTax(){
         return tax;
     }

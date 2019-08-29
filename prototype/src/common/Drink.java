@@ -2,19 +2,18 @@ package common;
 
 public class Drink extends BasicFood {
 
-    boolean hasDeposit;
+    private boolean hasDeposit;
 
-    public enum TYPE{
-        SODA,
-        TEA,
-        WATER,
-        OTHER;
+    public boolean isHasDeposit() {
+        return hasDeposit;
     }
 
-    TYPE type;
+    public void setHasDeposit(boolean hasDeposit) {
+        this.hasDeposit = hasDeposit;
+    }
 
-    public Drink(String name, String dplName, double price){
-        super(name, dplName, price);
+    public Drink(String name, String dplName, double price, boolean hasDeposit){
+        super(name, dplName, price, hasDeposit);
     }
 
 }

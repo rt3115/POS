@@ -9,19 +9,20 @@ public class AdjustableFood extends BasicFood {
     private List<Item> normalToppings = new LinkedList<>();
 
     public AdjustableFood(String name, String dplName,  double price, Item ... top){
-        super(name, dplName,price/100);
+        super(name, dplName,price);
+        System.err.println(price);
         for(Item t : top){
             normalToppings.add(t);
         }
     }
 
     public AdjustableFood(String name, String dplName, double price, List<Item> top){
-        super(name, dplName,price/100);
+        super(name, dplName,price);
         normalToppings.addAll(top);
     }
 
     public AdjustableFood(AdjustableFood copy){
-        super(copy.getName(), copy.getDplName(), copy.getPrice());
+        super(copy.getName(), copy.getDplName(), copy.getPrice()/100.00);
         normalToppings = copy.getNormalToppings();
         toppings = new LinkedList<>();
     }
@@ -59,6 +60,10 @@ public class AdjustableFood extends BasicFood {
 
     public List<Item> getNormalToppings() {
         return normalToppings;
+    }
+
+    public String saveLine(){
+        return "";
     }
 
     @Override

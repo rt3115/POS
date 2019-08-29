@@ -16,6 +16,22 @@ public class Transaction {
     public Date date;
     private boolean isVoid = false;
 
+    public enum PAYMENT_TYPE {
+        CREDIT,
+        CASH;
+    }
+
+    class PAYMENT {
+        PAYMENT_TYPE type;
+        double value;
+        public PAYMENT(PAYMENT_TYPE type, double value){
+            this.type = type;
+            this.value = value;
+        }
+    }
+
+    private List<PAYMENT> payments = new LinkedList<>();
+
     public List<Item> list = new LinkedList();
 
     public Transaction(){
@@ -35,13 +51,17 @@ public class Transaction {
         return list.get(index);
     }
 
-    public boolean cashOut(int ent){
+    public boolean cashOut(int ent, PAYMENT_TYPE type){
+
+        //if 0 was entered then exact change was given
         if(ent == 0){
-            entered = getTotal();
+            entered += getTotal() - entered; //this prevents weird things from happening when, you entered a partial amount and then exact change
             change = 0;
+            payments.add(new PAYMENT(type,entered));
             return true;
         }
         entered += ent;
+        payments.add(new PAYMENT(type,ent));
          if(getTotal() - entered <= 0){
              change = entered - getTotal();
              return true;
@@ -53,6 +73,16 @@ public class Transaction {
         int temp = 0;
         for(Item item : list){
             temp += item.getPrice();
+        }
+        return temp;
+    }
+
+    public String getTotalString(){
+        String temp = "";
+        if(payments.size() == 0)
+            temp = "Amt Owed: " + getTotal()/100.00;
+        else{
+            temp = "Amt Owed: " + (getTotal() - entered)/100.00;
         }
         return temp;
     }
@@ -82,7 +112,16 @@ public class Transaction {
 
     @Override
     public String toString() {
+        //the short hand string
         return id + "  -  " + getTotal()/100.00 + "  -  " + date.getHours() +":"+date.getMinutes();
+    }
+
+    public String saveString(){
+        //returns the String to be saved in the transaction file
+        String temp = "" + id + "," + date.toString() + "," + isVoid;
+
+
+        return temp;
     }
 
     public String descString(){

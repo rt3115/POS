@@ -4,6 +4,7 @@ import common.*;
 import gui.GUI;
 import gui.GUIKeyPad;
 import gui.GUIMain;
+import printer.Receipt;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -47,38 +48,21 @@ public class Register {
 
     public Register(){
 
-
-        toppings.add(new Topping("HomeFries", "HomeFries", .00));
-        toppings.add(new Topping("Mac Salad","Mac Salad", .00));
-        toppings.add(new Topping("Hot Sauce", "Hot Sauce", .00, .50));
-        toppings.add(new Topping("Lettuce" , "Lettuce",  .00));
-        toppings.add(new Topping("Tomato", "Tomato", .00));
-        toppings.add(new Topping("Onions", "Onions",.00));
-        toppings.add(new Topping("Cheese", "Cheese",.00, .50));
-
-        //make debug list
-        foods.add(new BasicFood("Pizza", "Pizza", 2.5));
-        foods.add(new BasicFood("Candy", "Candy",1.00));
-        foods.add(new BasicFood("Ice Cream", "Ice Cream",5.00));
-        foods.add(new AdjustableFood("Plate", "Plate", 10.00, new Topping("HomeFries", "HomeFries", .00), new Topping("Mac Salad", "Mac Salad", 00), new Topping("Hot Sauce", "Hot Sauce",00)));
-//        foods.add(new AdjustableFood("Sub", 8.00));
-
-        sides.add(new Side("Home Fries", "Home Fries", 2.00));
-        sides.add(new Side("Mac Salad", "Mac Salad", 1.50));
-        sides.add(new Side("Fries", "Fries", 3.00));
     }
 
 
 
     private boolean transDone = false;
 
-    public void cashout(){
-        cashout((int)(guiKeyPad.getValue()*100));
+    public void cashout(Transaction.PAYMENT_TYPE type){
+        cashout((int)(guiKeyPad.getValue()*100),type);
     }
 
-    public void cashout(int ent){
-        transDone = transaction.cashOut(ent);
+    public void cashout(int ent, Transaction.PAYMENT_TYPE type){
+        transDone = transaction.cashOut(ent, type);
         Main.transactionDB.addTransToCurr(transaction);
+        Receipt.print_Receipt(transaction);
+
         alertObservers();
     }
 
@@ -95,10 +79,7 @@ public class Register {
     public void addSide(Item newItem){
         //if no item is selected then the item is added right to the list
         transaction.list.add(newItem);
-    }
-
-    public void addSide(Item newItem, Item selected){
-        //if an item is selected then it will add the side to that item
+        alertObservers();
     }
 
     public void addFood(Item item){
@@ -150,6 +131,10 @@ public class Register {
 
     public int getTotal(){
        return transaction.getTotal();
+    }
+
+    public String getTotalString(){
+        return transaction.getTotalString();
     }
 
     public int getEntered(){

@@ -2,14 +2,14 @@ package common;
 
 public abstract class Item {
 
-    private final String name;
-    private final String dplName;
-    private final String description;
+    private String name;
+    private String dplName;
+    private String description;
     private int overidePrice = 0;
     private final int id;
     public static int CURRID = 0;
     private boolean isTaxable = false;
-    private boolean taxIsPartOfPrice = false;
+    private boolean taxIsPartOfPrice = true;
 
     public void setTaxable(boolean taxable) {
         isTaxable = taxable;
@@ -28,6 +28,7 @@ public abstract class Item {
     }
 
     public abstract int getPrice();
+    public abstract void setPrice(double price);
     public abstract String saveLine();
     public abstract int getTax();
 
@@ -36,7 +37,7 @@ public abstract class Item {
         this.dplName = dplName;
         this.id = Item.CURRID++;
         description = "";
-        System.err.println("*"+CURRID+"*");
+        System.err.println("*"+CURRID+"*" + name);
     }
 
     public Item(String name, String dplName, String description){
@@ -49,6 +50,8 @@ public abstract class Item {
     public String getName() {
         return name;
     }
+
+    public void setName(String name) {this.name = name;}
 
     public int getId() {
         return id;
@@ -67,6 +70,12 @@ public abstract class Item {
             return dplName;
         return name;
     }
+
+    public String getActDplName(){
+        return dplName;
+    }
+
+    public void setDplName(String name) {this.dplName = name;}
 
     @Override
     public String toString() {

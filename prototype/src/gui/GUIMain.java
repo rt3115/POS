@@ -30,9 +30,15 @@ public class GUIMain extends Application {
     public GUIPaymentMethods guiPaymentMethods;
 
     AnchorPane salesValueAnchorPane = new AnchorPane();
+
     AnchorPane summaryAnchorPane = new AnchorPane();
+    public GUISummary guiSummary;
+
     AnchorPane transactionsAnchorPane = new AnchorPane();
-    AnchorPane itemsAnchorPane = new AnchorPane();
+    public GUIViewTransactions guiViewTransactions;
+
+    AnchorPane editItemsAnchorPane = new AnchorPane();
+    public GUIEditItems guiEditItems;
 
     //the main pane that holds every other pane
     Pane mainPane = new Pane();
@@ -46,6 +52,9 @@ public class GUIMain extends Application {
         guiKeyPad = new GUIKeyPad(this, keyPadPane);
         guiPaymentMethods = new GUIPaymentMethods(this, paymentMethods);
         functions = new GUIFunctions(this, functionsPane);
+        guiSummary = new GUISummary(this, summaryAnchorPane);
+        guiViewTransactions = new GUIViewTransactions(this, transactionsAnchorPane);
+        guiEditItems = new GUIEditItems(this, editItemsAnchorPane);
     }
 
     @Override
@@ -63,17 +72,21 @@ public class GUIMain extends Application {
 
             AnchorPane.setTopAnchor(currTransViewPane, 1.00);
             AnchorPane.setRightAnchor(currTransViewPane, 1.00);
-            AnchorPane.setLeftAnchor(currTransViewPane, 600.0);
+            AnchorPane.setLeftAnchor(currTransViewPane, 650.0);
 
-            AnchorPane.setBottomAnchor(keyPadPane, 1.00);
+//            AnchorPane.setBottomAnchor(keyPadPane, 1.00);
             AnchorPane.setLeftAnchor(keyPadPane, 1.00);
-            AnchorPane.setTopAnchor(keyPadPane, 500.00);
+            AnchorPane.setTopAnchor(keyPadPane, 425.00);
 
-            AnchorPane.setBottomAnchor(paymentMethods, 1.00);
-            AnchorPane.setRightAnchor(paymentMethods, 1.00);
+            AnchorPane.setTopAnchor(paymentMethods, 425.00);
+            AnchorPane.setLeftAnchor(paymentMethods, 330.00);
+//            AnchorPane.setBottomAnchor(paymentMethods, 1.00);
+//            AnchorPane.setRightAnchor(paymentMethods, 1.00);
         }
 
-        mainPane.getChildren().addAll(salesValueAnchorPane, summaryAnchorPane, itemsAnchorPane, transactionsAnchorPane);
+        mainPane.getChildren().addAll(salesValueAnchorPane, summaryAnchorPane, editItemsAnchorPane, transactionsAnchorPane);
+//        stage.setMinWidth(1920);
+//        stage.setMinHeight(1080);
         Scene scene = new Scene(mainBox);
         stage.setScene(scene);
         stage.show();
@@ -91,7 +104,7 @@ public class GUIMain extends Application {
             case 's': salesValueAnchorPane.setVisible(true); break;
             case 'a': summaryAnchorPane.setVisible(true); break;
             case 't': transactionsAnchorPane.setVisible(true); break;
-            case 'i': itemViewPane.setVisible(true); break;
+            case 'i': editItemsAnchorPane.setVisible(true); break;
             case 'v': break;
             case 'p': break;
         }
