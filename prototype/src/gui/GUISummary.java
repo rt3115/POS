@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import main.Main;
+import printer.Receipt;
 
 import java.util.ArrayList;
 
@@ -87,6 +88,7 @@ public class GUISummary {
 
     public void print(String pr){
         //prints the given string to the printer
+        Receipt.print(pr.getBytes(), Main.values.PRINTER_NAME);
     }
 
 }

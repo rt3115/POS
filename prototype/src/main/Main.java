@@ -16,11 +16,13 @@ import java.util.List;
 public class Main {
 
     public static List<Function> functions = new LinkedList<>();
+    public static Register register = new Register();
     public static TransactionDB transactionDB = new TransactionDB();
     public static Values values = new Values();
     public static MainDB mainDB = new MainDB();
     public static GUIMain guiMain = new GUIMain();
-    public static Register register = new Register();
+
+
 
     public static void main(String[] args) {
 
@@ -43,9 +45,11 @@ public class Main {
 
 
         //print stuff
-        /*
+
         testPrint printerService = new testPrint();
 
+
+        /*
         printerService.printBytes(values.PRINTER_NAME, new byte[] {0x1b, 0x45}); //bold on
         printerService.printBytes(values.PRINTER_NAME, ("Register Online!" +
                 "\nImportant Startup stuff goes here!" +
@@ -67,9 +71,9 @@ public class Main {
         printerService.printBytes(values.PRINTER_NAME, new byte[] {0x1B,0x64,0x01});
         */
 
-        /*
-        System.out.println(printerService.getPrinters());
 
+        System.out.println(printerService.getPrinters());
+        /*
         ArrayList<byte[]> toPrint = new ArrayList<>();
         toPrint.add(new byte[] {0x1b, 0x1c, 0x70, 0x02, 0x00});
         toPrint.add(new byte[] {0x1b, 0x69, 0x01, 0x01});
@@ -92,8 +96,9 @@ public class Main {
         printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1b, 0x46}); //bold off
         printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1b, 0x69, 0x01, 0x01}); //character expansion
         printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1b, 0x69, 0x00, 0x00}); //Cancel Character Expansion
-        printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1b, 0x1c, 0x70, 0x02, 0x00}); //prints logo
         */
+//        printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1b, 0x1c, 0x70, 0x01, 0x00}); //prints logo
+
 
 
         //printerService.printBytes("TSP654II - BT:COM3", new byte[] {0x1B,0x32});
@@ -122,7 +127,15 @@ public class Main {
 //        guiFinal.startUp();
      //   GUIFinal.launch();
 //           GUIMain.launch();
+
+        //transactionDB.loadCurr();
+//        guiMain.guiCloseRegister.update();
+
         guiMain.launch();
+
+        //startup
+
+
     }
 
 }

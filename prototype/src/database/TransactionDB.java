@@ -13,7 +13,7 @@ import java.util.*;
 public class TransactionDB {
 
     public TransactionDB(){
-        loadCurr();
+        //loadCurr();
     }
 
     private Observer<TransactionDB> observer;
@@ -43,10 +43,29 @@ public class TransactionDB {
 
     public void save(){
         //calles the transManager telling it to save and handle the currTrans Data
+        transactionManager.save();
     }
 
     public void loadCurr(){
         //loads in the curr data
+        transactionManager.loadCurr();
+    }
+
+    public void open(){
+    //opens the register and gets the transactionManager Ready
+        Main.register.openRegister();
+        loadCurr();
+        save();
+        //must load the currTotals before opening the register, otherwise the file will be overwritten
+        System.err.println("Opened");
+
+    }
+
+    public void close(){
+        //closes the register and gets the transactionManager ready to close
+        Main.register.closeRegister();
+        save();
+        System.err.println("Closed");
     }
 
     public Transaction getTransaction(int id){
@@ -72,6 +91,7 @@ public class TransactionDB {
         currList.put(transaction.id, transaction);
         endIdCurr = transaction.id;
         alertObserver();
+        transactionManager.save(); //tells the transactionManager to save the transactions
     }
 
     public ArrayList<Double> getSummary(int startId){
@@ -117,13 +137,14 @@ public class TransactionDB {
         startIdTemp = Double.parseDouble("" + startId);
         endIdTemp = Double.parseDouble("" + endIdCurr);
 
-        rt.add(0, totSales);
-        rt.add(1, valueSales);
-        rt.add(2, noSales);
-        rt.add(3, itemsEntMan);
-        rt.add(4, startIdTemp);
-        rt.add(5, endIdTemp);
-        rt.add(6, bottleDepositTotal);
+        //+ is for adding the totals if the machine had already been opened but closed
+        rt.add(0, totSales + transactionManager.currTotals.get(0));
+        rt.add(1, valueSales + transactionManager.currTotals.get(1));
+        rt.add(2, noSales + transactionManager.currTotals.get(2));
+        rt.add(3, itemsEntMan + transactionManager.currTotals.get(3));
+        rt.add(4, startIdTemp + transactionManager.currTotals.get(4));
+        rt.add(5, endIdTemp + transactionManager.currTotals.get(5));
+        rt.add(6, bottleDepositTotal + transactionManager.currTotals.get(6));
         return rt;
     }
 

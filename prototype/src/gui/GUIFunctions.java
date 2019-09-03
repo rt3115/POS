@@ -26,6 +26,7 @@ public class GUIFunctions {
     Button summary = new Button("Summary");
     Button infoAndSupport = new Button("Info/Support");
     Button values = new Button("Values");
+    Button close = new Button("Open/Close");
     ToggleButton isActiveToggle = new ToggleButton("Are Functions Active");
 
     public GUIFunctions(GUIMain main, Pane pane){
@@ -44,18 +45,22 @@ public class GUIFunctions {
         summary.setPrefSize(length, height);
         infoAndSupport.setPrefSize(length, height);
         values.setPrefSize(length, height);
+        close.setPrefSize(length, height);
 
-        box.getChildren().addAll(isActiveToggle, sales, viewItems, viewTransactions, summary, values, infoAndSupport);
+        viewItems.setDisable(true);
+
+        box.getChildren().addAll(isActiveToggle, sales, viewItems, viewTransactions, summary, values, infoAndSupport, close);
         pane.getChildren().add(box);
 
         isActiveToggle.setOnAction(actionEvent -> {
             if(isActiveToggle.isSelected()){
                 sales.setDisable(false);
-                viewItems.setDisable(false);
+                viewItems.setDisable(true); //this function is disabled
                 viewTransactions.setDisable(false);
                 summary.setDisable(false);
                 infoAndSupport.setDisable(false);
                 values.setDisable(false);
+                close.setDisable(false);
             }else{
                 sales.setDisable(true);
                 viewItems.setDisable(true);
@@ -63,6 +68,7 @@ public class GUIFunctions {
                 summary.setDisable(true);
                 infoAndSupport.setDisable(true);
                 values.setDisable(true);
+                close.setDisable(true);
             }
         });
 
@@ -88,6 +94,11 @@ public class GUIFunctions {
 
         infoAndSupport.setOnAction(actionEvent -> {
             main.changeView('p');
+        });
+
+        close.setOnAction(actionEvent -> {
+            main.guiCloseRegister.update();
+            main.changeView('c');
         });
 
 

@@ -15,7 +15,7 @@ public class Values {
     public String PRINTER_NAME;
     public double BOTTLE_DEPOSIT;
 
-    private String fileLocation = "C:\\Users\\happy\\OneDrive\\Ronnie\\Documents\\Clawsons\\POS\\prototype\\src\\main\\Values";
+    private String fileLocation = "C:\\Users\\Public\\POS\\Values";
 
     public boolean readValues(){
         //reads in the values from the file

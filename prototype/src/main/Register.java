@@ -17,6 +17,7 @@ public class Register {
     //constructor
 
     //debug lists
+    private boolean isOpen = false; //if the register is already open
     public List<Topping> toppings = new LinkedList<>(); //fill this list with toppings
     public List<Item> foods = new LinkedList<>(); //fill this list with foods
     public List<Side> sides = new LinkedList<>();
@@ -50,7 +51,17 @@ public class Register {
 
     }
 
+    public void openRegister(){
+        isOpen = true;
+    }
 
+    public void closeRegister(){
+        isOpen = false;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
 
     private boolean transDone = false;
 
@@ -61,6 +72,7 @@ public class Register {
     public void cashout(int ent, Transaction.PAYMENT_TYPE type){
         transDone = transaction.cashOut(ent, type);
         Main.transactionDB.addTransToCurr(transaction);
+        Receipt.print_Receipt(transaction);
         Receipt.print_Receipt(transaction);
 
         alertObservers();

@@ -75,30 +75,6 @@ public class MainDB implements Runnable{
     public List<Side> getSides() { return sides; }
 
     private void load(){
-        //temp stuff to get it all working
-        /*
-        toppings.add(new Topping("Lettuce", "Lettuce", 0));
-        toppings.add(new Topping("Onion", "Onion", 0));
-        toppings.add(new Topping("Hot Sauce", "Hot Sauce", 0));
-        toppings.add(new Topping("Mac Salad", "Mac Salad", 0));
-        toppings.add(new Topping("Home Fries", "Home Fries", 0));
-
-        foods.add(new BasicFood("Ice Cream", "Ice Cream" , 5));
-        foods.add(new BasicFood("Pizza", "Pizza", 2.50));
-        foods.add(new BasicFood("Hot Dog", "Hot Dog" , 3));
-        foods.add(new AdjustableFood("Plate", "Plate", 10.00, toppings.get(2), toppings.get(3), toppings.get(4)));
-        foods.add(new AdjustableFood("HamBurger", "HamBurger", 6.00));
-
-        foods.add(new Drink("Water", "Water", 1, true));
-        foods.add(new Drink("Soda", "Soda", 2, true));
-
-        items.addAll(foods);
-
-        sides.add(new Side("Fries", "Fries", 2));
-        sides.add(new Side("Home Fries", "Home Fries", 3));
-        */
-
-
         //actually trying to load the file
         try {
             Scanner in = new Scanner(new File(fileName));

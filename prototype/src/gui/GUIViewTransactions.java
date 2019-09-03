@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import main.Main;
+import printer.Receipt;
 
 import java.awt.event.ActionEvent;
 
@@ -31,6 +32,11 @@ public class GUIViewTransactions implements Observer<TransactionDB> {
     ScrollPane transView = new ScrollPane();
     VBox transViewBox = new VBox();
 
+    public double height = 75;
+    public double width = 150;
+    public double startY = 100;
+    public double spacing = 80;
+
     public GUIViewTransactions(GUIMain main, AnchorPane pane){
         this.main = main;
         this.pane = pane;
@@ -43,6 +49,10 @@ public class GUIViewTransactions implements Observer<TransactionDB> {
 
         transList.getItems().addAll(transactions);
 
+        printButton.setPrefSize(width, height);
+        upButton.setPrefSize(width,height);
+        downButton.setPrefSize(width,height);
+        voidTransButton.setPrefSize(width,height);
 
         transView.setContent(transViewBox);
 
@@ -65,6 +75,13 @@ public class GUIViewTransactions implements Observer<TransactionDB> {
             System.err.println("I should probably do something");
         });
 
+        printButton.setOnAction(actionEvent -> {
+            //should reprint the selected receipt
+            System.err.println("I should have printed a receipt");
+            if(transList.getSelectionModel().getSelectedItem() != null)
+                Receipt.print_Receipt(transList.getSelectionModel().getSelectedItem());
+        });
+
         pane.getChildren().addAll(transView, transList, upButton, downButton, voidTransButton, printButton);
 
         //setting the anchors
@@ -76,16 +93,16 @@ public class GUIViewTransactions implements Observer<TransactionDB> {
             AnchorPane.setTopAnchor(transList, 50.00);
 
             AnchorPane.setLeftAnchor(upButton, 300.0);
-            AnchorPane.setTopAnchor(upButton, 100.00);
+            AnchorPane.setTopAnchor(upButton, startY);
 
             AnchorPane.setLeftAnchor(downButton, 300.00);
-            AnchorPane.setTopAnchor(downButton, 140.00);
+            AnchorPane.setTopAnchor(downButton, startY + spacing);
 
             AnchorPane.setLeftAnchor(voidTransButton, 300.0);
-            AnchorPane.setTopAnchor(voidTransButton, 180.0);
+            AnchorPane.setTopAnchor(voidTransButton, startY + spacing * 2);
 
             AnchorPane.setLeftAnchor(printButton, 300.00);
-            AnchorPane.setTopAnchor(printButton, 220.00);
+            AnchorPane.setTopAnchor(printButton, startY + spacing * 3);
         }
     }
 
