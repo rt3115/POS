@@ -3,6 +3,7 @@ package common;
 import javafx.scene.layout.Pane;
 import main.Main;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class BasicFood extends Item {
         super(name, dplName);
         this.price = (int)(price * 100);
         this.qty = 1;
-        tax = (int)(price * Main.values.TAX_RATE);
+        tax = (int)((price * Main.values.TAX_RATE)*100);
     }
 
     public BasicFood(String name, String dplName, double price, boolean hasDeposit){
@@ -64,7 +65,9 @@ public class BasicFood extends Item {
     }
 
     public int getTax() {
-        return tax;
+        if(isTaxable())
+            return tax;
+        return 0;
     }
 
     public int getQty() {
@@ -79,18 +82,21 @@ public class BasicFood extends Item {
         return super.getName()+","+super.getDplName()+",BASIC_FOOD,"+getPrice() +"," + getTax() + "," + isDeposit;
     }
 
+    String pattern = "##0.00";
+    DecimalFormat dF = new DecimalFormat(pattern);
+
     @Override
     public String toString(){
         if(sides.size() == 0) {
-            return super.toString() + "         " + (price / 100.00);
+            return super.toString() + "         " + dF.format(price / 100.00);
         }else{
-            String temp = super.toString() + "          " + (price/100.00);
+            String temp = super.toString() + "          " + dF.format(price/100.00);
             temp += "\n";
             for(Item top : sides){
                 top = (Topping)top;
                 temp += "      " + top.toString() + "\n";
             }
-            temp += "SubTotal: " + getPrice()/100.00;
+            temp += "SubTotal: " + dF.format(getPrice()/100.00);
             return temp;
         }
     }

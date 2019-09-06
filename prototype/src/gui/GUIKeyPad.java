@@ -3,6 +3,7 @@ package gui;
 import common.BasicFood;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -28,6 +29,7 @@ public class GUIKeyPad {
     Button dotButton = new Button(".");
     Button zeroButton = new Button("0");
 
+    Label feedBack = new Label("");
 
     public GUIKeyPad(GUIMain main, Pane pane){
         this.main = main;
@@ -37,6 +39,8 @@ public class GUIKeyPad {
 
     public void start(){
 
+        Main.salesFeedBack = feedBack;
+
         Main.register.setGuiKeyPad(this);
 
         VBox vBox = new VBox();
@@ -45,7 +49,7 @@ public class GUIKeyPad {
         HBox hBox = new HBox();
 
         VBox functions = new VBox();
-        functions.getChildren().addAll(addButton, clearButton, discountButton);
+        functions.getChildren().addAll( clearButton, addButton,discountButton);
 
         int i = 9;
         for(int x = 3; x >= 1; x--){
@@ -101,7 +105,7 @@ public class GUIKeyPad {
 
         textField.setFont(new Font(20));
 
-        vBox.getChildren().addAll(textField, hBox, box);
+        vBox.getChildren().addAll(textField, hBox, box, feedBack);
 
 
         pane.getChildren().add(vBox);

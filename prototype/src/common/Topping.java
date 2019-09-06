@@ -1,5 +1,7 @@
 package common;
 
+import java.text.DecimalFormat;
+
 public class Topping extends Item {
     private int price;
     private int extraPrice;
@@ -41,6 +43,8 @@ public class Topping extends Item {
     }
 
     public int getPrice() {
+        if(amount.equals(AMOUNT.EXTRA))
+            return extraPrice;
         return price;
     }
 
@@ -94,21 +98,24 @@ public class Topping extends Item {
 
     public String saveLine(){return super.getName()+","+super.getDplName()+","+getPrice();}
 
+    String pattern = "##0.00";
+    DecimalFormat dF = new DecimalFormat(pattern);
+
     @Override
     public String toString() {
         if(amount == AMOUNT.EXTRA){
-            return "EXTRA " + super.toString() + "   " + getExtraPrice();
+            return "EXTRA " + super.toString() + "   " + dF.format(getExtraPrice()/100.00);
         }else if(amount == AMOUNT.LIGHT){
-            return "LIGHT " + super.toString()+ "   " + getPrice()/100.00;
+            return "LIGHT " + super.toString()+ "   " + dF.format(getPrice()/100.00);
         }else if(amount == AMOUNT.NO){
             return "NO " + super.toString();
         }else if(amount == AMOUNT.SIDE){
             if(price != 0){
-                return "SIDE " + super.toString() + "   " +getPrice()/100.00;
+                return "SIDE " + super.toString() + "   " +dF.format(getPrice()/100.00);
             }else {
                 return "SIDE " + super.toString();
             }
         }
-        return super.toString() + "      " + getPrice()/100.00;
+        return super.toString() + "      " + dF.format(getPrice()/100.00);
     }
 }

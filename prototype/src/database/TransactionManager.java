@@ -24,7 +24,7 @@ public class TransactionManager {
     public TransactionManager(){
         System.err.println("Transaction Manager HAS AWOKEN! Be careful lazy employees");
 
-        for(int i = 0;i < 20; i++) {
+        for(int i = 0;i <= 21; i++) {
             currTotals.add(0.0);
         }
 
@@ -36,13 +36,9 @@ public class TransactionManager {
         ArrayList<Double> temp = Main.transactionDB.getSummary(Main.transactionDB.getStartIdCurr());
 
         String fileContent = "Register," + Main.register.isOpen() +"\n"; //add lines to be saved into the CurrTotals
-        fileContent += temp.get(0) + "\n";
-        fileContent += temp.get(1) + "\n";
-        fileContent += temp.get(2) + "\n";
-        fileContent += temp.get(3) + "\n";
-        fileContent += temp.get(4) + "\n";
-        fileContent += temp.get(5) + "\n";
-        fileContent += temp.get(6) + "\n";
+        for(int i = 0; i <= 21; i++) {
+            fileContent += temp.get(i) + "\n";
+        }
 
         try {
             FileWriter fileWriter = new FileWriter(currTrnasLocation);
@@ -59,24 +55,31 @@ public class TransactionManager {
         System.err.println("Loading Curr");
         try {
             Scanner reader = new Scanner(new File(currTrnasLocation));
-            while (reader.hasNext()){
-                String tempString = reader.nextLine();
-                String[] tempArr = tempString.split(",");
-                if(tempArr[0].equals("Register")) {
-                    boolean bol = Boolean.parseBoolean(tempArr[1]);
-                    if (bol){
-                        //the register was not closed
-                        System.err.println("The Register was not closed, loading in prev totals");
-                    }else{
-                        //the register was closed
-                        break;
-                    }
+            String tempString = reader.nextLine();
+            String[] tempArr = tempString.split(",");
+            if(tempArr[0].equals("Register")) {
+                boolean bol = Boolean.parseBoolean(tempArr[1]);
+                if (bol){
+                    //the register was not closed
+                    System.err.println("The Register was not closed, loading in prev totals");
+                    Main.closeFeedBack("The Register was not closed, loading in the previous totals. \n" +
+                            "If this was not intentional please close the register and restart the program");
                 }else{
-
-//                    tempString =
-
+                    //the register was closed
+                    Main.closeFeedBack("The register has opened normally");
+                    return temp;
                 }
             }
+
+            System.err.println("CurrTotal is being set");
+            for(int i = 0; i <= 21; i++) {
+                tempString = reader.nextLine();
+                temp.add(Double.parseDouble(tempString));
+                currTotals.set(i, Double.parseDouble(tempString));
+            }
+
+
+
 
         }catch (IOException e){
             e.printStackTrace();

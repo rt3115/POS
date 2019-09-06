@@ -1,5 +1,6 @@
 package common;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -75,6 +76,9 @@ public class AdjustableFood extends BasicFood {
         return temp;
     }
 
+    String pattern = "##0.00";
+    DecimalFormat dF = new DecimalFormat(pattern);
+
     @Override
     public String toString() {
         if(toppings.size() == 0){
@@ -86,7 +90,7 @@ public class AdjustableFood extends BasicFood {
             top = (Topping)top;
             temp += "      " + top.toString() + "\n";
         }
-        temp += "SubTotal: " + getPrice()/100.00;
+        temp += "SubTotal: " + dF.format(getPrice()/100.00);
         return temp;
     }
 }

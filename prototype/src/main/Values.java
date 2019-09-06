@@ -8,12 +8,17 @@ import java.util.Scanner;
 
 public class Values {
 
+    public Values(){
+        this.readValues();
+    }
+
     //in order for the system to run every value must be filled
-    public double TAX_RATE;
-    public double DEBUG_MODE;
-    public double ITEM_VIEW_WIDTH;
-    public String PRINTER_NAME;
-    public double BOTTLE_DEPOSIT;
+    public static double TAX_RATE;
+    public static double DEBUG_MODE;
+    public static double ITEM_VIEW_WIDTH;
+    public static String PRINTER_NAME;
+    public static double BOTTLE_DEPOSIT;
+    public static double STARTING_CASH;
 
     private String fileLocation = "C:\\Users\\Public\\POS\\Values";
 
@@ -36,6 +41,8 @@ public class Values {
                     PRINTER_NAME = words[1];
                 if(words[0].equals("BOTTLE_DEPOSIT"))
                     BOTTLE_DEPOSIT = Double.parseDouble(words[1]);
+                if(words[0].equals("START_CASH"))
+                    STARTING_CASH = Double.parseDouble(words[1]);
 
             }
 

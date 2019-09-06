@@ -2,6 +2,8 @@ package common;
 
 import main.Main;
 
+import java.text.DecimalFormat;
+
 public class Side extends Item {
 
     private int price;
@@ -34,8 +36,11 @@ public class Side extends Item {
         return tax;
     }
 
+    String pattern = "##0.00";
+    DecimalFormat dF = new DecimalFormat(pattern);
+
     @Override
     public String toString() {
-        return "Side of " + super.toString() + "    " + getPrice()/100.00;
+        return "Side of " + super.toString() + "    " + dF.format(getPrice()/100.00);
     }
 }

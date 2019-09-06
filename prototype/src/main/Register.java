@@ -63,7 +63,7 @@ public class Register {
         return isOpen;
     }
 
-    private boolean transDone = false;
+    private boolean transDone = true;
 
     public void cashout(Transaction.PAYMENT_TYPE type){
         cashout((int)(guiKeyPad.getValue()*100),type);
@@ -72,7 +72,8 @@ public class Register {
     public void cashout(int ent, Transaction.PAYMENT_TYPE type){
         transDone = transaction.cashOut(ent, type);
         Main.transactionDB.addTransToCurr(transaction);
-        Receipt.print_Receipt(transaction);
+
+        Receipt.print_Receipt_Without_Logo(transaction); //prints the receipt without the logo on it
         Receipt.print_Receipt(transaction);
 
         alertObservers();
@@ -90,8 +91,9 @@ public class Register {
 
     public void addSide(Item newItem){
         //if no item is selected then the item is added right to the list
-        transaction.list.add(newItem);
-        alertObservers();
+        addFood(newItem);
+        //transaction.list.add(newItem);
+        //alertObservers();
     }
 
     public void addFood(Item item){
@@ -154,7 +156,7 @@ public class Register {
     }
 
     public int getTax(){
-        return transaction.tax;
+        return transaction.getTax();
     }
 
     public int getChange(){

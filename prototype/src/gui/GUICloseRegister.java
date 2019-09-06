@@ -13,6 +13,7 @@ public class GUICloseRegister {
     AnchorPane pane;
 
     Label status = new Label("Register Status: Not Open");
+    Label feedBack = new Label();
     Button openRegister = new Button("Open");
     Button closeRegister = new Button("Close/Summary");
 
@@ -24,10 +25,16 @@ public class GUICloseRegister {
 
     public void update(){
         String temp = "";
-        if(Main.register.isOpen())
+        if(Main.register.isOpen()) {
             temp = "Register Status: Open";
-        else
-            temp = "Register Status: Close";
+            openRegister.setDisable(true);
+            closeRegister.setDisable(false);
+        }else {
+            temp = "Register Status: Closed";
+            openRegister.setDisable(false);
+            closeRegister.setDisable(true);
+
+        }
 
         status.setText(temp);
     }
@@ -41,15 +48,21 @@ public class GUICloseRegister {
         openRegister.setOnAction(actionEvent -> {
             Main.transactionDB.open();
             update();
+            openRegister.setDisable(true);
+            closeRegister.setDisable(false);
         });
 
         closeRegister.setOnAction(actionEvent -> {
             Main.transactionDB.close();
             update();
+            openRegister.setDisable(false);
+            closeRegister.setDisable(true);
         });
 
 
-        pane.getChildren().addAll(status, openRegister, closeRegister);
+        pane.getChildren().addAll(status, openRegister, closeRegister, feedBack);
+
+        Main.closeFeedBack = feedBack;
 
         //setting the anchors
         {
@@ -61,6 +74,9 @@ public class GUICloseRegister {
 
             AnchorPane.setLeftAnchor(closeRegister, 50.00);
             AnchorPane.setTopAnchor(closeRegister, 175.00);
+
+            AnchorPane.setTopAnchor(feedBack, 200.00);
+            AnchorPane.setLeftAnchor(feedBack, 300.00);
         }
     }
 

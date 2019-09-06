@@ -88,8 +88,8 @@ public class MainDB implements Runnable{
 
                 if(words[2].equals("BASIC_FOOD")){
                     BasicFood temp = new BasicFood(words[0], words[1], Double.parseDouble(words[3]));
-                    temp.setDeposit(Boolean.getBoolean(words[5]));
-                    temp.setTaxable(Boolean.getBoolean(words[4]));
+                    temp.setDeposit(Boolean.parseBoolean(words[5]));
+                    temp.setTaxable(Boolean.parseBoolean(words[4]));
                     items.add(temp);
                 }else if(words[2].equals("ADJUSTABLE_FOOD")){
                     int x = words.length - 5;
@@ -104,7 +104,7 @@ public class MainDB implements Runnable{
                     }else{
                         temp = new AdjustableFood(words[0], words[1], Double.parseDouble(words[3]),toppings);
                     }
-                    temp.setTaxable(Boolean.getBoolean(words[4]));
+                    temp.setTaxable(Boolean.parseBoolean(words[4]));
                     items.add(temp);
                 }else if(words[2].equals("TOPPING")){
                     Topping temp = new Topping(words[0], words[1], Double.parseDouble(words[3]), Double.parseDouble(words[4]));

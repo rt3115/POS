@@ -6,6 +6,7 @@ import functions.AddItem;
 import functions.Function;
 import functions.Sales;
 import gui.GUIMain;
+import javafx.scene.control.Label;
 import printer.testPrint;
 
 import java.util.ArrayList;
@@ -15,14 +16,23 @@ import java.util.List;
 
 public class Main {
 
+    public static Values values = new Values();
     public static List<Function> functions = new LinkedList<>();
     public static Register register = new Register();
     public static TransactionDB transactionDB = new TransactionDB();
-    public static Values values = new Values();
     public static MainDB mainDB = new MainDB();
     public static GUIMain guiMain = new GUIMain();
 
-
+    public static final String VERSION = "A-POS-090319-CLAW-01";
+    /*
+    1:DEV : A dev, B bug-tested, E experimental, D deployed
+    2:CODE : POS (Piece of Shit) code name for project
+    3:Date : 090319
+    4:customer code : CLAW
+    5:Version 01 02 03 04 11
+    6 (extra) : Platform, added to the end if needed, W windows (also blank), M mac, I ios, L linux, A android
+    EXAMPLE: A-POS-090319-CLAW-01
+     */
 
     public static void main(String[] args) {
 
@@ -39,9 +49,6 @@ public class Main {
          */
 
         //main runner of the program!!
-
-        //set the values of the program
-        values.readValues();
 
 
         //print stuff
@@ -136,6 +143,18 @@ public class Main {
         //startup
 
 
+    }
+
+    public static Label closeFeedBack;
+
+    public static void closeFeedBack(String feedback){
+        closeFeedBack.setText(feedback);
+    }
+
+    public static Label salesFeedBack;
+
+    public static void setSalesFeedBack(String feedBack){
+        salesFeedBack.setText(feedBack);
     }
 
 }

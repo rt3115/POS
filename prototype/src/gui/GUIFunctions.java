@@ -73,7 +73,14 @@ public class GUIFunctions {
         });
 
         sales.setOnAction(actionEvent -> {
-            main.changeView('s');
+            if(Main.register.isOpen()) {
+                main.changeView('s');
+                isActiveToggle.fire();
+            }else{
+                //feedback goes here, Can not make sales with out register being open
+                //unless debug is on
+                Main.closeFeedBack("Must Open Register to go to Sales");
+            }
         });
 
         viewItems.setOnAction(actionEvent -> {

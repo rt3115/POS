@@ -43,6 +43,9 @@ public class GUIMain extends Application {
     AnchorPane closeRegisterAnchorPane = new AnchorPane();
     public GUICloseRegister guiCloseRegister;
 
+    AnchorPane supportAndInfoAnchorPane = new AnchorPane();
+    public GUIInfoAndSupport guiInfoAndSupport;
+
     //the main pane that holds every other pane
     Pane mainPane = new Pane();
     HBox mainBox = new HBox();
@@ -59,6 +62,7 @@ public class GUIMain extends Application {
         guiViewTransactions = new GUIViewTransactions(this, transactionsAnchorPane);
         guiEditItems = new GUIEditItems(this, editItemsAnchorPane);
         guiCloseRegister = new GUICloseRegister(this, closeRegisterAnchorPane);
+        guiInfoAndSupport = new GUIInfoAndSupport(this, supportAndInfoAnchorPane);
     }
 
     @Override
@@ -88,11 +92,12 @@ public class GUIMain extends Application {
 //            AnchorPane.setRightAnchor(paymentMethods, 1.00);
         }
 
-        mainPane.getChildren().addAll(salesValueAnchorPane, summaryAnchorPane, editItemsAnchorPane, transactionsAnchorPane, closeRegisterAnchorPane);
+        mainPane.getChildren().addAll(salesValueAnchorPane, summaryAnchorPane, editItemsAnchorPane, transactionsAnchorPane, closeRegisterAnchorPane, supportAndInfoAnchorPane);
 //        stage.setMinWidth(1920);
 //        stage.setMinHeight(1080);
         Scene scene = new Scene(mainBox);
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
         changeView('c');
     }
@@ -110,7 +115,7 @@ public class GUIMain extends Application {
             case 't': transactionsAnchorPane.setVisible(true); break;
             case 'i': editItemsAnchorPane.setVisible(true); break;
             case 'v': break;
-            case 'p': break;
+            case 'p': supportAndInfoAnchorPane.setVisible(true);break;
             case 'c': closeRegisterAnchorPane.setVisible(true); break;
         }
     }

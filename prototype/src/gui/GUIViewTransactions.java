@@ -72,7 +72,9 @@ public class GUIViewTransactions implements Observer<TransactionDB> {
         });
 
         voidTransButton.setOnAction(ActionEvent -> {
-            System.err.println("I should probably do something");
+            transList.getSelectionModel().getSelectedItem().voidTrans();
+            refreshTransList();
+            Main.transactionDB.save();
         });
 
         printButton.setOnAction(actionEvent -> {

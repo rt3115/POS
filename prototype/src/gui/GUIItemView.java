@@ -103,6 +103,7 @@ public class GUIItemView implements Observer<Register>{
         sideButton.setPrefSize(80, 40);
         sideButton.setToggleGroup(group);
         sizesBox.getChildren().addAll(lightButton, normalButton, extraButton, sideButton);
+        sizesBox.setVisible(false);
 
         mainPane.getChildren().addAll(scrollPane, functionRow, sizesBox);
         pane.getChildren().add(mainPane);
@@ -170,15 +171,17 @@ public class GUIItemView implements Observer<Register>{
                             if (((ToggleButton) (sizesBox.getChildren().get(0))).isSelected()) {
                                 ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.LIGHT);
                                 ((ToggleButton) (sizesBox.getChildren().get(1))).fire();
+                                System.err.println("I got called");
                             }
-                            if (((ToggleButton) (sizesBox.getChildren().get(1))).isSelected()) {
+                            else if (((ToggleButton) (sizesBox.getChildren().get(1))).isSelected()) {
                                 ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.NORMAL);
+                                System.err.println("I got called 2");
                             }
-                            if (((ToggleButton) (sizesBox.getChildren().get(2))).isSelected()) {
+                            else if (((ToggleButton) (sizesBox.getChildren().get(2))).isSelected()) {
                                 ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.EXTRA);
                                 ((ToggleButton) (sizesBox.getChildren().get(1))).fire();
                             }
-                            if (((ToggleButton) (sizesBox.getChildren().get(3))).isSelected()) {
+                            else if (((ToggleButton) (sizesBox.getChildren().get(3))).isSelected()) {
                                 ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.SIDE);
                                 ((ToggleButton) (sizesBox.getChildren().get(1))).fire();
                             }

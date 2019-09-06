@@ -1,6 +1,7 @@
 package common;
 
 import java.sql.Time;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -21,16 +22,28 @@ public class Transaction {
         CASH;
     }
 
-    class PAYMENT {
+    public class PAYMENT {
         PAYMENT_TYPE type;
         double value;
         public PAYMENT(PAYMENT_TYPE type, double value){
             this.type = type;
             this.value = value;
         }
+
+        public PAYMENT_TYPE getType() {
+            return type;
+        }
+
+        public double getValue() {
+            return value;
+        }
     }
 
     private List<PAYMENT> payments = new LinkedList<>();
+
+    public List<PAYMENT> getPayments() {
+        return payments;
+    }
 
     public List<Item> list = new LinkedList();
 
@@ -77,12 +90,15 @@ public class Transaction {
         return temp;
     }
 
+    String pattern = "##0.00";
+    DecimalFormat dF = new DecimalFormat(pattern);
+
     public String getTotalString(){
         String temp = "";
         if(payments.size() == 0)
-            temp = "Amt Owed: " + getTotal()/100.00;
+            temp = "Amt Owed: " + dF.format(getTotal()/100.00);
         else{
-            temp = "Amt Owed: " + (getTotal() - entered)/100.00;
+            temp = "Amt Owed: " + dF.format((getTotal() - entered)/100.00);
         }
         return temp;
     }
@@ -113,7 +129,7 @@ public class Transaction {
     @Override
     public String toString() {
         //the short hand string
-        return id + "  -  " + getTotal()/100.00 + "  -  " + date.getHours() +":"+date.getMinutes();
+        return id + "  -  " + dF.format(getTotal()/100.00 )+ "  -  " + date.getHours() +":"+date.getMinutes();
     }
 
     public String saveString(){
@@ -125,13 +141,17 @@ public class Transaction {
     }
 
     public String descString(){
-        String temp  = id + " - " + date.toString();
+        String temp = "";
+        if(isVoid){
+            temp += "\nTrans is VOID\n";
+        }
+        temp += id + " - " + date.toString();
 
         for(Item item : list){
             temp += '\n';
             temp += "\t\t" + item.toString();
         }
-        temp += '\n' + "Total: " + getTotal()/100.00 + '\n' + "Entered: " + entered/100.00 + '\n' + "Change: " + change/100.00;
+        temp += '\n' + "Total: " + dF.format(getTotal()/100.00)+ '\n' + "Entered: " + dF.format(entered/100.00) + '\n' + "Change: " + dF.format(change/100.00);
         return temp;
     }
 
@@ -142,7 +162,7 @@ public class Transaction {
             temp += "\n" + item.toString();
         }
 
-        temp += '\n' + "Total: " + getTotal()/100.00 + "\n Tax: " + getTax()/100.00 + "\n Entered: " + entered/100.00 + "\n Change: " + change/100.00;
+        temp += '\n' + "Total: " + dF.format(getTotal()/100.00) + "\n Tax: " + dF.format(getTax()/100.00) + "\n Entered: " + dF.format(entered/100.00) + "\n Change: " + dF.format(change/100.00);
 
         return temp;
     }
