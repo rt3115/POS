@@ -39,6 +39,7 @@ public class GUISummary {
 
         detailedSummary.setDisable(true);
         custumSummary.setDisable(true);
+        generalSum.setDisable(true);
 
         generalSum.setPrefSize(length, width);
         salesSummary.setPrefSize(length, width);
@@ -125,32 +126,32 @@ public class GUISummary {
         rt += "Number of No Sales:              " + temp.get(2).intValue() + "\n\n";
 
         rt += "Starting Cash in Drawer:         " + dF.format(temp.get(10)) + "\n";
-        rt += "******\n\n";
+        rt += "                                 ******\n\n";
 
-        rt += "Deposits Collected:              " + temp.get(6)/100.00 + "\n\n";
+        rt += "Deposits Collected:              " + dF.format(temp.get(6)/100.00) + "\n\n";
 
         rt += "Number Of Payments Received:     " + temp.get(11).intValue() + "\n";
         rt += "Cash Payments:                   " + temp.get(12).intValue() + "\n";
         rt += "Credit Payments:                 " + temp.get(13).intValue() + "\n";
-        rt += "******\n";
-        rt += "Total Payments:                  " + temp.get(14)/100.00 + "\n\n";
+        rt += "                                 ******\n";
+        rt += "Total Payments:                  " + dF.format(temp.get(14)/100.00) + "\n\n";
 
-        rt += "Total Taxable Sales:             " + temp.get(20)/100.00 + "\n";
-        rt += "Total NonTaxable Sales:          " + temp.get(21)/100.00 + "\n";
-        rt += "******\n";
-        rt += "Total Sales:                     " + temp.get(1)/100.00 + "\n";
-        rt += "Total Tax:                       " + temp.get(17)/100.00 + "\n";
-        rt += "******\n";
-        rt += "Total Sales - Total Tax:         " + (temp.get(1)-temp.get(17))/100.00 + "\n";
-        rt += "Sales - Tax - Deposit:           " + (temp.get(1)-temp.get(17)-temp.get(6))/100.00 + "\n\n";
+        rt += "Total Taxable Sales:             " + dF.format(temp.get(20)/100.00) + "\n";
+        rt += "Total NonTaxable Sales:          " + dF.format(temp.get(21)/100.00) + "\n";
+        rt += "                                 ******\n";
+        rt += "Total Sales:                     " + dF.format(temp.get(1)/100.00) + "\n";
+        rt += "Total Tax:                       " + dF.format(temp.get(17)/100.00) + "\n";
+        rt += "                                 ******\n";
+        rt += "Total Sales - Total Tax:         " + dF.format((temp.get(1) - temp.get(17))/100.00) + "\n";
+        rt += "Sales - Tax - Deposit:           " + dF.format((temp.get(1) - temp.get(17) - temp.get(6))/100.00) + "\n\n";
 
-        rt += "Total Cash:                      " + temp.get(15)/100.00 + "\n";
-        rt += "Total Credit Cards:              " + temp.get(16)/100.00 + "\n";
-        rt += "******\n";
-        rt += "Deposit Total:                   " + temp.get(1)/100.00 + "\n\n";
+        rt += "Total Cash:                      " + dF.format(temp.get(15)/100.00) + "\n";
+        rt += "Total Credit Cards:              " + dF.format(temp.get(16)/100.00) + "\n";
+        rt += "                                 ******\n";
+        rt += "Deposit Total:                   " + dF.format(temp.get(1)/100.00) + "\n\n";
 
         rt += "Total Discount Items:            " + temp.get(18).intValue() + "\n";
-        rt += "Total Discount Dollars:          " + temp.get(19)/100.00 + "\n";
+        rt += "Total Discount Dollars:          " + dF.format(temp.get(19)/100.00) + "\n";
         rt += "\n\n\n\n\n\n\n\n\n\n";
         return rt;
     }
@@ -158,6 +159,7 @@ public class GUISummary {
     public void print(String pr){
         //prints the given string to the printer
         Receipt.print(pr.getBytes(), Main.values.PRINTER_NAME);
+        Receipt.cutPaper(Main.values.PRINTER_NAME);
     }
 
 }

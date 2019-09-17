@@ -50,7 +50,7 @@ public class GUIItemView implements Observer<Register>{
         sidesGird.setVisible(false);
 
         scrollPane.setContent(itemsPane);
-        scrollPane.setPrefSize(610, 300);
+        scrollPane.setPrefSize(630, 320);
         itemsPane.getChildren().addAll(mainGrid, toppingsGrid, sidesGird);
 
         Button adjustOrderButton = new Button("Adjust Order");
@@ -102,7 +102,10 @@ public class GUIItemView implements Observer<Register>{
         ToggleButton sideButton = new ToggleButton("Side");
         sideButton.setPrefSize(80, 40);
         sideButton.setToggleGroup(group);
-        sizesBox.getChildren().addAll(lightButton, normalButton, extraButton, sideButton);
+        ToggleButton optionalButton = new ToggleButton("Optional");
+        optionalButton.setPrefSize(80, 40);
+        optionalButton.setToggleGroup(group);
+        sizesBox.getChildren().addAll(lightButton, normalButton, extraButton, sideButton, optionalButton);
         sizesBox.setVisible(false);
 
         mainPane.getChildren().addAll(scrollPane, functionRow, sizesBox);
@@ -112,7 +115,7 @@ public class GUIItemView implements Observer<Register>{
         {
             AnchorPane.setTopAnchor(scrollPane, 50.00);
 
-            AnchorPane.setTopAnchor(functionRow, 350.00);
+            AnchorPane.setTopAnchor(functionRow, 370.00);
         }
 
         updateItems();
@@ -171,11 +174,9 @@ public class GUIItemView implements Observer<Register>{
                             if (((ToggleButton) (sizesBox.getChildren().get(0))).isSelected()) {
                                 ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.LIGHT);
                                 ((ToggleButton) (sizesBox.getChildren().get(1))).fire();
-                                System.err.println("I got called");
                             }
                             else if (((ToggleButton) (sizesBox.getChildren().get(1))).isSelected()) {
                                 ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.NORMAL);
-                                System.err.println("I got called 2");
                             }
                             else if (((ToggleButton) (sizesBox.getChildren().get(2))).isSelected()) {
                                 ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.EXTRA);
@@ -183,6 +184,10 @@ public class GUIItemView implements Observer<Register>{
                             }
                             else if (((ToggleButton) (sizesBox.getChildren().get(3))).isSelected()) {
                                 ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.SIDE);
+                                ((ToggleButton) (sizesBox.getChildren().get(1))).fire();
+                            }
+                            else if (((ToggleButton) (sizesBox.getChildren().get(4))).isSelected()) {
+                                ((Topping) temp.getItem()).setAmount(Topping.AMOUNT.OPTIONAL);
                                 ((ToggleButton) (sizesBox.getChildren().get(1))).fire();
                             }
                         }

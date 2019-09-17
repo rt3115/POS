@@ -84,7 +84,7 @@ public class GUIMain extends Application {
 
 //            AnchorPane.setBottomAnchor(keyPadPane, 1.00);
             AnchorPane.setLeftAnchor(keyPadPane, 1.00);
-            AnchorPane.setTopAnchor(keyPadPane, 425.00);
+            AnchorPane.setTopAnchor(keyPadPane, 455.00);
 
             AnchorPane.setTopAnchor(paymentMethods, 425.00);
             AnchorPane.setLeftAnchor(paymentMethods, 330.00);

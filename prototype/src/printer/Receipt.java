@@ -35,6 +35,27 @@ public class Receipt {
         }
     }
 
+    public static void cutPaper(String printerName){
+        DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+        PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+
+        PrintService printService[] = PrintServiceLookup.lookupPrintServices(
+                flavor, pras);
+        PrintService service = findPrintService(printerName, printService);
+
+        DocPrintJob job = service.createPrintJob();
+
+        try{
+            byte[] bytes = {0x1B,0x64,0x01};
+            Doc doc = new SimpleDoc(bytes, flavor,null);
+
+            job.print(doc, null);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private static PrintService findPrintService(String printerName,
                                           PrintService[] services) {
         for (PrintService service : services) {

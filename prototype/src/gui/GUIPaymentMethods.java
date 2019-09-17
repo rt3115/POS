@@ -53,7 +53,7 @@ public class GUIPaymentMethods implements Observer<Register> {
         hBox.getChildren().addAll(cash, credit);
         pane.getChildren().add(vBox);
 
-        box.setHeight(10);
+        box.setHeight(80);
 
         cash.setStyle(genStyle + "-fx-background-color:lightGreen");
         credit.setStyle(genStyle + "-fx-background-color:pink");

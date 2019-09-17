@@ -23,7 +23,7 @@ public class Main {
     public static MainDB mainDB = new MainDB();
     public static GUIMain guiMain = new GUIMain();
 
-    public static final String VERSION = "A-POS-090319-CLAW-01";
+    public static final String VERSION = "A-POS-09172019-CLAW-03";
     /*
     1:DEV : A dev, B bug-tested, E experimental, D deployed
     2:CODE : POS (Piece of Shit) code name for project

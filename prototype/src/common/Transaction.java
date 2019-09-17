@@ -162,7 +162,11 @@ public class Transaction {
             temp += "\n" + item.toString();
         }
 
-        temp += '\n' + "Total: " + dF.format(getTotal()/100.00) + "\n Tax: " + dF.format(getTax()/100.00) + "\n Entered: " + dF.format(entered/100.00) + "\n Change: " + dF.format(change/100.00);
+        temp += "\n\n\n" +
+                "Total:     " + dF.format(getTotal()/100.00) + "\n" +
+                "Tax:       " + dF.format(getTax()/100.00) + "\n" +
+                "Entered:   " + dF.format(entered/100.00) + "\n" +
+                "Change:    " + dF.format(change/100.00);
 
         return temp;
     }

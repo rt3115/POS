@@ -12,6 +12,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import main.Main;
 import printer.Receipt;
 
@@ -125,7 +126,9 @@ public class GUIViewTransactions implements Observer<TransactionDB> {
         ObservableList observableList = transList.getSelectionModel().getSelectedItems();
 
         for(Object o : observableList){
-            transViewBox.getChildren().add(new Label("" + ((Transaction)o).descString()));
+            Label temp = new Label("" + ((Transaction)o).descString());
+            temp.setFont(new Font(25));
+            transViewBox.getChildren().add(temp);
         }
     }
 

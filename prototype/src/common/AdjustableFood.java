@@ -88,7 +88,7 @@ public class AdjustableFood extends BasicFood {
         temp += "\n";
         for(Item top : toppings){
             top = (Topping)top;
-            temp += "      " + top.toString() + "\n";
+            temp += "  --" + top.toString() + "\n";
         }
         temp += "SubTotal: " + dF.format(getPrice()/100.00);
         return temp;

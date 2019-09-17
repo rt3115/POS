@@ -27,6 +27,8 @@ public class GUICurrTransView implements Observer<Register> {
     Button voidItem = new Button("Void Item");
     Button voidTrans = new Button("Void Trans");
 
+    Label orderNumber = new Label("#: 45");
+
     public GUICurrTransView(GUIMain main, Pane pane){
         this.main = main;
         this.pane = pane;
@@ -38,7 +40,7 @@ public class GUICurrTransView implements Observer<Register> {
 
     public void start(){
         scrollPane.setContent(scrollBox);
-        hBox.getChildren().addAll(voidItem, voidTrans);
+        hBox.getChildren().addAll(voidItem, voidTrans, orderNumber);
 
         voidItem.setPrefSize(200, 50);
         voidTrans.setPrefSize(200, 50);
@@ -52,6 +54,9 @@ public class GUICurrTransView implements Observer<Register> {
         voidTrans.setOnAction(actionEvent -> {
             Main.register.voidTransaction();
         });
+
+        orderNumber.setFont(new Font(20));
+
         vBox.getChildren().addAll(hBox, scrollPane);
         pane.getChildren().add(vBox);
     }

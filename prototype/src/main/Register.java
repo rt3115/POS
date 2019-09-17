@@ -73,8 +73,10 @@ public class Register {
         transDone = transaction.cashOut(ent, type);
         Main.transactionDB.addTransToCurr(transaction);
 
-        Receipt.print_Receipt_Without_Logo(transaction); //prints the receipt without the logo on it
-        Receipt.print_Receipt(transaction);
+        if(transDone) {
+            Receipt.print_Receipt_Without_Logo(transaction); //prints the receipt without the logo on it
+            Receipt.print_Receipt(transaction);
+        }
 
         alertObservers();
     }

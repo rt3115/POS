@@ -16,7 +16,8 @@ public class Topping extends Item {
         NORMAL,
         LIGHT,
         EXTRA,
-        SIDE;
+        SIDE,
+        OPTIONAL;
     }
 
 
@@ -45,6 +46,8 @@ public class Topping extends Item {
     public int getPrice() {
         if(amount.equals(AMOUNT.EXTRA))
             return extraPrice;
+        if(amount.equals(AMOUNT.OPTIONAL))
+            return 0;
         return price;
     }
 
@@ -104,9 +107,15 @@ public class Topping extends Item {
     @Override
     public String toString() {
         if(amount == AMOUNT.EXTRA){
-            return "EXTRA " + super.toString() + "   " + dF.format(getExtraPrice()/100.00);
+            if(price != 0)
+                return "EXTRA " + super.toString() + "   " + dF.format(getExtraPrice()/100.00);
+            else
+                return "EXTRA " + super.toString();
         }else if(amount == AMOUNT.LIGHT){
-            return "LIGHT " + super.toString()+ "   " + dF.format(getPrice()/100.00);
+            if(price != 0)
+                return "LIGHT " + super.toString()+ "   " + dF.format(getPrice()/100.00);
+            else
+                return "LIGHT " + super.toString();
         }else if(amount == AMOUNT.NO){
             return "NO " + super.toString();
         }else if(amount == AMOUNT.SIDE){
@@ -115,6 +124,8 @@ public class Topping extends Item {
             }else {
                 return "SIDE " + super.toString();
             }
+        }else if(amount == AMOUNT.OPTIONAL){
+            return super.toString();
         }
         return super.toString() + "      " + dF.format(getPrice()/100.00);
     }
