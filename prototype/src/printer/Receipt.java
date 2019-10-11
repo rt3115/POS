@@ -142,8 +142,7 @@ public class Receipt {
             copyArray(data, tempList);
             list.addAll(Arrays.asList(tempList));
 
-            //TODO: make it so that trans id is only the last two digits
-            data = ("" + transaction.id).getBytes(); //prints out the current id for the transaction
+            data = ("" + transaction.id % 100).getBytes(); //prints out the current id for the transaction
             tempList = new Byte[data.length];
             copyArray(data, tempList);
             list.addAll(Arrays.asList(tempList));

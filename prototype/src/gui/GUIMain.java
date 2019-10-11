@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 
 public class GUIMain extends Application {
 
+    public boolean refund = false;
+
     public GUIMain(){
         //Application.launch();
     }

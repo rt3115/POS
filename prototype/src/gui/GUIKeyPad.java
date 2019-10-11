@@ -24,6 +24,7 @@ public class GUIKeyPad {
     GridPane keyPadGrid = new GridPane();
 
     Button addButton = new Button("Add");
+    Button addButtonTax = new Button("Add (Tax)");
     Button clearButton = new Button("Clear");
     Button discountButton = new Button("Discount");
     Button dotButton = new Button(".");
@@ -49,7 +50,7 @@ public class GUIKeyPad {
         HBox hBox = new HBox();
 
         VBox functions = new VBox();
-        functions.getChildren().addAll( clearButton, addButton,discountButton);
+        functions.getChildren().addAll( clearButton, addButton, addButtonTax, discountButton);
 
         int i = 9;
         for(int x = 3; x >= 1; x--){
@@ -87,9 +88,16 @@ public class GUIKeyPad {
         addButton.setPrefSize(120, 70);
         addButton.setOnAction(ActionEvent -> {
             if(getValue() != 0) {
-                Main.register.addFood(new BasicFood("Man Add", "Man Add", getValue()));
+                Main.register.addFood(new BasicFood("Add", "Add", getValue()));
             }
             clear();
+        });
+
+        addButtonTax.setPrefSize(120, 70);
+        addButtonTax.setOnAction(actionEvent -> {
+            if(getValue() != 0) {
+                Main.register.addFood(new BasicFood("Add W/ Tax", "Add W/ Tax", getValue(), false, true));
+            }
         });
 
         discountButton.setPrefSize(120, 70);
@@ -101,7 +109,7 @@ public class GUIKeyPad {
         hBox.getChildren().addAll(keyPadGrid, functions);
 
         HBox box = new HBox();
-        box.getChildren().addAll(zeroButton, dotButton);
+        box.getChildren().addAll(zeroButton, dotButton, discountButton);
 
         textField.setFont(new Font(20));
 

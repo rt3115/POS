@@ -187,10 +187,10 @@ public class TransactionDB {
 
             for(Transaction.PAYMENT payment : transaction.getPayments()){
                 totalPayments += 1.0;
-                valueTotalPayments += payment.getValue();
+                valueTotalPayments += payment.getValue() - transaction.change;
                 if(payment.getType().equals(Transaction.PAYMENT_TYPE.CASH)){
                     numCashPayments += 1.0;
-                    valueCashPayments += payment.getValue();
+                    valueCashPayments += payment.getValue() - transaction.change;
                 }else{
                     numCreditPayments += 1.0;
                     valueCreditPayments += payment.getValue();

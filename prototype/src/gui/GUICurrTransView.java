@@ -27,7 +27,7 @@ public class GUICurrTransView implements Observer<Register> {
     Button voidItem = new Button("Void Item");
     Button voidTrans = new Button("Void Trans");
 
-    Label orderNumber = new Label("#: 45");
+    Label orderNumber = new Label("#: 0");
 
     public GUICurrTransView(GUIMain main, Pane pane){
         this.main = main;
@@ -63,6 +63,9 @@ public class GUICurrTransView implements Observer<Register> {
 
     public void update(Register register){
         //when a change occurs update the view
+
+        orderNumber.setText("#: " + register.getTransNumber());
+
         scrollBox.getChildren().remove(0, scrollBox.getChildren().size());
         for(Item item : Main.register.getList()){
             Label label = new Label(item.toString());

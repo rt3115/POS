@@ -18,6 +18,7 @@ public class Register {
 
     //debug lists
     private boolean isOpen = false; //if the register is already open
+    private boolean isRefundActive = false; //if the refund mode active
     public List<Topping> toppings = new LinkedList<>(); //fill this list with toppings
     public List<Item> foods = new LinkedList<>(); //fill this list with foods
     public List<Side> sides = new LinkedList<>();
@@ -46,6 +47,13 @@ public class Register {
         return transaction.list;
     }
 
+    public void setRefundActive(boolean refundActive) {
+        isRefundActive = refundActive;
+    }
+
+    public boolean isRefundActive() {
+        return isRefundActive;
+    }
 
     public Register(){
 
@@ -102,7 +110,13 @@ public class Register {
         if(isTransDone()){
             transDone = false;
             list.add(transaction);
-            transaction = new Transaction();
+            if(Main.refund) {
+                transaction = new Refund();
+                System.err.println("Creating a refund");
+            }else {
+                transaction = new Transaction();
+                System.err.println("Regular transaction");
+            }
         }
         if(item instanceof AdjustableFood){
             //if its an adjustable food it must be a new instance becuase of the toppings
@@ -163,6 +177,10 @@ public class Register {
 
     public int getChange(){
         return transaction.change;
+    }
+
+    public int getTransNumber(){
+        return transaction.id % 100;
     }
 
     public boolean isTransDone() {

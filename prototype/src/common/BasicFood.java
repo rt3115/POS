@@ -23,8 +23,12 @@ public class BasicFood extends Item {
 
     public BasicFood(String name, String dplName, double price, boolean hasDeposit){
         this(name, dplName, price);
-
         this.isDeposit = hasDeposit;
+    }
+
+    public BasicFood(String name, String dplName, double price, boolean hasDeposit, boolean hasTax){
+        this(name, dplName, price, hasDeposit);
+        setTaxable(hasTax);
     }
 
     public BasicFood(BasicFood copy){

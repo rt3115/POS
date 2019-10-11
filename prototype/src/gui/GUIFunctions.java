@@ -28,6 +28,7 @@ public class GUIFunctions {
     Button values = new Button("Values");
     Button close = new Button("Open/Close");
     ToggleButton isActiveToggle = new ToggleButton("Are Functions Active");
+    public ToggleButton isRefundActive = new ToggleButton("Refund");
 
     public GUIFunctions(GUIMain main, Pane pane){
         this.main = main;
@@ -38,7 +39,6 @@ public class GUIFunctions {
     public void start(){
 
         isActiveToggle.setPrefSize(length, height);
-
         sales.setPrefSize(length, height);
         viewItems.setPrefSize(length, height);
         viewTransactions.setPrefSize(length, height);
@@ -46,10 +46,11 @@ public class GUIFunctions {
         infoAndSupport.setPrefSize(length, height);
         values.setPrefSize(length, height);
         close.setPrefSize(length, height);
+        isRefundActive.setPrefSize(length, height);
 
         viewItems.setDisable(true);
 
-        box.getChildren().addAll(isActiveToggle, sales, viewItems, viewTransactions, summary, values, infoAndSupport, close);
+        box.getChildren().addAll(isActiveToggle, sales, viewItems, viewTransactions, summary, values, infoAndSupport, close, isRefundActive);
         pane.getChildren().add(box);
 
         isActiveToggle.setOnAction(actionEvent -> {
@@ -61,6 +62,7 @@ public class GUIFunctions {
                 infoAndSupport.setDisable(false);
                 values.setDisable(false);
                 close.setDisable(false);
+                isRefundActive.setDisable(false);
             }else{
                 sales.setDisable(true);
                 viewItems.setDisable(true);
@@ -69,6 +71,7 @@ public class GUIFunctions {
                 infoAndSupport.setDisable(true);
                 values.setDisable(true);
                 close.setDisable(true);
+                isRefundActive.setDisable(true);
             }
         });
 
@@ -106,6 +109,12 @@ public class GUIFunctions {
         close.setOnAction(actionEvent -> {
             main.guiCloseRegister.update();
             main.changeView('c');
+        });
+
+        isRefundActive.setOnAction(actionEvent -> {
+            //main.refund = isRefundActive.isSelected();
+            Main.refund = isRefundActive.isSelected();
+            //System.err.println("Should have updated refund bool: " + main.refund);
         });
 
 
