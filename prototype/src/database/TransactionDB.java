@@ -1,9 +1,7 @@
 package database;
 
-import common.BasicFood;
-import common.Item;
+import common.*;
 import common.Observer;
-import common.Transaction;
 import main.Main;
 
 import javax.xml.crypto.Data;
@@ -144,6 +142,8 @@ public class TransactionDB {
         Double valueDiscount = 0.0;
         Double taxableSales = 0.0;
         Double nonTaxableSales = 0.0;
+        Double numRefunds = 0.0;
+        Double valueRefunds = 0.0;
 
         for(Transaction transaction : getCurrList(startId)){
             //checking is trans if void
@@ -151,6 +151,13 @@ public class TransactionDB {
                 numVoids += 1.0;
                 valueVoid += transaction.getTotal();
                 continue;
+            }
+
+            boolean refund = false;
+            if(transaction instanceof Refund){
+                numRefunds += 1.0;
+                valueRefunds += transaction.getTotal();
+                refund = true;
             }
 
             tax += transaction.getTax();
@@ -167,8 +174,10 @@ public class TransactionDB {
                     if (item.getName().equals("Man Add"))
                         itemsEntMan += 1.0;
                     if(item.getName().equals("DISCOUNT")){
-                        numDiscount += 1.0;
-                        valueDiscount += item.getPrice();
+                        if(!refund) {
+                            numDiscount += 1.0;
+                            valueDiscount += item.getPrice();
+                        }
                     }
                     if(item.isTaxable()){
                         taxableSales += item.getPrice();
@@ -177,7 +186,10 @@ public class TransactionDB {
                     }
                     if(item instanceof BasicFood) {
                         if (((BasicFood) item).isDeposit()) {
-                            bottleDepositTotal += (Main.values.BOTTLE_DEPOSIT * 100.00);
+                            if(!refund)
+                                bottleDepositTotal += (Main.values.BOTTLE_DEPOSIT * 100.00);
+                            else
+                                bottleDepositTotal -= (Main.values.BOTTLE_DEPOSIT * 100.00);
                         }
                     }
                 } catch (Exception e){

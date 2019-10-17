@@ -155,7 +155,15 @@ public class Register {
 
     public void voidTransaction(){
         //this should void the transaction and make a new one
-        transaction = new Transaction();
+
+        if(Main.refund) {
+            transaction = new Refund();
+            System.err.println("Creating a refund");
+        }else {
+            transaction = new Transaction();
+            System.err.println("Regular transaction");
+        }
+
         alertObservers();
     }
 

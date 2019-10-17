@@ -56,7 +56,7 @@ public class GUIFunctions {
         isActiveToggle.setOnAction(actionEvent -> {
             if(isActiveToggle.isSelected()){
                 sales.setDisable(false);
-                viewItems.setDisable(true); //this function is disabled
+                viewItems.setDisable(false); //this function is disabled
                 viewTransactions.setDisable(false);
                 summary.setDisable(false);
                 infoAndSupport.setDisable(false);
